@@ -1,0 +1,11 @@
+Package: myrmidon
+Type: Package
+Title: My Custom Settings and Scripts
+Version: 0.1.0
+Author: Francis Barton
+Maintainer: Francis Barton <fbarton@alwaysdata.net>
+Description: A package containing things I want to easily load most times I
+    start up an R project. Functions, scripts and templates.
+License: MIT
+Encoding: UTF-8
+LazyData: true
