@@ -1,0 +1,4 @@
+Name: Insert assignment pipe %<>%
+Description: Inserts `%<>%` at the cursor position.
+Binding: insertAssPipe
+Interactive: false
