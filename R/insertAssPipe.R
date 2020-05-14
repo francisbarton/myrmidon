@@ -1,15 +1,16 @@
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Ctrl + Shift + B'
-#   Check Package:             'Ctrl + Shift + E'
-#   Test Package:              'Ctrl + Shift + T'
-
+#' Insert magrittr assignment pipe
+#'
+#' RStudio API tweak to insert the reflexive assignment pipe
+#' from magrittr at the cursor location when editing R code.
+#' Designed to be assigned a keyboard shortcut.
+#' - I use Ctrl+Alt+,
+#'
+#' @importFrom rstudioapi insertText
+#'
+#' @return None
+#'
+#' @export
+#'
 insertAssPipe <- function() {
   rstudioapi::insertText(" %<>% ")
 }
-
-

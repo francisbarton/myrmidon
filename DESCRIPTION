@@ -1,12 +1,16 @@
 Package: myrmidon
 Type: Package
-Title: My Custom Settings and Scripts
-Version: 0.2.0
-Author: Francis Barton
+Title: Personal Scripts - Francis Barton
+Version: 0.4.0
+Date: 2020-05-14
+Author: Francis Barton (@ludictech)
 Maintainer: Francis Barton <fbarton@alwaysdata.net>
-Description: A package containing things I want to easily load most times I
+Description: A package containing things I want to have available most times I
     start up an R project. Functions, scripts, RStudio add-ins and templates.
-License: MIT
+License: MIT + file LICENCE
 Encoding: UTF-8
 LazyData: true
-Imports: rstudioapi
+Imports: rstudioapi, here, usethis, utils
+Suggests: 
+    testthat
+RoxygenNote: 7.1.0
