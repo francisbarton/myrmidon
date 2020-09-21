@@ -8,6 +8,8 @@ insertAssPipe()
 }
 \value{
 None
+
+dont#@export
 }
 \description{
 RStudio API tweak to insert the reflexive assignment pipe

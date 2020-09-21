@@ -9,7 +9,7 @@
 #'
 #' @return None
 #'
-#' @export
+#' dont#@export
 #'
 insertAssPipe <- function() {
   rstudioapi::insertText(" %<>% ")

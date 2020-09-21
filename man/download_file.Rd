@@ -2,24 +2,9 @@
 % Please edit documentation in R/download_file.R
 \name{download_file}
 \alias{download_file}
-\title{Wrapper to simplify download.file
-
-Sometimes you just want to call download.file and not have to specify
-the name of the destination file. You just want the local file to be the same
-as the remote file that forms the basename of the URL.
-
-Default setting for dir is "" which means file will end up in project root
-directory (according to `here()`).
-
-destfile we want to extract from the URL using `basename` but we need to offer
-it as an argument to the function anyway because the user might want or need
-to specify it, as you do with `download.file` eg if it turns out destfile
-already exists.
-
-User can specify `overwrite = TRUE` which will allow the file to be downloaded
-even if the target already exists.}
+\title{Wrapper to Automate `download.file()`}
 \usage{
-download_file(url, dir = "", destfile = FALSE, overwrite = FALSE, ...)
+download_file(url, dir = "", destfile = "", overwrite = FALSE, ...)
 }
 \arguments{
 \item{url}{URL to download. Passed to `download.file()`.}
@@ -38,15 +23,14 @@ I haven't checked whether `download.file()` will actually do this in the end, th
 mode, method, headers, quiet and so on.}
 }
 \value{
-None
+A downloaded file, hopefully
 }
 \description{
-Wrapper to simplify download.file
-
 Sometimes you just want to call download.file and not have to specify
 the name of the destination file. You just want the local file to be the same
 as the remote file that forms the basename of the URL.
-
+}
+\details{
 Default setting for dir is "" which means file will end up in project root
 directory (according to `here()`).
 
@@ -55,10 +39,9 @@ it as an argument to the function anyway because the user might want or need
 to specify it, as you do with `download.file` eg if it turns out destfile
 already exists.
 
-User can specify `overwrite = TRUE` which will allow the file to be downloaded
+The user can specify `overwrite = TRUE` which will allow the file to be downloaded
 even if the target already exists.
 }
 \examples{
 download_file("https://r-bootcamp.netlify.app/fishermen_mercury_README.md", dir = "data")
-
 }

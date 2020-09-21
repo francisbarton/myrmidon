@@ -1,16 +1,17 @@
 Package: myrmidon
 Type: Package
-Title: Personal Scripts - Francis Barton
-Version: 0.4.0
-Date: 2020-05-14
+Title: Personal Functions Toolbox
+Version: 0.5.1
+Date: 2020-09-21
 Author: Francis Barton (@ludictech)
 Maintainer: Francis Barton <fbarton@alwaysdata.net>
-Description: A package containing things I want to have available most times I
-    start up an R project. Functions, scripts, RStudio add-ins and templates.
-License: MIT + file LICENCE
+Description: A package containing functions I want to have available most times I
+    start up R. Also hoping to develop my own default RMarkdown template.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: rstudioapi, here, usethis, utils
+Imports: rstudioapi, here, usethis, utils, rlang, dplyr, httr, magrittr,
+    purrr, stringr, readr, rvest, xml2
 Suggests: 
     testthat
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1

@@ -1,0 +1,32 @@
+# use the doogal.co.uk API to get data about a postcode
+# Doesn't accept a vector of codes all at once, so use with purrr::map_dfr()
+
+get_latlon <- function(postcode) {
+
+  data_names <- c(
+    "postcode",
+    "lat",
+    "lon",
+    "quality",
+    "constituency",
+    "district",
+    "ward",
+    "lsoa11nm",
+    "county",
+    "region",
+    "country",
+    "national_park",
+    "altitude",
+    "rural_urban"
+    )
+
+  endpoint <- "https://www.doogal.co.uk/GetPostcode.ashx?postcode="
+
+  paste0(endpoint, postcode) %>%
+    utils::URLencode() %>%
+    xml2::read_html() %>%
+    rvest::html_node("p") %>%
+    rvest::html_text() %>%
+    readr::read_delim("\t", col_names = data_names)
+
+}
