@@ -4,7 +4,14 @@
 \alias{download_file}
 \title{Wrapper to Automate `download.file()`}
 \usage{
-download_file(url, dir = "", destfile = "", overwrite = FALSE, ...)
+download_file(
+  url,
+  dir = "",
+  destfile = "",
+  overwrite = FALSE,
+  quiet = TRUE,
+  ...
+)
 }
 \arguments{
 \item{url}{URL to download. Passed to `download.file()`.}
@@ -18,6 +25,8 @@ but if you want or need to, you can. Passed to `download.file()`.}
 
 \item{overwrite}{(optional) Force allow overwrite of existing local destfile.
 I haven't checked whether `download.file()` will actually do this in the end, though.}
+
+\item{quiet}{don't say anything while downloading}
 
 \item{...}{Any other arguments you want to pass through to `download.file()`, such as
 mode, method, headers, quiet and so on.}

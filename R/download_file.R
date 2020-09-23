@@ -29,6 +29,7 @@
 #' but if you want or need to, you can. Passed to `download.file()`.
 #' @param overwrite (optional) Force allow overwrite of existing local destfile.
 #' I haven't checked whether `download.file()` will actually do this in the end, though.
+#' @param quiet don't say anything while downloading
 #' @param ... Any other arguments you want to pass through to `download.file()`, such as
 #' mode, method, headers, quiet and so on.
 #'
@@ -63,5 +64,7 @@ download_file <- function(url, dir = "", destfile = "", overwrite = FALSE, quiet
 
   # if we've got this far then it's probably ok to download the file.
   # other arguments to `download.file` can be passed via the dots.
+  # We're supposed to implement some form of checking for download errors
+  # as R may not report them to the user
   utils::download.file(url, here::here(dir, destfile), quiet = quiet, ...)
 }

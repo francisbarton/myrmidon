@@ -4,7 +4,7 @@
 \alias{download_files}
 \title{Automatically download files from multiple URLs}
 \usage{
-download_files(urls, download_dir = "", overwrite = FALSE)
+download_files(urls, download_dir = "", overwrite = FALSE, quiet = TRUE, ...)
 }
 \arguments{
 \item{urls}{A list or vector of URLs}
@@ -12,6 +12,11 @@ download_files(urls, download_dir = "", overwrite = FALSE)
 \item{download_dir}{specify a directory to download to. Defaults to "" (cwd)}
 
 \item{overwrite}{allow downloaded files to overwrite existing files. Defaults to FALSE}
+
+\item{quiet}{don't say anything while downloading}
+
+\item{...}{Any other arguments you want to pass through to `download.file()`, such as
+mode, method, headers and so on.}
 }
 \value{
 downloaded files
