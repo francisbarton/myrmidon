@@ -14,12 +14,9 @@
 #'
 #' @return downloaded files
 #' @export
-#'
 download_files <- function(urls, download_dir = "", overwrite = FALSE, quiet = TRUE, ...) {
-
   urls <- unique(unlist(urls))
   destfiles <- basename(urls)
-
 
   if (anyDuplicated(destfiles)) {
     usethis::ui_warn("There are duplicate destination filenames.
@@ -28,18 +25,14 @@ download_files <- function(urls, download_dir = "", overwrite = FALSE, quiet = T
     dupes <- which(duplicated(destfiles))
 
     for (i in dupes) {
-
       destfiles[i] <- paste0(
         tools::file_path_sans_ext(destfiles[i]),
         "_",
         i,
         ".",
         tools::file_ext(destfiles[i]))
-
     }
-
     ui_info("The following files will have their names altered: ", destfiles[dupes])
-
   }
 
   mapply(myrmidon::download_file, urls, destfiles, MoreArgs = list(dir = download_dir, overwrite = overwrite, quiet = quiet, ...))

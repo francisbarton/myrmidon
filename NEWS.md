@@ -1,3 +1,8 @@
+# myrmidon 0.5.2
+
+* added `batch_it.R` and `batch_it_simple.R`
+* played around with dates and `lubridate`
+
 # myrmidon 0.5.1
 
 * added `download_files.R` to handle multiple URLs
