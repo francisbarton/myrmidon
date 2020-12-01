@@ -1,8 +1,3 @@
-Name: Insert assignment pipe %<>%
-Description: Inserts `%<>%` at the cursor position
-Binding: insertAssPipe
-Interactive: false
-
 Name: Insert View() command
 Description: Inserts `%>% View()` at the cursor position
 Binding: pipeToView

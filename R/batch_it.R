@@ -116,6 +116,8 @@ batch_it <- function(x, batches = NULL, proportion = NULL, maximise = FALSE) {
   # add initial zero to support algorithm below
   batches <- c(0, batches)
 
+  # should be able to do all this with purrr??
+
   # construct batched list to return
   out <- list()
 
@@ -124,7 +126,7 @@ batch_it <- function(x, batches = NULL, proportion = NULL, maximise = FALSE) {
     out[[i]] <- x[sum(batches[1:i], 1):sum(batches[1:(i + 1)])]
   }
 
-  return(out)
+  out
 
   # end of main function
 }
@@ -158,5 +160,6 @@ maximise_batches <- function(x, batches, maximise) {
     # test this feature with e.g.:
     # batch_it(letters, batches = c(4, 6), maximise = TRUE)
   }
-  return(batches)
+
+  batches
 }
