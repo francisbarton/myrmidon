@@ -6,10 +6,6 @@
 #' services with limited APIs such as postcodes.io
 #'
 #' @importFrom usethis ui_info ui_stop ui_oops ui_nope
-#' @importFrom assertthat assert_that
-#' @importFrom rlang is_interactive
-#' @importFrom lubridate as_date days_in_month ymd
-#' @importFrom purrr map_dbl
 #' @importFrom utils head
 #'
 #' @param x a vector
@@ -27,6 +23,7 @@
 #' @param maximise FALSE by default. When TRUE, a vector of batch
 #'   sizes will be partially repeated to fit maximally to the length
 #'   of the target vector. See examples below.
+#' @param quiet Boolean, default FALSE. Whether to show ui_* messages.
 #'
 #' @export
 #'
@@ -51,8 +48,27 @@
 #'     purrr::map_dbl(1)
 #' }
 #' batch_it(x = as_year(2019), batches = month_lengths(2019))
-batch_it <- function(x, batches = NULL, proportion = NULL, maximise = FALSE) {
-  if (!rlang::is_interactive()) options(usethis.quiet = TRUE)
+batch_it <- function(x, batches = NULL, proportion = NULL, maximise = FALSE, quiet = FALSE) {
+  if (!rlang::is_interactive() | quiet) {
+    options(usethis.quiet = TRUE)
+  }
+
+  # ensure x is a reasonable vector
+  if (is.list(x)) {
+    ui_info("Converting list to single vector")
+    x <- purrr::map(x, unlist)
+    x <- do.call("c", x)
+  }
+
+  assertthat::assert_that(is.atomic(x),
+                          msg = ui_stop("This function only works with lists or vectors")
+  )
+
+
+  if (length(x) > 10e6) {
+    ui_nope("Easy, tiger! That vector has more than a million items.
+              Are you sure you want to continue?")
+  }
 
   # if no arguments supplied, set batches to a default value
   if (is.null(batches) && is.null(proportion)) batches <- length(x) / 10
@@ -60,8 +76,8 @@ batch_it <- function(x, batches = NULL, proportion = NULL, maximise = FALSE) {
   # prefer batches if both are supplied
   if (!is.null(batches) && !is.null(proportion)) {
     proportion <- NULL
-    ui_info("batches and proportion cannot both be supplied.
-            batches only is being kept.")
+    ui_info("`batches` and `proportion` cannot both be supplied.
+            `batches` only is being kept.")
   }
 
   # sub-routine to handle proportion parameter
@@ -80,21 +96,7 @@ batch_it <- function(x, batches = NULL, proportion = NULL, maximise = FALSE) {
     msg = ui_oops("Batch sizes must not be negative numbers")
   )
 
-  # ensure x is a reasonable vector
-  if (is.list(x)) {
-    ui_info("Converting list to single vector")
-    x <- do.call("c", x)
-  }
 
-  assertthat::assert_that(is.atomic(x),
-    msg = ui_stop("This function only works with lists or vectors")
-  )
-
-
-  if (length(x) > 10e6) {
-    ui_nope("Easy, tiger! That vector has more than a million items.
-              Are you sure you want to continue?")
-  }
 
   batches <- round(batches)
   batches <- batches[which(!batches == 0)]
@@ -107,7 +109,7 @@ batch_it <- function(x, batches = NULL, proportion = NULL, maximise = FALSE) {
   }
 
   if (!length(x) - sum(batches) == 0) {
-    ui_oops("The length of the target vector is not an exact multiple of the
+    ui_info("The length of the target vector is not an exact multiple of the
     total of the batches. The remainder will be added as a final batch.")
 
     batches <- c(batches, length(x) - sum(batches))
@@ -116,17 +118,13 @@ batch_it <- function(x, batches = NULL, proportion = NULL, maximise = FALSE) {
   # add initial zero to support algorithm below
   batches <- c(0, batches)
 
-  # should be able to do all this with purrr??
-
-  # construct batched list to return
-  out <- list()
-
-  # for (i in (1:(length(batches) - 1))) {
-  for (i in head(seq_along(batches), -1)) {
-    out[[i]] <- x[sum(batches[1:i], 1):sum(batches[1:(i + 1)])]
-  }
-
-  out
+  purrr::map(seq_along(head(batches, -1)),
+             ~ `[`(x,
+                   `:`(sum(batches[1:.x], 1),
+                       sum(batches[1:(.x + 1)])
+                       )
+                   )
+  )
 
   # end of main function
 }
@@ -148,7 +146,12 @@ convert_proportion_to_batches <- function(x, proportion) {
   `/`(proportion, sum(proportion)) * length(x)
 }
 
+
 maximise_batches <- function(x, batches, maximise) {
+  # If maximise = TRUE and `batches` has length > 0, partially repeat the
+  # batch lengths as far as possible within the length of x.
+  # If maximise = FALSE, only repeat the batch lengths in full as far as they
+  # will fit, then return the remainder as a final batch.
   if (!maximise) {
     batches <- rep(batches, times = floor(length(x) / sum(batches)))
   } else {

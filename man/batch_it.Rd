@@ -4,7 +4,7 @@
 \alias{batch_it}
 \title{Turn A Long Vector Into A Batched List}
 \usage{
-batch_it(x, batches = NULL, proportion = NULL, maximise = FALSE)
+batch_it(x, batches = NULL, proportion = NULL, maximise = FALSE, quiet = FALSE)
 }
 \arguments{
 \item{x}{a vector}
@@ -25,6 +25,8 @@ integer size nearest to a tenth of the vector length.}
 \item{maximise}{FALSE by default. When TRUE, a vector of batch
 sizes will be partially repeated to fit maximally to the length
 of the target vector. See examples below.}
+
+\item{quiet}{Boolean, default FALSE. Whether to show ui_* messages.}
 }
 \description{
 Go \code{batch_it()} crazy!

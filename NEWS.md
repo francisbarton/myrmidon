@@ -1,3 +1,10 @@
+# myrmidon 0.5.3
+
+* fixed annoying problem with get_postcode_data() return that was erroring
+* changed return style argument from minimal (Boolean) to an option of 3 character strings (moderate, minimal or full)
+* added "quiet" option as a parameter to batch_it()
+* `purrr`-ified the batching algorithm in batch_it(), replacing for() loop
+
 # myrmidon 0.5.2
 
 * added `batch_it.R` and `batch_it_simple.R`

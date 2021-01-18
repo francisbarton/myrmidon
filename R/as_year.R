@@ -1,11 +1,11 @@
 as_year <- function(x, months = 1:12, unlist = FALSE) {
   x <- as.character(x)
 
-  assertthat::assert_that(is.character(x))
   assertthat::assert_that(is.numeric(months),
-                          msg = usethis::ui_oops(
-                            "Months must be supplied as numbers")
-                          )
+    msg = usethis::ui_oops(
+      "Months must be supplied as numbers"
+    )
+  )
 
 
   months <- stringr::str_pad(
@@ -32,8 +32,8 @@ as_year <- function(x, months = 1:12, unlist = FALSE) {
     out <- do.call("c", out)
   }
 
-  return(out)
+  out
 }
 
-# example:
+#' example:
 as_year(2019:2020, months = c(1, 4), unlist = TRUE)

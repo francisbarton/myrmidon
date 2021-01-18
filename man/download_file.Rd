@@ -48,8 +48,8 @@ it as an argument to the function anyway because the user might want or need
 to specify it, as you do with `download.file` eg if it turns out destfile
 already exists.
 
-The user can specify `overwrite = TRUE` which will allow the file to be downloaded
-even if the target already exists.
+The user can specify `overwrite = TRUE` which will allow the file to be
+downloaded even if the target already exists.
 }
 \examples{
 download_file("https://r-bootcamp.netlify.app/fishermen_mercury_README.md", dir = "data")

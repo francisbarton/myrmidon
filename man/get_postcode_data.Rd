@@ -4,10 +4,12 @@
 \alias{get_postcode_data}
 \title{Use postcodes.io To Get Postcode Metadata}
 \usage{
-get_postcode_data(postcodes)
+get_postcode_data(postcodes, return_style = c("moderate", "minimal", "full"))
 }
 \arguments{
 \item{postcodes}{one or more valid GB postcodes}
+
+\item{return_style}{minimal just returns LSOA data and UK Grid eastings & northings. moderate returns a fuller selection of columns, arranged and renamed. full returns all columns.}
 }
 \value{
 Tibble of postcode data
@@ -16,6 +18,6 @@ Tibble of postcode data
 Use postcodes.io To Get Postcode Metadata
 }
 \examples{
-get_postcode_data("W1A 1AA")
+get_postcode_data(c("SW1A 0AA", "E15 1TT"))
 
 }
