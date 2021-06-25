@@ -6,8 +6,8 @@
 \usage{
 download_file(
   url,
-  dir = "",
-  destfile = "",
+  dir = here::here(),
+  destfile = NULL,
   overwrite = FALSE,
   quiet = TRUE,
   ...
@@ -16,23 +16,23 @@ download_file(
 \arguments{
 \item{url}{URL to download. Passed to `download.file()`.}
 
-\item{dir}{(optional) Directory to download to.
-Defaults to project root folder/working directory.}
+\item{dir}{(optional) Directory to download to. Defaults to the output of
+`here::here()` i.e. the project directory or equivalent (since
+[this beauty](https://github.com/r-lib/rprojroot/pull/59) got merged you can
+nest `here()`s and it just takes it in its stride.)}
 
 \item{destfile}{(optional) Name of local file to download to.
 The whole point of this is not to have to specify a destfile,
 but if you want or need to, you can. Passed to `download.file()`.}
 
 \item{overwrite}{(optional) Force allow overwrite of existing local destfile.
-I haven't checked whether `download.file()` will actually do this in the end, though.}
+I haven't checked whether `download.file()` will actually do this in the end,
+though.}
 
 \item{quiet}{don't say anything while downloading}
 
-\item{...}{Any other arguments you want to pass through to `download.file()`, such as
-mode, method, headers, quiet and so on.}
-}
-\value{
-A downloaded file, hopefully
+\item{...}{Any other arguments you want to pass through to `download.file()`,
+such as mode, method, headers and so on.}
 }
 \description{
 Sometimes you just want to call download.file and not have to specify

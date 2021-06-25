@@ -59,7 +59,7 @@ fix_invalid_postcodes <- function(codes) {
 
    httr::content(response) %>%
      reverse_geocode_postcode(search_limit) %>%
-     tail(1)
+     utils::tail(1)
 
   }
 

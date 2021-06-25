@@ -4,22 +4,24 @@
 \alias{download_files}
 \title{Automatically download files from multiple URLs}
 \usage{
-download_files(urls, download_dir = "", overwrite = FALSE, quiet = TRUE, ...)
+download_files(urls, dir = here::here(), overwrite = FALSE, quiet = TRUE, ...)
 }
 \arguments{
 \item{urls}{A list or vector of URLs}
 
-\item{download_dir}{specify a directory to download to. Defaults to "" (cwd)}
+\item{dir}{(optional) Directory to download to. Defaults to the output of
+`here::here()` i.e. the project directory or equivalent (since
+[this beauty](https://github.com/r-lib/rprojroot/pull/59) got merged you can
+nest `here()`s and it just takes it in its stride.)}
 
-\item{overwrite}{allow downloaded files to overwrite existing files. Defaults to FALSE}
+\item{overwrite}{(optional) Force allow overwrite of existing local destfile.
+I haven't checked whether `download.file()` will actually do this in the end,
+though.}
 
 \item{quiet}{don't say anything while downloading}
 
-\item{...}{Any other arguments you want to pass through to `download.file()`, such as
-mode, method, headers and so on.}
-}
-\value{
-downloaded files
+\item{...}{Any other arguments you want to pass through to `download.file()`,
+such as mode, method, headers and so on.}
 }
 \description{
 Passes URLs to download_file() after checking that there are no duplicate

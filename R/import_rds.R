@@ -9,10 +9,6 @@
 #' @param recursive whether to search through folders recursively (default is TRUE)
 #'
 #' @return object(s) in the global env.
-#'
-#' @importFrom here here
-#' @importFrom stringr str_extract
-#'
 #' @export
 #'
 #' @examples

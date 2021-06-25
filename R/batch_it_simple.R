@@ -43,7 +43,7 @@ batch_it_simple <- function(x, batch_size = 100) {
   # do the batching by creating a vector of factors of length(x)
   # then use this as the factor argument to split(x)
   rep(1:ceiling(length(x) / batch_size), each = batch_size) %>%
-    head(length(x)) %>%
+    utils::head(length(x)) %>%
     split(x = x, f = .)
 }
 
