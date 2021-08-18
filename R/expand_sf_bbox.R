@@ -20,7 +20,7 @@ expand_sf_bbox <- function(x, factor, crs = NULL) {
 
   orig_bbox <- sf::st_bbox(x)
 
-  testthat::expect_true(purrr::is_scalar_double(orig_bbox))
+  testthat::expect_true(purrr::is_double(orig_bbox))
   testthat::expect_length(orig_bbox, 4)
 
   usethis::ui_info("The bounding box of the object you supplied was:")
@@ -49,7 +49,7 @@ expand_sf_bbox <- function(x, factor, crs = NULL) {
     ymax = orig_bbox[["ymax"]] + (orig_height * factor[[4]])
   )
 
-  testthat::expect_true(purrr::is_scalar_double(b))
+  testthat::expect_true(purrr::is_double(b))
 
 
   sf::st_linestring(

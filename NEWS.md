@@ -1,3 +1,7 @@
+# myrmidon 0.5.5 (18 August 2021)
+
+* add `gmaps_to_sf` function
+
 # myrmidon 0.5.4 (25 June 2021)
 
 * added new function `expand_sf_bbox` which automates creating a bigger (or smaller) bbox - as an `sf` object - from an existing bboxable object
