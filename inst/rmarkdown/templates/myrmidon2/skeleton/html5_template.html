@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="$lang$" />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+$for(author-meta)$
+  <meta name="author" property="og:article:author" content="$author-meta$" />
+$endfor$
+$if(date-meta)$
+  <meta itemprop="datePublished" property="og:article:published_time" content="$date-meta$" />
+$endif$
+$if(keywords)$
+  <meta name="keywords" property="og:article:tag" content="$for(keywords)$$keywords$$sep$, $endfor$" />
+$endif$
+$if(og-type)$
+  <meta property="og:type" content="$og-type$" />
+$endif$
+$if(description-meta)$
+  <meta name="description" property="og:description" property="twitter:description" content="$description-meta$" />
+$endif$
+  <meta property="og:title" property="twitter:title" content="$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$" />
+  <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
+$for(css)$
+  <link rel="stylesheet" type="text/css" href="$css$" />
+$endfor$
+$if(highlightjs)$
+  <link rel="stylesheet" type="text/css" href="js/hl/styles/$highlightjs$.min.css" />
+$endif$
+$if(favicon)$
+  <link rel="icon" type="image/svg+xml" href="$favicon$">
+$endif$
+$for(header-includes)$
+  $header-includes$
+$endfor$
+</head>
+
+<body>
+$for(include-before)$
+$include-before$
+$endfor$
+
+<main role="main">
+
+<header id="title-block-header">
+
+$if(title)$
+<h1 class="title">$title$</h1>
+$endif$
+
+$if(subtitle)$
+<h2 class="subtitle">$subtitle$</h2>
+$endif$
+
+$if(toc)$
+<nav id="$idprefix$TOC" role="doc-toc">
+
+$if(toc-title)$
+<h2 id="$idprefix$toc-title">$toc-title$</h2>
+$endif$
+
+$table-of-contents$
+</nav>
+$endif$
+
+</header>
+
+<article>
+$body$
+</article>
+
+</main>
+
+<footer>
+$for(include-after)$
+$include-after$
+$endfor$
+
+<address>
+$for(author)$
+<p class="author">$author$</p>
+$endfor$
+</address>
+
+$if(date)$
+<p class="date">$date$</p>
+$endif$
+
+$if(highlightjs)$
+<script src="js/hl/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+$endif$
+
+</footer>
+</body>
+</html>
