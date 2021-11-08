@@ -1,4 +1,4 @@
-#' as_year
+#' Create vectors of dates for one or more years (and/or months)
 #'
 #' @param x a vector of years, provided as numeric or string
 #' @param months a numeric vector. 1:12 by default (whole year).
@@ -8,8 +8,8 @@
 #' @export
 #'
 #' @examples
-#' head(as_year(2019:2020, months = c(1, 4), unlist = TRUE), 10)
-as_year <- function(x, months = 1:12, unlist = FALSE) {
+#' head(year_dates(2019:2020, months = c(1, 4), unlist = TRUE), 10)
+year_dates <- function(x, months = 1:12, unlist = FALSE) {
   x <- as.character(x)
 
   assertthat::assert_that(is.numeric(months),

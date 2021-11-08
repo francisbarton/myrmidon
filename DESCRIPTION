@@ -9,6 +9,7 @@ Description: A package containing functions I want to have available most times
   I start up R, as well as my own HTML5 RMarkdown template.
 License: MIT + file LICENSE
 Encoding: UTF-8
+LazyData: true
 Imports: 
     assertthat,
     dplyr,
@@ -23,6 +24,7 @@ Imports:
     rstudioapi,
     rvest,
     sf,
+    snakecase,
     stringr,
     testthat,
     usethis,

@@ -2,8 +2,7 @@
 % Please edit documentation in R/batch_it.R
 \name{batch_it}
 \alias{batch_it}
-\title{batch_it
-Turn A Long Vector Into A Batched List}
+\title{Turn A Long Vector Into A Batched List}
 \usage{
 batch_it(x, batches = NULL, proportion = NULL, maximise = FALSE, quiet = FALSE)
 }

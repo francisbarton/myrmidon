@@ -1,4 +1,15 @@
-function(area, measure, source_pcts, invert = TRUE, age_bands = "lloyds_all", summary = TRUE) {
+#' Generate stats tables or summaries of age-based data by area
+#'
+#' @importFrom assertthat assert_that
+#' @param area name of geographical area
+#' @param measure name of data measure
+#' @param source_pcts age band percentages
+#' @param invert whether to convert percentages into their inverse (100-x). Default TRUE
+#' @param age_bands use an alias for certain common age bandings (lloyds_all, lloyds_wa, lloyds_65, ons, ofcom), or supply a list of two integer vectors, named `lows` and `highs`
+#' @param summary whether to output data for all age bands (FALSE) or just a total for the area (TRUE, default)
+#'
+#' @export
+generate_stats <- function(area, measure, source_pcts, invert = TRUE, age_bands = "lloyds_all", summary = TRUE) {
 
   slice_pops <- function(area, low, high) {
 
@@ -62,6 +73,9 @@ function(area, measure, source_pcts, invert = TRUE, age_bands = "lloyds_all", su
     highs <- rep(9, 5) %>%
       c(8, ., 15) %>%
       purrr::map2_dbl(lows, `+`)
+  } else {
+    lows <- age_bands[["lows"]]
+    highs <- age_bands[["highs"]]
   }
   assert_that(length(lows) == length(highs))
   assert_that(length(lows) == length(source_pcts))

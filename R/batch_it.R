@@ -1,12 +1,9 @@
-#' batch_it
 #' Turn A Long Vector Into A Batched List
 #'
 #' Go \code{batch_it()} crazy!
 #'
 #' Batch up a long vector or list of vectors for passing to
 #' services with limited APIs such as postcodes.io
-#'
-#' @importFrom usethis ui_info ui_stop ui_oops ui_nope
 #'
 #' @param x a vector
 #' @param batches size of batches to create. Can be a single value or
