@@ -1,0 +1,21 @@
+---
+html5_output:
+  knitr: null
+  pandoc: [ "to", "html5" ]
+  base_format:
+    html_document:
+      template: html5_template.html
+      css: style.scss
+      self_contained: false
+      theme: null
+      mathjax: null
+      highlight: null
+      anchor_sections: true
+      section_divs: false
+      smart: false
+      md_extensions: "+emoji+header_attributes+auto_identifiers"
+      includes:
+        in_header: includes/header.html
+        before_body: includes/before_body.html
+        after_body:  includes/after_body.html
+---

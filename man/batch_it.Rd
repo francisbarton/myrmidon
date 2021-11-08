@@ -2,7 +2,8 @@
 % Please edit documentation in R/batch_it.R
 \name{batch_it}
 \alias{batch_it}
-\title{Turn A Long Vector Into A Batched List}
+\title{batch_it
+Turn A Long Vector Into A Batched List}
 \usage{
 batch_it(x, batches = NULL, proportion = NULL, maximise = FALSE, quiet = FALSE)
 }
@@ -36,6 +37,7 @@ Batch up a long vector or list of vectors for passing to
 services with limited APIs such as postcodes.io
 }
 \examples{
+library(magrittr)
 batch_it(seq(2, 60, 2), 6)
 batch_it(seq(2, 60, 2), proportion = 0.2)
 batch_it(1:100, batches = c(20, 30, 50))

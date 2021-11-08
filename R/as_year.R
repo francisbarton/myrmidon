@@ -1,3 +1,14 @@
+#' as_year
+#'
+#' @param x a vector of years, provided as numeric or string
+#' @param months a numeric vector. 1:12 by default (whole year).
+#' @param unlist FALSE by default (allows returning a list). TRUE causes it to return a vector of dates.
+#'
+#' @return a vector of dates, or a list of vectors, one for each year, where multiple years are requested.
+#' @export
+#'
+#' @examples
+#' head(as_year(2019:2020, months = c(1, 4), unlist = TRUE), 10)
 as_year <- function(x, months = 1:12, unlist = FALSE) {
   x <- as.character(x)
 
@@ -34,6 +45,3 @@ as_year <- function(x, months = 1:12, unlist = FALSE) {
 
   out
 }
-
-#' example:
-as_year(2019:2020, months = c(1, 4), unlist = TRUE)

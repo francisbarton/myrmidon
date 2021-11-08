@@ -1,6 +1,8 @@
-# use the doogal.co.uk API to get data about a postcode
-# Doesn't accept a vector of codes all at once, so use with purrr::map_dfr()
-
+#' Use doogal.co.uk API To Get Postcode Data
+#'
+#' Deprecated - use \code{get_postcode_data()} instead
+#' Doesn't accept a vector of codes all at once, so use with purrr::map_dfr()
+#' @param postcode a UK postcode
 get_latlon <- function(postcode) {
 
   data_names <- c(
@@ -28,5 +30,4 @@ get_latlon <- function(postcode) {
     rvest::html_node("p") %>%
     rvest::html_text() %>%
     readr::read_delim("\t", col_names = data_names)
-
 }

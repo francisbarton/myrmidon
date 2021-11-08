@@ -3,9 +3,6 @@
 #' @param x Object to save (can be piped in)
 #' @param dir Directory to store RDS files ('rds_data' by default)
 #'
-#' @importFrom here here
-#' @importFrom rlang enexpr
-#'
 #' @return Creates an RDS file
 #' @export
 #'

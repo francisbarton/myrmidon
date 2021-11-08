@@ -1,31 +1,30 @@
 Package: myrmidon
 Type: Package
 Title: Personal Functions Toolbox
-Version: 0.5.3
-Date: 2021-01-18
+Version: 0.6
+Date: 2021-06-25
 Author: Fran Barton (@ludictech)
 Maintainer: Fran Barton <fbarton@alwaysdata.net>
-Description: A package containing functions I want to have available most times I
-    start up R. Also hoping to develop my own default RMarkdown template.
+Description: A package containing functions I want to have available most times
+  I start up R, as well as my own HTML5 RMarkdown template.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 Imports: 
-    rstudioapi,
-    here,
-    usethis,
-    utils,
-    rlang,
+    assertthat,
     dplyr,
+    here,
     httr,
     lubridate,
     magrittr,
     purrr,
-    stringr,
     readr,
+    rlang,
+    rstudioapi,
     rvest,
-    xml2,
-    assertthat
-Suggests: 
-    testthat
-RoxygenNote: 7.1.1
+    sf,
+    stringr,
+    testthat,
+    usethis,
+    utils,
+    xml2
+RoxygenNote: 7.1.2

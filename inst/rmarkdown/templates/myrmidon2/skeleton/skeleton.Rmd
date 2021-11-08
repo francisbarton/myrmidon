@@ -1,0 +1,106 @@
+---
+title: An RMarkdown Template
+title-prefix: "{myrmidon2}"
+subtitle: Something to start with
+author: "[Francis Barton](https://twitter.com/ludictech)"
+date: "`r Sys.Date()`"
+og-type: article
+lang: en-GB
+highlightjs: base16/eighties # use anything from js/hl/styles
+csl: harvard-university-of-gloucestershire
+link-citations: true
+params:
+  code_folding: false
+keywords:
+  - one
+  - two
+kable-scroll: true
+knit: (
+  function(input, ...) {
+  rmarkdown::render(  
+    input,
+    output_format = rmarkdown::output_format(
+      knitr = NULL,
+      pandoc = list(to = "html5"),
+      base_format = rmarkdown::html_document(
+        template = "html5_template.html",
+        css = "style.scss",
+        self_contained = FALSE,
+        theme = NULL,
+        mathjax = NULL,
+        highlight = NULL,
+        anchor_sections = TRUE,
+        section_divs = FALSE,
+        smart = FALSE,
+        md_extensions = "+emoji+header_attributes+auto_identifiers",
+        includes = list(in_header = "includes/header.html",
+                        before_body = "includes/before_body.html",
+                        after_body = "includes/after_body.html"))))} )
+---
+
+```{r setup}
+#| include: false
+#| message: false
+
+knitr::opts_chunk$set(
+  comment = "#",
+	echo = TRUE,
+	fig.align = "center",
+	fig.alt = "Alt text not provided",
+	fig.height = 6,
+	fig.width = 8,
+	message = FALSE,
+	dev = "ragg_png",
+	dpi = 192,
+	out.width = "80%",
+	collapse = TRUE
+)
+
+knitr::knit_hooks$set(
+  plot = function(x, options) {
+  paste0('<figure><img src="',
+        knitr::opts_knit$get('base.url'),
+        paste(x, collapse = '.'),
+        '" alt="',
+        options$fig.alt,
+        '"><figcaption>',
+        options$fig.cap,
+        '</figcaption></figure>')
+})
+
+if (params$code_folding) {
+  knitr::knit_hooks$set(
+  source = function(x, options) {
+  paste0('<details>',
+         '<summary>code</summary>',
+         paste(x, collapse = ''),
+         '</details>')
+  }
+  )
+}
+
+
+library(here)
+library(tidyverse)
+library(janitor)
+library(xfun)
+
+```
+
+
+
+
+
+
+<hr />
+
+### session info
+
+<details><summary>session info</summary>
+```{r}
+#| comment: ""
+#| prompt: true
+xfun::session_info(dependencies = FALSE)
+```
+
+</details>

@@ -1,3 +1,4 @@
+#' batch_it
 #' Turn A Long Vector Into A Batched List
 #'
 #' Go \code{batch_it()} crazy!
@@ -6,7 +7,6 @@
 #' services with limited APIs such as postcodes.io
 #'
 #' @importFrom usethis ui_info ui_stop ui_oops ui_nope
-#' @importFrom utils head
 #'
 #' @param x a vector
 #' @param batches size of batches to create. Can be a single value or
@@ -28,6 +28,7 @@
 #' @export
 #'
 #' @examples
+#' library(magrittr)
 #' batch_it(seq(2, 60, 2), 6)
 #' batch_it(seq(2, 60, 2), proportion = 0.2)
 #' batch_it(1:100, batches = c(20, 30, 50))
@@ -118,7 +119,7 @@ batch_it <- function(x, batches = NULL, proportion = NULL, maximise = FALSE, qui
   # add initial zero to support algorithm below
   batches <- c(0, batches)
 
-  purrr::map(seq_along(head(batches, -1)),
+  purrr::map(seq_along(utils::head(batches, -1)),
              ~ `[`(x,
                    `:`(sum(batches[1:.x], 1),
                        sum(batches[1:(.x + 1)])
@@ -158,7 +159,7 @@ maximise_batches <- function(x, batches, maximise) {
     batches <- rep(batches, times = ceiling(length(x) / sum(batches)))
 
     while (sum(batches) > length(x)) {
-      batches <- head(batches, -1)
+      batches <- utils::head(batches, -1)
     }
     # test this feature with e.g.:
     # batch_it(letters, batches = c(4, 6), maximise = TRUE)
