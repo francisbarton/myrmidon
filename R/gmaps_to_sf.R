@@ -8,8 +8,6 @@
 #'
 #' @return an `sf` (sfc) object (collection)
 #' @export
-#'
-#' @examples
 gmaps_to_sf <- function(lst, crs) {
 
   lst %>%

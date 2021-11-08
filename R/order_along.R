@@ -1,17 +1,11 @@
 #' Sort a data frame using a secondary key, within primary groupings
 #'
 #' Also works with `sf` tibbles – use `order_along.sf` instead.
-#'
-#'
-#' @param df
-#' @param order_along
-#' @param sort_by
-#' @param desc
-#'
-#' @return
+#' @param df data frame
+#' @param order_along variable you want to order
+#' @param sort_by variable(s) you want to order by
+#' @param desc whether to sort sort_by in descending order
 #' @export
-#'
-#' @examples
 order_along <- function(df, order_along, sort_by, desc = FALSE) {
 
   # https://adv-r.hadley.nz/quasiquotation.html?q=ensym#capturing-symbols 🤓

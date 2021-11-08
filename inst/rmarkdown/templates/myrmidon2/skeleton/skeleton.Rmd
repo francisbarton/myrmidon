@@ -5,6 +5,7 @@ subtitle: Something to start with
 author: "[Francis Barton](https://twitter.com/ludictech)"
 date: "`r Sys.Date()`"
 og-type: article
+documentclass: article
 lang: en-GB
 highlightjs: base16/eighties # use anything from js/hl/styles
 csl: harvard-university-of-gloucestershire
@@ -15,6 +16,7 @@ keywords:
   - one
   - two
 kable-scroll: true
+papersize: a4
 knit: (
   function(input, ...) {
   rmarkdown::render(  
@@ -42,18 +44,22 @@ knit: (
 #| include: false
 #| message: false
 
+options(sass.cache = FALSE)
+
 knitr::opts_chunk$set(
-  comment = "#",
+  comment = "#>",
 	echo = TRUE,
+	message = FALSE,
 	fig.align = "center",
 	fig.alt = "Alt text not provided",
-	fig.height = 6,
+  fig.retina = 1,
 	fig.width = 8,
-	message = FALSE,
+	fig.asp = 0.618, # golden ratio
 	dev = "ragg_png",
 	dpi = 192,
-	out.width = "80%",
-	collapse = TRUE
+	out.width = "100%",
+	collapse = TRUE,
+  tab.topcaption = FALSE
 )
 
 knitr::knit_hooks$set(

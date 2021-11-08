@@ -7,10 +7,13 @@
 order_along(df, order_along, sort_by, desc = FALSE)
 }
 \arguments{
-\item{desc}{}
-}
-\value{
+\item{df}{data frame}
 
+\item{order_along}{variable you want to order}
+
+\item{sort_by}{variable(s) you want to order by}
+
+\item{desc}{whether to sort sort_by in descending order}
 }
 \description{
 Also works with `sf` tibbles – use `order_along.sf` instead.

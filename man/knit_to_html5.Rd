@@ -4,14 +4,12 @@
 \alias{knit_to_html5}
 \title{Custom HTML5 knit function}
 \usage{
-knit_to_html5(input, quiet = FALSE, ...)
+knit_to_html5(input, ...)
 }
 \arguments{
 \item{input}{input document to be knitted}
 
-\item{quiet}{passed to rmarkdown::render}
-
-\item{...}{args passed to rmarkdown::html_document}
+\item{...}{other arguments to pass to rmarkdown::output_format()}
 }
 \description{
 Custom HTML5 knit function
