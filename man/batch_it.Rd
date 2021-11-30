@@ -4,7 +4,7 @@
 \alias{batch_it}
 \title{Turn A Long Vector Into A Batched List}
 \usage{
-batch_it(x, batches = NULL, proportion = NULL, maximise = FALSE, quiet = FALSE)
+batch_it(x, batches = NULL, proportion = NULL, maximise = FALSE, quiet = TRUE)
 }
 \arguments{
 \item{x}{a vector}
@@ -26,7 +26,7 @@ integer size nearest to a tenth of the vector length.}
 sizes will be partially repeated to fit maximally to the length
 of the target vector. See examples below.}
 
-\item{quiet}{Boolean, default FALSE. Whether to show ui_* messages.}
+\item{quiet}{Boolean, default TRUE. Whether to show ui_* messages.}
 }
 \description{
 Go \code{batch_it()} crazy!
@@ -36,7 +36,6 @@ Batch up a long vector or list of vectors for passing to
 services with limited APIs such as postcodes.io
 }
 \examples{
-library(magrittr)
 batch_it(seq(2, 60, 2), 6)
 batch_it(seq(2, 60, 2), proportion = 0.2)
 batch_it(1:100, batches = c(20, 30, 50))

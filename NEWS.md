@@ -1,3 +1,16 @@
+# 0.6.3 (30 November 2021)
+
+* Created new function postcode_data_join for mutating a data frame with a column of postcodes, to add postcode data from the postcodes.io API. I actually wrote tests!
+
+# 0.6.2 (23 November 2021)
+
+* Moved `ons_age_profiles` data object and `generate_stats()` out to a new package/repo called co-useful-data
+
+# 0.6.1 (8 November 2021)
+
+* Further work on Rmd template and documented some hitherto undocumented functions
+* Created `ons_age_profiles` data object and added `generate_stats` function to produce age banded stat summaries from this data.
+
 # 0.6 (29 October 2021)
 
 * developed new RMarkdown template `myrmidon2`, with the aim to be HTML5 compatible and get rid of certain options in default `html_document()` that I don't agree with.

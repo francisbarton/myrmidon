@@ -1,9 +1,0 @@
-Name: Insert View() command
-Description: Inserts `%>% View()` at the cursor position
-Binding: pipeToView
-Interactive: false
-
-Name: Insert glimpse() command
-Description: Inserts `%>% glimpse()` at the cursor position
-Binding: pipeToGlimpse
-Interactive: false
