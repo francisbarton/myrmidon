@@ -39,10 +39,8 @@
 #'   )
 #' }
 #' month_lengths <- function(year) {
-#'   lubridate::as_date(paste0(year, "-", 1:12, "-01")) %>%
-#'     lubridate::days_in_month() %>%
-#'     split(factor(names(.), levels = month.abb)) %>%
-#'     purrr::map_dbl(1)
+#'   lubridate::as_date(paste0(year, "-", 1:12, "-01")) |>
+#'     lubridate::days_in_month()
 #' }
 #' batch_it(x = as_year(2019), batches = month_lengths(2019))
 batch_it <- function(x, batches = NULL, proportion = NULL, maximise = FALSE, quiet = TRUE) {

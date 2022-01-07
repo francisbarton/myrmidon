@@ -3,3 +3,6 @@
 ^LICENSE\.md$
 ^data-raw$
 ^\.github$
+^data$
+^reprex.txt$
+^test.Rds$

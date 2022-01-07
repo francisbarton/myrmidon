@@ -20,8 +20,8 @@ expand_sf_bbox <- function(x, factor, crs = NULL) {
 
   orig_bbox <- sf::st_bbox(x)
 
-  testthat::expect_true(purrr::is_double(orig_bbox))
-  testthat::expect_length(orig_bbox, 4)
+  assertthat::assert_that(purrr::is_double(orig_bbox))
+  assertthat::assert_that(length(orig_bbox) == 4)
 
   usethis::ui_info("The bounding box of the object you supplied was:")
   usethis::ui_code(orig_bbox)
@@ -33,7 +33,7 @@ expand_sf_bbox <- function(x, factor, crs = NULL) {
     factor <- rep(factor, 2)
   }
 
-  testthat::expect_length(factor, 4)
+  assertthat::assert_that(length(factor) == 4)
   if (!length(factor) == 4) {
     usethis::ui_stop("The factor you supplied is not of length 1, 2 or 4")
   }
@@ -49,10 +49,10 @@ expand_sf_bbox <- function(x, factor, crs = NULL) {
     ymax = orig_bbox[["ymax"]] + (orig_height * factor[[4]])
   )
 
-  testthat::expect_true(purrr::is_double(b))
+  assertthat::assert_that(purrr::is_double(b))
 
 
-  sf::st_linestring(
+  list(
     matrix(
       c(
         b[["xmin"]], b[["ymin"]], # bottom left corner
@@ -63,6 +63,6 @@ expand_sf_bbox <- function(x, factor, crs = NULL) {
         ),
         ncol = 2, byrow = TRUE)
   ) %>%
-    sf::st_polygonize() %>%
+    sf::st_polygon() %>%
     sf::st_sfc(crs = crs)
 }

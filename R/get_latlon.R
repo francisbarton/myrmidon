@@ -26,7 +26,7 @@ get_latlon <- function(postcode) {
 
   paste0(endpoint, postcode) %>%
     utils::URLencode() %>%
-    xml2::read_html() %>%
+    rvest::read_html() %>%
     rvest::html_node("p") %>%
     rvest::html_text() %>%
     readr::read_delim("\t", col_names = data_names)

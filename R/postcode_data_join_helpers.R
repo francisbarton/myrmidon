@@ -1,7 +1,7 @@
 in_names_test <- function(df, var = postcode) {
-  var <- rlang::ensym(var)
+  var <- rlang::as_string(rlang::ensym(var))
   assertthat::assert_that(
-    rlang::as_string({{var}}) %in% names(df),
+    var %in% names(df),
     msg = "That variable doesn't seem to exist in this data frame."
   )
 }
@@ -44,8 +44,8 @@ check_term_possibly <- purrr::possibly(check_term, otherwise = NULL)
 
 extract_lonlat <- function(df) {
   df %>%
-    tidyr::unnest_wider(response) %>%
-    dplyr::select(longitude, latitude)
+    tidyr::unnest_wider(.data$response) %>%
+    dplyr::select(c(.data$longitude, .data$latitude))
 }
 
 
@@ -55,8 +55,8 @@ bulk_reverse_geocode <- function(df) {
     httr2::req_url_query(limit = 1) %>%
     pluck_result() %>%
     purrr::map_df("result") %>%
-    dplyr::mutate(codes_names = names(codes), codes = unlist(codes)) %>%
-    tidyr::pivot_wider(names_from = codes_names, names_glue = "{codes_names}_code", values_from = codes)
+    dplyr::mutate(codes_names = names(.data$codes), codes = unlist(.data$codes)) %>%
+    tidyr::pivot_wider(names_from = .data$codes_names, names_glue = "{codes_names}_code", values_from = .data$codes)
 }
 
 
@@ -77,6 +77,6 @@ bulk_lookup <- function(x) {
     httr2::req_body_json(list(postcodes = x), auto_unbox = FALSE) %>%
     pluck_result() %>%
     purrr::map_df("result") %>%
-    dplyr::mutate(codes_names = names(codes), codes = unlist(codes)) %>%
-    tidyr::pivot_wider(names_from = codes_names, names_glue = "{codes_names}_code", values_from = codes)
+    dplyr::mutate(codes_names = names(.data$codes), codes = unlist(.data$codes)) %>%
+    tidyr::pivot_wider(names_from = .data$codes_names, names_glue = "{codes_names}_code", values_from = .data$codes)
 }

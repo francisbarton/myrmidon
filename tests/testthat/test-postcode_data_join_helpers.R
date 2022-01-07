@@ -1,7 +1,6 @@
 postcodes <- c("HD1 2UT", "HD1 2UU", "HD1 2UV")
-bad_postcode <- "HD1 2VA" # doesnt exist
+bad_postcode <- "HD1 2VA" # doesn't exist
 test_df1 <- dplyr::tibble(place = paste0("place_", 1:3), postcode = postcodes)
-test_df2 <- readRDS(here::here("test.Rds"))
 ua_string <- "github.com/francisbarton/myrmidon // httr2"
 
 

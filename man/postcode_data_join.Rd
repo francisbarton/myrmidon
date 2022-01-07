@@ -2,13 +2,17 @@
 % Please edit documentation in R/postcode_data_join.R
 \name{postcode_data_join}
 \alias{postcode_data_join}
-\title{Use postcodes.io To Get Postcode Metadata}
+\title{Use postcodes.io to get postcode data}
 \usage{
 postcode_data_join(df, var = postcode, fix_invalid = TRUE)
 }
 \arguments{
 \item{df}{a data frame with a column of postcodes}
+
+\item{var}{the name of the variable in the data frame that contains postcodes (only!)}
+
+\item{fix_invalid}{whether to try to fix any postcodes that are not found (potentially because they are terminated codes)}
 }
 \description{
-Use postcodes.io To Get Postcode Metadata
+Use postcodes.io to get postcode data
 }

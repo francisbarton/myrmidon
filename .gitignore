@@ -4,3 +4,6 @@
 .Ruserdata
 NAMESPACE-old
 R/something_random.R
+reprex.txt
+test.Rds
+inst/postcodes_test

@@ -1,3 +1,11 @@
+# 0.6.4 (7 January 2022)
+
+* Added new function `bb_to_poly`
+* Fixed an issue with `batch_it` example code (and simplified the example)
+* Further attempts to fix `postcode_data_join` and reduce CMD check notes
+* Added `.data` pronoun to scripts to reduce `devtools::check()` Notes
+* Discovered weird issue with `commonest` tests
+
 # 0.6.3 (30 November 2021)
 
 * Created new function postcode_data_join for mutating a data frame with a column of postcodes, to add postcode data from the postcodes.io API. I actually wrote tests!
