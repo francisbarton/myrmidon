@@ -1,11 +1,3 @@
-in_names_test <- function(df, var = postcode) {
-  var <- rlang::as_string(rlang::ensym(var))
-  assertthat::assert_that(
-    var %in% names(df),
-    msg = "That variable doesn't seem to exist in this data frame."
-  )
-}
-
 req_base <- function(ep = "") {
   ua <- "github.com/francisbarton/myrmidon // httr2"
 
@@ -14,13 +6,15 @@ req_base <- function(ep = "") {
     httr2::req_user_agent(ua)
 }
 
+
+
+
 pluck_result <- function(req) {
   req %>%
     httr2::req_perform() %>%
     httr2::resp_body_json() %>%
     purrr::pluck("result")
 }
-
 
 
 
@@ -49,6 +43,7 @@ extract_lonlat <- function(df) {
 }
 
 
+
 bulk_reverse_geocode <- function(df) {
   req_base() %>%
     httr2::req_body_json(list(geolocations = df)) %>%
@@ -58,6 +53,7 @@ bulk_reverse_geocode <- function(df) {
     dplyr::mutate(codes_names = names(.data$codes), codes = unlist(.data$codes)) %>%
     tidyr::pivot_wider(names_from = .data$codes_names, names_glue = "{codes_names}_code", values_from = .data$codes)
 }
+
 
 
 autocomplete <- function(x) {
@@ -70,6 +66,7 @@ autocomplete <- function(x) {
     purrr::pluck(1)
 }
 autocomplete_possibly <- purrr::possibly(autocomplete, otherwise = NULL)
+
 
 
 bulk_lookup <- function(x) {

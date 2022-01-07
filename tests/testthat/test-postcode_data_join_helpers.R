@@ -52,13 +52,6 @@ lonlat_out <- structure(list(longitude = -1.780629, latitude = 53.643909), row.n
 
 
 
-"in_names_test" %>% test_that({
-  expect_true(
-    in_names_test(test_df1, var = postcode)
-  )
-})
-
-
 "validate_test" %>%
   test_that({
     expect_identical(
