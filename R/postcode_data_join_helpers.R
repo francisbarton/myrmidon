@@ -77,3 +77,51 @@ bulk_lookup <- function(x) {
     dplyr::mutate(codes_names = names(.data$codes), codes = unlist(.data$codes)) %>%
     tidyr::pivot_wider(names_from = .data$codes_names, names_glue = "{codes_names}_code", values_from = .data$codes)
 }
+
+
+narrow <- function(df) {
+  df %>%
+    dplyr::rename(
+      lsoa11nm = .data$lsoa,
+      lsoa11cd = .data$lsoa_code,
+      msoa11nm = .data$msoa,
+      msoa11cd = .data$msoa_code,
+      wd21nm = .data$admin_ward,
+      wd21cd = .data$admin_ward_code,
+      pcon21nm = .data$parliamentary_constituency,
+      pcon21cd = .data$parliamentary_constituency_code,
+      ltla21nm = .data$admin_district,
+      ltla21cd = .data$admin_district_code
+    ) %>%
+    dplyr::select(!c(
+      .data$quality,
+      .data$result_type,
+      .data$nhs_ha,
+      .data$longitude,
+      .data$latitude,
+      .data$european_electoral_region,
+      .data$primary_care_trust,
+      .data$incode,
+      .data$outcode,
+      .data$ced, # county electoral division
+      .data$admin_county,
+      starts_with("ccg"),
+      starts_with("parish"),
+      starts_with("nuts"),
+      ends_with("_code")
+    )) %>%
+    dplyr::relocate(
+      c(
+        starts_with("lsoa"),
+        starts_with("msoa"),
+        starts_with("wd"),
+        starts_with("ltla"),
+        starts_with("pcon"),
+        .data$region,
+        .data$country,
+        .data$eastings,
+        .data$northings
+      ),
+      .after = last_col()
+    )
+}

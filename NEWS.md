@@ -1,3 +1,8 @@
+# 0.6.5 (7 January 2022)
+
+* Added `narrow` option to `postcode_data_join` to reduce columns in the return.
+* Added `add_msoa_names` function to facilitate using the [HoCL MSOA Names resource](https://houseofcommonslibrary.github.io/msoanames/).
+
 # 0.6.4 (7 January 2022)
 
 * Added new function `bb_to_poly`

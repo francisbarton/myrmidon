@@ -4,14 +4,24 @@
 \alias{postcode_data_join}
 \title{Use postcodes.io to get postcode data}
 \usage{
-postcode_data_join(df, var = postcode, fix_invalid = TRUE)
+postcode_data_join(df, var = postcode, fix_invalid = TRUE, narrow = TRUE)
 }
 \arguments{
-\item{df}{a data frame with a column of postcodes}
+\item{df}{A data frame with a column of postcodes.}
 
-\item{var}{the name of the variable in the data frame that contains postcodes (only!)}
+\item{var}{The name of the variable in the data frame that contains
+postcodes (only!). Should be acceptable as a symbol (variable name)
+or as a standard character string.}
 
-\item{fix_invalid}{whether to try to fix any postcodes that are not found (potentially because they are terminated codes)}
+\item{fix_invalid}{Whether to try to fix any postcodes that are not
+found (potentially because they are terminated codes, or typos).}
+
+\item{narrow}{Whether to narrow the returned data frame by removing
+a bunch of potentially unnecessary fields from the data before
+returning the final product to the user. Boolean, default TRUE.
+Set to FALSE to get all data variables available from the API,
+plus a data quality indicator and a record of which codes were
+invalid and subsequently fixed, if any.}
 }
 \description{
 Use postcodes.io to get postcode data
