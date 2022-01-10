@@ -26,3 +26,8 @@ invalid and subsequently fixed, if any.}
 \description{
 Use postcodes.io to get postcode data
 }
+\examples{
+postcodes <- c("HD1 2UT", "HD1 2UU", "HD1 2UV")
+test_df1 <- dplyr::tibble(place = paste0("place_", 1:3), postcode = postcodes)
+postcode_data_join(test_df1, fix_invalid = TRUE, narrow = FALSE)
+}

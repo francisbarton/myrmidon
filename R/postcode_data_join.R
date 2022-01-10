@@ -13,8 +13,11 @@
 #'   plus a data quality indicator and a record of which codes were
 #'   invalid and subsequently fixed, if any.
 #'
-#' @importFrom assertthat assert_that
 #' @export
+#' @examples
+#' postcodes <- c("HD1 2UT", "HD1 2UU", "HD1 2UV")
+#' test_df1 <- dplyr::tibble(place = paste0("place_", 1:3), postcode = postcodes)
+#' postcode_data_join(test_df1, fix_invalid = TRUE, narrow = FALSE)
 postcode_data_join <- function(df, var = postcode, fix_invalid = TRUE, narrow = TRUE) {
 
   valid_results <- NULL

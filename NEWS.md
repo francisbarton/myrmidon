@@ -1,3 +1,9 @@
+# 0.6.6 (10 January 2022)
+
+* Further fixes to the `narrow` function in `postcode_data_join`
+* `postcode_data_join` gets an example in its manpage...
+* ... and `README.md` finally gets a little bit of love.
+
 # 0.6.5 (7 January 2022)
 
 * Added `narrow` option to `postcode_data_join` to reduce columns in the return.

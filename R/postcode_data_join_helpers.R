@@ -1,5 +1,5 @@
 req_base <- function(ep = "") {
-  ua <- "github.com/francisbarton/myrmidon // httr2"
+  ua <- "github.com/francisbarton/myrmidon 0.6.6 // httr2"
 
   paste0("https://api.postcodes.io/", ep, "postcodes/") %>%
     httr2::request() %>%
@@ -96,17 +96,20 @@ narrow <- function(df) {
       ltla21cd = .data$admin_district_code
     ) %>%
     dplyr::select(!c(
-      .data$quality,
-      .data$result_type,
-      .data$nhs_ha,
-      .data$longitude,
-      .data$latitude,
-      .data$european_electoral_region,
-      .data$primary_care_trust,
-      .data$incode,
-      .data$outcode,
-      .data$ced, # county electoral division
-      .data$admin_county,
+      any_of(
+        c(
+          "quality",
+          "result_type",
+          "nhs_ha",
+          "longitude",
+          "latitude",
+          "european_electoral_region",
+          "primary_care_trust",
+          "incode",
+          "outcode",
+          "ced",
+          "admin_county"
+        )),
       starts_with("ccg"),
       starts_with("parish"),
       starts_with("nuts"),
@@ -119,10 +122,13 @@ narrow <- function(df) {
         starts_with("wd"),
         starts_with("ltla"),
         starts_with("pcon"),
-        .data$region,
-        .data$country,
-        .data$eastings,
-        .data$northings
+        any_of(
+          c(
+          "region",
+          "country",
+          "eastings",
+          "northings"
+        ))
       ),
       .after = last_col()
     )
