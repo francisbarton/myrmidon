@@ -51,7 +51,8 @@ bulk_reverse_geocode <- function(df) {
     pluck_result() %>%
     purrr::map_df("result") %>%
     dplyr::mutate(codes_names = names(.data$codes), codes = unlist(.data$codes)) %>%
-    tidyr::pivot_wider(names_from = .data$codes_names, names_glue = "{codes_names}_code", values_from = .data$codes)
+    tidyr::pivot_wider(names_from = .data$codes_names, names_glue = "{codes_names}_code", values_from = .data$codes) %>%
+    dplyr::mutate(across(everything(), unname))
 }
 
 
@@ -75,7 +76,8 @@ bulk_lookup <- function(x) {
     pluck_result() %>%
     purrr::map_df("result") %>%
     dplyr::mutate(codes_names = names(.data$codes), codes = unlist(.data$codes)) %>%
-    tidyr::pivot_wider(names_from = .data$codes_names, names_glue = "{codes_names}_code", values_from = .data$codes)
+    tidyr::pivot_wider(names_from = .data$codes_names, names_glue = "{codes_names}_code", values_from = .data$codes) %>%
+    dplyr::mutate(across(everything(), unname))
 }
 
 
