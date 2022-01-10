@@ -17,6 +17,7 @@ Myrmidon cartoon by [Horacio Gonzalez][hg].
 
 
 >  We hear about these ant-men in Metamorphoses and in Homer's Iliad, where they are Achilles' warriors. Ovid gives the origin: Aeacus, father of Peleus and Telamon and grandfather of Ajax, comes to an uninhabited island and prays to Jove for a populace. He dreams that ants, "grain-bearers," he saw on a tree magically transform into men. He awakens to his son Telamon bringing word that masses of people have inexplicably shown up, as Aeacus says, "greeting me as a ruler" (Ovid 172).
+>  
 > What do ants best represent in the cosmos? [Carol] Anelli reports [E.O.] Wilson insisting that they "do it all" and dominate on a number of fronts. They are exceedingly diverse -- predators, farmers, architects -- and are highly social. [Delahoyde & Hughes, 2008](https://web.archive.org/web/20080224072456/http://www.wsu.edu/~delahoyd/myrmidons.html)
 
 Some useful functions you will find in here:
@@ -30,6 +31,7 @@ Some useful functions you will find in here:
 
 ## Examples
 
+### postcode_data_join
 ```r
 postcodes <- c("HD1 2UT", "HD1 2UU", "HD1 2UV")
 test_df1 <- dplyr::tibble(place = paste0("place_", 1:3), postcode = postcodes)
