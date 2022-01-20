@@ -98,7 +98,7 @@ postcode_data_join <- function(df, var = postcode, fix_invalid = TRUE, narrow = 
       # NB this will return codes that may be geographically inaccurate at small
       # scales compared to the original postcode query.
       if (nrow(terminated) < nrow(invalid)) {
-        autocompleted <- invalid %>%
+        to_autocomplete <- invalid %>%
           dplyr::anti_join(terminated, by = "query_code") %>%
           # will be used to left_join to original df
           dplyr::rename(postcode = .data[["query_code"]]) %>%
@@ -107,13 +107,13 @@ postcode_data_join <- function(df, var = postcode, fix_invalid = TRUE, narrow = 
           # keep both original postcode and new postcode to query
           dplyr::select(postcode, query_code)
 
-        if (nrow(autocompleted) > 0) {
-          autocompleted_results <- autocompleted[["query_code"]] %>%
+        if (nrow(to_autocomplete) > 0) {
+          autocompleted_results <- to_autocomplete[["query_code"]] %>%
             batch_it(100) %>%
             purrr::map_df(bulk_lookup) %>%
-            dplyr::left_join(autocompleted, ., by = c(query_code = "postcode"))
+            dplyr::left_join(to_autocomplete, ., by = c(query_code = "postcode"))
         }
-        replaced <- c(replaced, autocompleted$postcode)
+        replaced <- c(replaced, to_autocomplete$postcode)
       }
       remainder <- setdiff(invalid$query_code, replaced)
 

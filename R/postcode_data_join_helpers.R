@@ -71,13 +71,23 @@ autocomplete_possibly <- purrr::possibly(autocomplete, otherwise = NULL)
 
 
 bulk_lookup <- function(x) {
-  req_base() %>%
+  len1 <- length(x)
+  st <- lubridate::now()
+  out <- req_base() %>%
     httr2::req_body_json(list(postcodes = x), auto_unbox = FALSE) %>%
     pluck_result() %>%
     purrr::map_df("result") %>%
     dplyr::mutate(codes_names = names(.data$codes), codes = unlist(.data$codes)) %>%
     tidyr::pivot_wider(names_from = .data$codes_names, names_glue = "{codes_names}_code", values_from = .data$codes) %>%
     dplyr::mutate(across(everything(), unname))
+  fi <- lubridate::now()
+  len2 <- nrow(out)
+  if (interactive()) {
+    usethis::ui_info(stringr::str_glue(
+      "{len2}/{len1} postcodes successfully queried ({round(as.numeric(substr(fi - st, 1, 19)), 3)}s)."
+    ))
+  }
+  out
 }
 
 
