@@ -13,7 +13,7 @@
 
 <figure style="margin: 10px;">
   <img src="bad_myrmidon.png" width = "50%" alt="Myrmidon cartoon by Horacio Gonzalez. A "centaur" ant is drawn, with an ant's body and legs, and a human torso, wearing a breastplate and helmet in an Ancient Greek style, and carrying a spear in its right hand and a sword in its left. (It also has its six ant legs)." />
-  <figcaption>Myrmidon cartoon – represented as a half-ant, half-human warrior creature – by <a href="https://lostinbrittany.org/blog/2006/09/28/monstres-pour-la-grece-fantastique/">Horacio Gonzalez</a>.</figcaption>
+  <figcaption><em>Myrmidon cartoon – represented as a half-ant, half-human warrior creature – by <a href="https://lostinbrittany.org/blog/2006/09/28/monstres-pour-la-grece-fantastique/">Horacio Gonzalez</a>.</em></figcaption>
  </figure>
 
 <p>&nbsp;</p>
