@@ -1,5 +1,12 @@
 prompt_rstudio <- function(col = "darkslateblue") {
-  rstd <- RStudio.Version()$release_name
+
+  rstd <- get0("rstd", .prompt_env, ifnotfound = NULL)
+
+  if (is.null(rstd)) {
+    rstd <- tryCatch(
+      RStudio.Version()$release_name, error = function(e) NULL)
+    rlang::env_bind(.prompt_env, rstd = rstd)
+  }
   crayon::style(rstd, col)
 }
 
@@ -23,7 +30,6 @@ prompt_git <- function() {
     paste0(
       crayon::style("\uE0A0", "orange"),
       crayon::style(gert::git_branch(), "orange"),
-      # prompt::git_dirty(),
       git_ahead, git_behind)
   } else {
     NULL
@@ -32,12 +38,16 @@ prompt_git <- function() {
 
 
 prompt_moon <- function() {
-  moons <- c(
+  moon_emoji <- c(
     "\U1F311", "\U1F312",  "\U1F313", "\U1F314",
     "\U1F315", "\U1F316",  "\U1F317", "\U1F318"
   )
-  moon_phase <- round(suncalc::getMoonIllumination()$phase * 8) + 1
-  moons[moon_phase]
+  moon_phase <- get0("moon_phase", .prompt_env, ifnotfound = suncalc::getMoonIllumination()$phase)
+  # moon_phase <- rlang::env_cache(.prompt_env, "moon_phase", suncalc::getMoonIllumination()$phase)
+  if (!is.null(moon_phase)) {
+    moon_phase <- round(moon_phase * length(moon_emoji)) + 1
+    moon_emoji[moon_phase]
+  } else NULL
 }
 
 prompt_memuse <- function() {
@@ -68,20 +78,19 @@ prompt_pkgs <- function() {
 }
 
 prompt_uptime <- function(prefix = "up: ") {
-  rstime <- get0("rstime", .prompt_env, ifnotfound = NULL)
-    if (!is.null(rstime)) {
-      uptime <- difftime(Sys.time(), rstime, units = "auto")
-      paste0(
-        prefix,
-        signif(as.double(uptime), 2),
-        substr(units(uptime), 1, 1)
-      )
-    }
+  rstime <- get0("rstime", .prompt_env, ifnotfound = Sys.time())
+  # rstime <- rlang::env_cache(.prompt_env, "rstime", Sys.time())
+
+  uptime <- difftime(Sys.time(), rstime, units = "auto")
+    paste0(
+      prefix,
+      signif(as.double(uptime), 2),
+      substr(units(uptime), 1, 1)
+    )
   }
 
 
 prompt_toggl <- function(add_time = TRUE) {
-  if (require(togglr)) {
     toggl <- togglr::get_current()$description
     if (is.null(toggl)) {
       toggl_status <- crayon::red$bold("\u2718")
@@ -103,44 +112,27 @@ prompt_toggl <- function(add_time = TRUE) {
       " ",
       toggl_status)
   }
-}
 
-#' Reset console prompt, with options.
+#' Feature-full custom prompt.
 #'
 #' @export
-prompt_reset <- function(type = c("min", "max")) {
-  switch(type,
-         "min" = {
-           .prompt_env$type <- "min"
-           prompt::set_prompt(
-           function(expr, value, ok, visible) {
-             chk <- ifelse(ok, crayon::green$bold("\u2713"), crayon::red$bold("\u2718"))
-             cat(chk, prompt_uptime(), "> ")
-           })},
-         "max" = {
-           .prompt_env$type <- "max"
-           prompt::set_prompt(
-           function(expr, value, ok, visible) {
-             chk <- ifelse(ok, crayon::green$bold("\u2713"), crayon::red$bold("\u2718"))
-             cat(
-               prompt_rstudio(),
-               prompt_pkgs(),
-               prompt_location(),
-               prompt_git(),
-               # prompt_uptime(),
-               # prompt_toggl(),
-               chk,
-               "\u27A4",
-               "",
-               sep = " "
-             )})}
+my_prompt <- function() {
+  prompt::set_prompt(
+    function(expr, value, ok, visible) {
+      chk <- ifelse(ok, crayon::green$bold("\u2713"), crayon::red$bold("\u2718"))
+      cat(
+        prompt_rstudio(),
+        # prompt_pkgs(),
+        prompt_location(),
+        prompt_git(),
+        prompt_moon(),
+        prompt_uptime(),
+        # prompt_toggl(),
+        chk
+        # crayon::white("\u27A4"),
+        # ""
+      )
+    }
   )
   invisible(NULL)
-}
-
-#' @export
-prompt_toggle <- function() {
-  type <- get0("type", .prompt_env, ifnotfound = "max")
-  other <- setdiff(c("max", "min"), type)
-  prompt_reset(other)
 }
