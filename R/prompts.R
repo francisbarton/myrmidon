@@ -18,21 +18,24 @@ prompt_location <- function(col = "whitesmoke", icon = TRUE) {
 
 prompt_git <- function() {
   if (prompt::is_git_dir()) {
-    git_ab <- gert::git_ahead_behind()
+    ab <- NULL
+    if (nrow(gert::git_remote_list()) > 0) {
+      git_ab <- gert::git_ahead_behind()
 
-    if (git_ab$ahead > 0 ) {
-      git_ahead <- paste0(" ", git_ab$ahead, crayon::style("\u25B2", "slateblue1"))
-    } else git_ahead <- NULL
-    if (git_ab$behind > 0 ) {
-      git_behind <- paste0(" ", git_ab$behind, crayon::style("\u25BC", "tomato1"))
-    } else git_behind <- NULL
+      if (git_ab$ahead > 0 ) {
+        git_ahead <- paste0(" ", git_ab$ahead, crayon::style("\u25B2", "slateblue1"))
+      } else git_ahead <- NULL
+      if (git_ab$behind > 0 ) {
+        git_behind <- paste0(" ", git_ab$behind, crayon::style("\u25BC", "tomato1"))
+      } else git_behind <- NULL
+
+      ab <- paste0(git_ahead, git_behind)
+    }
 
     paste0(
       crayon::style("\uE0A0", "orange"),
       crayon::style(gert::git_branch(), "orange"),
-      git_ahead, git_behind)
-  } else {
-    NULL
+      ab)
   }
 }
 
@@ -73,8 +76,8 @@ prompt_memuse <- function() {
 }
 
 prompt_pkgs <- function() {
-  n <- length(names(utils::old.packages()[,1]))
-  paste0("\U1F4E6", n)
+  n <- length(utils::old.packages()[,1])
+  if (n > 0) paste0("\U1F4E6", n)
 }
 
 prompt_uptime <- function(prefix = "up: ") {
@@ -122,11 +125,11 @@ my_prompt <- function() {
       chk <- ifelse(ok, crayon::green$bold("\u2713"), crayon::red$bold("\u2718"))
       cat(
         prompt_rstudio(),
+        prompt_moon(),
+        prompt_uptime(),
         # prompt_pkgs(),
         prompt_location(),
         prompt_git(),
-        prompt_moon(),
-        prompt_uptime(),
         # prompt_toggl(),
         chk
         # crayon::white("\u27A4"),
