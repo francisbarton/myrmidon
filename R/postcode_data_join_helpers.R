@@ -20,7 +20,7 @@ pluck_result <- function(req) {
 
 validate <- function(x) {
   req_base() %>%
-    httr2::req_url_path_append(x) %>%
+    httr2::req_url_path_append(URLencode(x)) %>%
     httr2::req_url_path_append("/validate") %>%
     pluck_result()
 }
@@ -29,7 +29,7 @@ validate <- function(x) {
 
 check_term <- function(x) {
   req_base("terminated_") %>%
-    httr2::req_url_path_append(x) %>%
+    httr2::req_url_path_append(URLencode(x)) %>%
     pluck_result()
 }
 check_term_possibly <- purrr::possibly(check_term, otherwise = NULL)
@@ -58,7 +58,8 @@ bulk_reverse_geocode <- function(df) {
 
 
 autocomplete <- function(x) {
-  x <- stringr::str_remove(x, "[A-Z]{1}$")
+  x <- stringr::str_remove(x, "[A-Z]{1}$") %>%
+    URLencode()
   req_base() %>%
     httr2::req_url_path_append(x) %>%
     httr2::req_url_path_append("/autocomplete") %>%
@@ -84,7 +85,7 @@ bulk_lookup <- function(x) {
   len2 <- nrow(out)
   if (interactive()) {
     usethis::ui_info(stringr::str_glue(
-      "{len2}/{len1} postcodes successfully queried ({round(as.numeric(substr(fi - st, 1, 19)), 3)}s)."
+      "{len2} of {len1} postcodes successfully queried ({round(as.numeric(substr(fi - st, 1, 19)), 3)}s)."
     ))
   }
   out

@@ -4,5 +4,7 @@
 ^data-raw$
 ^\.github$
 ^data$
-^reprex.txt$
-^test.Rds$
+^reprex\.txt$
+^test\.Rds$
+^R/sfbb_map\.R$
+^R/wifi_points_map\.R$

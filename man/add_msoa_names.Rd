@@ -16,5 +16,5 @@ A wider data frame.
 }
 \description{
 This will only work if you have a column in the df that matches
-a column name from the Names resource, for the left_join to work.
+a (clean) column name from the MSOA Names resource (so the left_join works).
 }

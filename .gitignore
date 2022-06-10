@@ -7,3 +7,7 @@ R/something_random.R
 reprex.txt
 test.Rds
 inst/postcodes_test
+R/sfbb_map.R
+R/wifi_points_map.R
+*.rda
+R/wtf.R
