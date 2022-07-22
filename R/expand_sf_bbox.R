@@ -1,10 +1,10 @@
-#' Create an expanded sf object
+#' Create an expanded sf rectangular polygon based on an object
 #'
 #' @param x A rectangular sf object, or any object with a bbox
 #' @param factor The factor(s) to expand the bbox by. Can be length 1, 2 or 4.
 #' @param crs the CRS of the returned object. The same as x by default. Use NA if no CRS is desired.
 #'
-#' @return a rectangular sf object
+#' @return a rectangular sf polygon
 #' @export
 expand_sf_bbox <- function(x, factor, crs = NULL) {
 
@@ -35,7 +35,7 @@ expand_sf_bbox <- function(x, factor, crs = NULL) {
 
   assertthat::assert_that(length(factor) == 4)
   if (!length(factor) == 4) {
-    usethis::ui_stop("The factor you supplied is not of length 1, 2 or 4")
+    usethis::ui_stop("The expansion factor you supplied is not of length 1, 2 or 4")
   }
 
   orig__width <- orig_bbox[["xmax"]] - orig_bbox[["xmin"]]
@@ -52,17 +52,20 @@ expand_sf_bbox <- function(x, factor, crs = NULL) {
   assertthat::assert_that(purrr::is_double(b))
 
 
-  list(
-    matrix(
-      c(
-        b[["xmin"]], b[["ymin"]], # bottom left corner
-        b[["xmax"]], b[["ymin"]], # bottom right corner
-        b[["xmax"]], b[["ymax"]], # top right corner
-        b[["xmin"]], b[["ymax"]], # top left corner
-        b[["xmin"]], b[["ymin"]]  # bottom left corner
-        ),
-        ncol = 2, byrow = TRUE)
-  ) %>%
-    sf::st_polygon() %>%
-    sf::st_sfc(crs = crs)
+  #   list(
+  #     matrix(
+  #       c(
+  #         b[["xmin"]], b[["ymin"]], # bottom left corner
+  #         b[["xmax"]], b[["ymin"]], # bottom right corner
+  #         b[["xmax"]], b[["ymax"]], # top right corner
+  #         b[["xmin"]], b[["ymax"]], # top left corner
+  #         b[["xmin"]], b[["ymin"]]  # bottom left corner
+  #         ),
+  #         ncol = 2, byrow = TRUE)
+  #   ) %>%
+  #     sf::st_polygon() %>%
+  #     sf::st_sfc(crs = crs)
+  
+  # return
+  bbox_to_poly(b)
 }
