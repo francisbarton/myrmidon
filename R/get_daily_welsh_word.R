@@ -2,7 +2,7 @@
 #' @export
 get_daily_welsh_word <- function() {
 
-  feed_items <- feedeR::feed.extract("https://toot.wales/@geiriadurGPC.rss") %>%
+  feed_items <- myrmidon::read_rss("https://toot.wales/@geiriadurGPC.rss") %>%
     purrr::pluck("items")
 
   latest <- feed_items %>%

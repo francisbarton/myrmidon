@@ -42,13 +42,14 @@ prompt_git <- function() {
 
 prompt_moon <- function() {
   moon_emoji <- c(
-    "\U1F311", "\U1F312",  "\U1F313", "\U1F314",
-    "\U1F315", "\U1F316",  "\U1F317", "\U1F318"
+    "\U1F316", "\U1F317", "\U1F318", "\U1F311",
+    "\U1F312", "\U1F313", "\U1F314", "\U1F315"
   )
   moon_phase <- get0("moon_phase", .prompt_env, ifnotfound = suncalc::getMoonIllumination()$phase)
   # moon_phase <- rlang::env_cache(.prompt_env, "moon_phase", suncalc::getMoonIllumination()$phase)
   if (!is.null(moon_phase)) {
-    moon_phase <- round(moon_phase * length(moon_emoji)) + 1
+    moon_phase <- round(moon_phase * length(moon_emoji))
+    if (moon_phase == 0) moon_phase <- 8
     moon_emoji[moon_phase]
   } else NULL
 }
