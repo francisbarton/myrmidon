@@ -1,4 +1,4 @@
-#' Gets the latest Welsh word of the day from the GPC (Geiridaur Prifysgol Cymru) Mastodon RSS feed
+#' Gets the latest Welsh word of the day from the GPC (Geiriadur Prifysgol Cymru) Mastodon RSS feed
 #' @export
 get_daily_welsh_word <- function() {
 
