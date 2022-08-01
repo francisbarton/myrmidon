@@ -54,24 +54,6 @@ prompt_git <- function(unicode) {
 
 
 
-prompt_moon <- function(unicode) {
-  if (requireNamespace("suncalc", quietly = TRUE) & unicode) {
-    moon_emoji <- c(
-      "\U1F311", "\U1F312",  "\U1F313", "\U1F314",
-      "\U1F315", "\U1F316",  "\U1F317", "\U1F318"
-    )
-    moon_phase <- get0("moon_phase", .prompt_env, ifnotfound = suncalc::getMoonIllumination()$phase)
-    # moon_phase <- rlang::env_cache(.prompt_env, "moon_phase", suncalc::getMoonIllumination()$phase)
-    if (!is.null(moon_phase)) {
-      moon_phase <- round(moon_phase * length(moon_emoji)) + 1
-      moon_emoji[moon_phase]
-    }}
-  else NULL
-}
-
-
-
-
 prompt_memuse <- function(unicode) {
 
   mem_pct <- ps::ps_system_memory()$percent
@@ -102,16 +84,19 @@ prompt_memuse <- function(unicode) {
 }
 
 
-<<<<<<< HEAD
 
 prompt_pkgs <- function(unicode) {
   n <- length(utils::old.packages()[,1])
   if (n > 0) {
     if (unicode) paste0("\U1F4E6", n)
     else n
-=======
-prompt_moon <- function() {
-  moon_emoji <- c(
+  }
+}
+
+
+prompt_moon <- function(unicode) {
+  if (requireNamespace("suncalc", quietly = TRUE) & unicode) {
+    moon_emoji <- c(
     "\U1F316", "\U1F317", "\U1F318", "\U1F311",
     "\U1F312", "\U1F313", "\U1F314", "\U1F315"
   )
@@ -121,7 +106,6 @@ prompt_moon <- function() {
     moon_phase <- round(moon_phase * length(moon_emoji))
     if (moon_phase == 0) moon_phase <- 8
     moon_emoji[moon_phase]
->>>>>>> 90b19154e614faa62946f2a0a68c40b02c800410
   } else NULL
 }
 
@@ -221,3 +205,4 @@ switch_my_prompt <- function() {
   using_unicode <- get0("use_unicode", .prompt_env, ifnotfound = FALSE)
   my_prompt(!using_unicode)
 }
+
