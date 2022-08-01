@@ -2,10 +2,13 @@
 % Please edit documentation in R/prompts.R
 \name{my_prompt}
 \alias{my_prompt}
-\title{Feature-full custom prompt.}
+\title{My custom prompt}
 \usage{
-my_prompt()
+my_prompt(unicode = FALSE)
+}
+\arguments{
+\item{unicode}{whether to use unicode characters in the prompt.}
 }
 \description{
-Feature-full custom prompt.
+My custom prompt
 }

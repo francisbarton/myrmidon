@@ -8,3 +8,4 @@
 ^test\.Rds$
 ^R/sfbb_map\.R$
 ^R/wifi_points_map\.R$
+^R/wtf\.R$

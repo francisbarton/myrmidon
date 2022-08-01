@@ -7,135 +7,203 @@ prompt_rstudio <- function(col = "darkslateblue") {
       RStudio.Version()$release_name, error = function(e) NULL)
     rlang::env_bind(.prompt_env, rstd = rstd)
   }
-  crayon::style(rstd, col)
+
+  if (!is.null(rstd)) crayon::style(rstd, col) else NULL
 }
 
-prompt_location <- function(col = "whitesmoke", icon = TRUE) {
+
+
+
+prompt_location <- function(unicode, col = "whitesmoke") {
   location <- basename(getwd())
-  if (icon) icon <- "\U1F4C2" else icon <- NULL
+  icon <- if(unicode) "\U1F4C2" else NULL
   paste0(icon, crayon::style(location, col))
 }
 
-prompt_git <- function() {
+
+
+
+
+prompt_git <- function(unicode) {
   if (prompt::is_git_dir()) {
-    ab <- NULL
-    if (nrow(gert::git_remote_list()) > 0) {
-      git_ab <- gert::git_ahead_behind()
+    if (unicode) {
+      ab <- NULL
+      if (nrow(gert::git_remote_list()) > 0) {
+        git_ab <- gert::git_ahead_behind()
 
-      if (git_ab$ahead > 0 ) {
-        git_ahead <- paste0(" ", git_ab$ahead, crayon::style("\u25B2", "slateblue1"))
-      } else git_ahead <- NULL
-      if (git_ab$behind > 0 ) {
-        git_behind <- paste0(" ", git_ab$behind, crayon::style("\u25BC", "tomato1"))
-      } else git_behind <- NULL
+        if (git_ab$ahead > 0 ) {
+          git_ahead <- paste0(" ", git_ab$ahead, crayon::style("\u25B2", "slateblue1"))
+        } else git_ahead <- NULL
+        if (git_ab$behind > 0 ) {
+          git_behind <- paste0(" ", git_ab$behind, crayon::style("\u25BC", "tomato1"))
+        } else git_behind <- NULL
 
-      ab <- paste0(git_ahead, git_behind)
+        ab <- paste0(git_ahead, git_behind)
+      }
+
+      paste0(
+        crayon::style("\uE0A0", "orange"),
+        crayon::style(gert::git_branch(), "orange"),
+        ab)
+    } else {
+      crayon::style(gert::git_branch(), "orange")
     }
+  }
+  else NULL
+}
+
+
+
+prompt_moon <- function(unicode) {
+  if (requireNamespace("suncalc", quietly = TRUE) & unicode) {
+    moon_emoji <- c(
+      "\U1F311", "\U1F312",  "\U1F313", "\U1F314",
+      "\U1F315", "\U1F316",  "\U1F317", "\U1F318"
+    )
+    moon_phase <- get0("moon_phase", .prompt_env, ifnotfound = suncalc::getMoonIllumination()$phase)
+    # moon_phase <- rlang::env_cache(.prompt_env, "moon_phase", suncalc::getMoonIllumination()$phase)
+    if (!is.null(moon_phase)) {
+      moon_phase <- round(moon_phase * length(moon_emoji)) + 1
+      moon_emoji[moon_phase]
+    }}
+  else NULL
+}
+
+
+
+
+prompt_memuse <- function(unicode) {
+
+  mem_pct <- ps::ps_system_memory()$percent
+  mem <- ceiling(mem_pct * 3)
+
+  if (unicode) {
+    col_blocks <- c(
+      crayon::style("\u2582", "palegreen4"),
+      crayon::style("\u2585", "palegreen4"),
+      crayon::style("\u2588", "orangered3")
+    )
+    gry_blocks <- c(
+      crayon::style("\u2582", "grey40"),
+      crayon::style("\u2585", "grey40"),
+      crayon::style("\u2588", "grey40")
+    )
 
     paste0(
-      crayon::style("\uE0A0", "orange"),
-      crayon::style(gert::git_branch(), "orange"),
-      ab)
+      paste0(col_blocks[seq(mem)], collapse = ""),
+      paste0(gry_blocks[setdiff(seq(3), seq(mem))], collapse = "")
+    )
+  } else {
+    colours <- c(rep("palegreen4", 2), "orangered3")
+    crayon::style(
+      scales::percent(mem_pct, accuracy = 0.1),
+      colours[mem])
   }
 }
 
 
-prompt_moon <- function() {
-  moon_emoji <- c(
-    "\U1F311", "\U1F312",  "\U1F313", "\U1F314",
-    "\U1F315", "\U1F316",  "\U1F317", "\U1F318"
-  )
-  moon_phase <- get0("moon_phase", .prompt_env, ifnotfound = suncalc::getMoonIllumination()$phase)
-  # moon_phase <- rlang::env_cache(.prompt_env, "moon_phase", suncalc::getMoonIllumination()$phase)
-  if (!is.null(moon_phase)) {
-    moon_phase <- round(moon_phase * length(moon_emoji)) + 1
-    moon_emoji[moon_phase]
+
+prompt_pkgs <- function(unicode) {
+  n <- length(utils::old.packages()[,1])
+  if (n > 0) {
+    if (unicode) paste0("\U1F4E6", n)
+    else n
   } else NULL
 }
 
-prompt_memuse <- function() {
 
-  col_blocks <- c(
-    crayon::style("\u2582", "darkolivegreen3"),
-    crayon::style("\u2584", "darkolivegreen3"),
-    crayon::style("\u2586", "darkolivegreen3"),
-    crayon::style("\u2588", "orangered3")
-  )
-  gry_blocks <- c(
-    crayon::style("\u2582", "grey67"),
-    crayon::style("\u2584", "grey67"),
-    crayon::style("\u2586", "grey67"),
-    crayon::style("\u2588", "grey67")
-  )
-
-  mem <- ceiling(ps::ps_system_memory()$percent * 4)
-  paste0(
-    paste0(col_blocks[seq(mem)], collapse = ""),
-    paste0(gry_blocks[setdiff(seq(4), seq(mem))], collapse = "")
-  )
-}
-
-prompt_pkgs <- function() {
-  n <- length(utils::old.packages()[,1])
-  if (n > 0) paste0("\U1F4E6", n)
-}
 
 prompt_uptime <- function(prefix = "up: ") {
   rstime <- get0("rstime", .prompt_env, ifnotfound = Sys.time())
   # rstime <- rlang::env_cache(.prompt_env, "rstime", Sys.time())
 
   uptime <- difftime(Sys.time(), rstime, units = "auto")
-    paste0(
-      prefix,
-      signif(as.double(uptime), 2),
-      substr(units(uptime), 1, 1)
-    )
-  }
+  paste0(
+    prefix,
+    signif(as.double(uptime), 2),
+    substr(units(uptime), 1, 1)
+  )
+}
 
 
-prompt_toggl <- function(add_time = TRUE) {
-    toggl <- togglr::get_current()$description
-    if (is.null(toggl)) {
-      toggl_status <- crayon::red$bold("\u2718")
-    } else {
-      toggl_time <- if (add_time) {
-        paste0(
+
+
+prompt_toggl <- function(unicode, add_time = TRUE) {
+
+  if (requireNamespace("togglr", quietly = TRUE)) {
+
+    toggl_desc <- togglr::get_current()$description
+
+    if (is.null(toggl_desc)) {
+      if (unicode) toggl_status <- crayon::red$bold("\u2718")
+      else NULL
+    }
+
+    if (!is.null(toggl_desc)) {
+      if (add_time) {
+        toggl_time <- paste0(
           signif(
             as.double(
               togglr::get_current_duration() / 60000,
               units = "mins"), 2),
           "m")
-      } else NULL
-      toggl_status <- paste0(
-        crayon::style(toggl, "mediumorchid3"), " ",
-        crayon::style(toggl_time, "darkolivegreen3"))
-    }
-    paste0(
-      crayon::style("\u23FB", "mediumorchid1"),
-      " ",
-      toggl_status)
-  }
 
-#' Feature-full custom prompt.
+        toggl_status <- paste0(
+          crayon::style(toggl_desc, "mediumorchid3"),
+          " ",
+          crayon::style(toggl_time, "darkolivegreen3"))
+      } else {
+        toggl_status <- crayon::style(toggl_desc, "mediumorchid3")
+      }
+
+      if (unicode) {
+        toggl_status <- paste0(
+          crayon::style("\u23FB", "mediumorchid1"),
+          " ",
+          toggl_status)
+      }
+    }
+
+    toggl_status
+  } else NULL
+}
+
+
+
+#' My custom prompt
 #'
+#' @param unicode whether to use unicode characters in the prompt.
 #' @export
-my_prompt <- function() {
+my_prompt <- function(unicode = FALSE) {
+
+  stopifnot(is.logical(unicode))
+  rlang::env_bind(.prompt_env, use_unicode = unicode)
+
   prompt::set_prompt(
     function(expr, value, ok, visible) {
-      chk <- ifelse(ok, crayon::green$bold("\u2713"), crayon::red$bold("\u2718"))
+      chk <- if (unicode) {
+        if (ok) crayon::green$bold("\u2713 ") else crayon::red$bold("\u2718 ")
+      } else " "
+
       cat(
         prompt_rstudio(),
-        prompt_moon(),
+        prompt_moon(unicode),
         prompt_uptime(),
-        # prompt_pkgs(),
-        prompt_location(),
-        prompt_git(),
-        # prompt_toggl(),
+        prompt_memuse(unicode),
+        prompt_pkgs(unicode),
+        prompt_location(unicode),
+        prompt_git(unicode),
+        prompt_toggl(unicode),
         chk
-        # crayon::white("\u27A4"),
-        # ""
-      )
-    }
-  )
+      )})
+
   invisible(NULL)
+}
+
+#' Toggle unicode usage on/off in my custom prompt `my_prompt()`
+#'
+#' @export
+switch_my_prompt <- function() {
+  using_unicode <- get0("use_unicode", .prompt_env, ifnotfound = FALSE)
+  my_prompt(!using_unicode)
 }

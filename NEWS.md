@@ -1,3 +1,9 @@
+# 0.6.7 (1 August 2022)
+
+* Added `get_daily_welsh_word()` function just for fun
+* Bit of an RSS reader (non-robust) in there too
+* Improvements to `my_prompt()` [`prompts.R`] particularly around Unicode handling
+
 # 0.6.6 (10 January 2022)
 
 * Further fixes to the `narrow` function in `postcode_data_join`
