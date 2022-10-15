@@ -2,7 +2,7 @@
 % Please edit documentation in R/expand_sf_bbox.R
 \name{expand_sf_bbox}
 \alias{expand_sf_bbox}
-\title{Create an expanded sf object}
+\title{Create an expanded sf rectangular polygon based on an object}
 \usage{
 expand_sf_bbox(x, factor, crs = NULL)
 }
@@ -14,8 +14,8 @@ expand_sf_bbox(x, factor, crs = NULL)
 \item{crs}{the CRS of the returned object. The same as x by default. Use NA if no CRS is desired.}
 }
 \value{
-a rectangular sf object
+a rectangular sf polygon
 }
 \description{
-Create an expanded sf object
+Create an expanded sf rectangular polygon based on an object
 }

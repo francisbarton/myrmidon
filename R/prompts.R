@@ -188,7 +188,7 @@ my_prompt <- function(unicode = FALSE) {
         prompt_rstudio(),
         prompt_moon(unicode),
         prompt_uptime(),
-        prompt_memuse(unicode),
+        # prompt_memuse(unicode), # issue with ps::ps_system_memory() currently
         prompt_pkgs(unicode),
         prompt_location(unicode),
         prompt_git(unicode),

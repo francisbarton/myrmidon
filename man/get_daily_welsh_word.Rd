@@ -2,10 +2,10 @@
 % Please edit documentation in R/get_daily_welsh_word.R
 \name{get_daily_welsh_word}
 \alias{get_daily_welsh_word}
-\title{Gets the latest Welsh word of the day from the GPC (Geiridaur Prifysgol Cymru) Mastodon RSS feed}
+\title{Gets the latest Welsh word of the day from the GPC (Geiriadur Prifysgol Cymru) Mastodon RSS feed}
 \usage{
 get_daily_welsh_word()
 }
 \description{
-Gets the latest Welsh word of the day from the GPC (Geiridaur Prifysgol Cymru) Mastodon RSS feed
+Gets the latest Welsh word of the day from the GPC (Geiriadur Prifysgol Cymru) Mastodon RSS feed
 }

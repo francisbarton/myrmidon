@@ -23,11 +23,11 @@ bbox_to_poly <- function(x, crs) {
 }
 
 #' Create a square box around a polygon
-#' 
+#'
 #' @param x A polygon
 #' @param return Whether to return just a bbox, or an sf polygon
 #' @export
-fit_square <- function(x, return = c("bbox", "polygon") {
+fit_square <- function(x, return = c("bbox", "polygon")) {
 
   bb <- sf::st_bbox(x)
   ht <- (bb[["ymax"]] - bb[["ymin"]])
