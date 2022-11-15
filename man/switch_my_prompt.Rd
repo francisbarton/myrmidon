@@ -4,7 +4,7 @@
 \alias{switch_my_prompt}
 \title{Toggle unicode usage on/off in my custom prompt `my_prompt()`}
 \usage{
-switch_my_prompt()
+switch_my_prompt(...)
 }
 \description{
 Toggle unicode usage on/off in my custom prompt `my_prompt()`

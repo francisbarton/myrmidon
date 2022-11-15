@@ -14,10 +14,10 @@ prompt_rstudio <- function(col = "darkslateblue") {
 
 
 
-prompt_location <- function(unicode, col = "whitesmoke") {
+prompt_location <- function(unicode) {
   location <- basename(getwd())
   icon <- if(unicode) "\U1F4C2" else NULL
-  paste0(icon, crayon::style(location, col))
+  paste0(icon, crayon::style(location, "whitesmoke"))
 }
 
 
@@ -56,7 +56,7 @@ prompt_git <- function(unicode) {
 
 prompt_memuse <- function(unicode) {
 
-  mem_pct <- ps::ps_system_memory()$percent
+  mem_pct <- ps::ps_system_memory()$percent / 100
   mem <- ceiling(mem_pct * 3)
 
   if (unicode) {
@@ -100,12 +100,12 @@ prompt_moon <- function(unicode) {
     "\U1F316", "\U1F317", "\U1F318", "\U1F311",
     "\U1F312", "\U1F313", "\U1F314", "\U1F315"
   )
-  moon_phase <- get0("moon_phase", .prompt_env, ifnotfound = suncalc::getMoonIllumination()$phase)
+  moon_phase <- get0("moon_phase", .prompt_env, ifnotfound = suncalc::getMoonIllumination()$fraction)
   # moon_phase <- rlang::env_cache(.prompt_env, "moon_phase", suncalc::getMoonIllumination()$phase)
   if (!is.null(moon_phase)) {
     moon_phase <- round(moon_phase * length(moon_emoji))
     if (moon_phase == 0) moon_phase <- 8
-    moon_emoji[moon_phase]
+    moon_emoji[[moon_phase]]
   } else NULL
   }
 }
@@ -113,8 +113,8 @@ prompt_moon <- function(unicode) {
 
 
 prompt_uptime <- function(prefix = "up: ") {
-  rstime <- get0("rstime", .prompt_env, ifnotfound = Sys.time())
-  # rstime <- rlang::env_cache(.prompt_env, "rstime", Sys.time())
+  # rstime <- get0("rstime", .prompt_env, ifnotfound = Sys.time())
+  rstime <- rlang::env_cache(.prompt_env, "rstime", Sys.time())
 
   uptime <- difftime(Sys.time(), rstime, units = "auto")
   paste0(
@@ -172,8 +172,9 @@ prompt_toggl <- function(unicode, add_time = TRUE) {
 #' My custom prompt
 #'
 #' @param unicode whether to use unicode characters in the prompt.
+#' @param rstd_col colour to use for the RStudio codename
 #' @export
-my_prompt <- function(unicode = FALSE) {
+my_prompt <- function(unicode = FALSE, rstd_col = "darkseagreen1") {
 
   stopifnot(is.logical(unicode))
   rlang::env_bind(.prompt_env, use_unicode = unicode)
@@ -185,10 +186,10 @@ my_prompt <- function(unicode = FALSE) {
       } else " "
 
       cat(
-        prompt_rstudio(),
+        prompt_rstudio(col = rstd_col),
         prompt_moon(unicode),
         prompt_uptime(),
-        # prompt_memuse(unicode), # issue with ps::ps_system_memory() currently
+        prompt_memuse(unicode),
         prompt_pkgs(unicode),
         prompt_location(unicode),
         prompt_git(unicode),
@@ -202,8 +203,8 @@ my_prompt <- function(unicode = FALSE) {
 #' Toggle unicode usage on/off in my custom prompt `my_prompt()`
 #'
 #' @export
-switch_my_prompt <- function() {
+switch_my_prompt <- function(...) {
   using_unicode <- get0("use_unicode", .prompt_env, ifnotfound = FALSE)
-  my_prompt(!using_unicode)
+  my_prompt(unicode = !using_unicode, ...)
 }
 

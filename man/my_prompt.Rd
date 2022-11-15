@@ -4,10 +4,12 @@
 \alias{my_prompt}
 \title{My custom prompt}
 \usage{
-my_prompt(unicode = FALSE)
+my_prompt(unicode = FALSE, rstd_col = "darkseagreen1")
 }
 \arguments{
 \item{unicode}{whether to use unicode characters in the prompt.}
+
+\item{rstd_col}{colour to use for the RStudio codename}
 }
 \description{
 My custom prompt
