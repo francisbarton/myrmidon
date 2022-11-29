@@ -1,8 +1,8 @@
 Package: myrmidon
 Type: Package
 Title: Personal Functions Toolbox
-Version: 0.6.7
-Date: 2022-08-01
+Version: 0.6.8
+Date: 2022-11-29
 Author: Fran Barton (@ludictech)
 Maintainer: Fran Barton <fbarton@alwaysdata.net>
 Description: A package containing functions I want to have available most times
