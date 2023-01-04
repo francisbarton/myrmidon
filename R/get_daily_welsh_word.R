@@ -2,18 +2,17 @@
 #' @export
 get_daily_welsh_word <- function() {
 
-  feed_items <- myrmidon::read_rss("https://toot.wales/@geiriadurGPC.rss") %>%
+  feed_items <- myrmidon::read_rss("https://toot.wales/@geiriadurGPC.rss") |>
     purrr::pluck("items")
 
-  latest <- feed_items %>%
-    dplyr::slice(1) %>%
-    dplyr::pull(description)
+  latest <- feed_items |>
+    dplyr::slice(1) |>
+    dplyr::pull(description) |>
+    rvest::read_html() |>
+    rvest::html_elements("p") |>
+    purrr::pluck(2) |>
+    rvest::html_text() |>
+    stringr::str_extract("(?<=^Word of the Day: )[^:]*(?=https)")
 
-  latest %>%
-    rvest::read_html() %>%
-    rvest::html_elements("p") %>%
-    purrr::pluck(2) %>%
-    rvest::html_text() %>%
-    stringr::str_extract(".*(?=: https)") %>%
-    paste("Gair y Dydd /", .)
+  paste("Gair y Dydd: ", latest)
 }

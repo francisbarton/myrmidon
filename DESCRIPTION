@@ -1,8 +1,8 @@
 Package: myrmidon
 Type: Package
 Title: Personal Functions Toolbox
-Version: 0.6.8
-Date: 2022-11-29
+Version: 0.6.9
+Date: 2023-01-04
 Author: Fran Barton (@ludictech)
 Maintainer: Fran Barton <fbarton@alwaysdata.net>
 Description: A package containing functions I want to have available most times
@@ -13,30 +13,27 @@ LazyData: true
 Imports: 
     assertthat,
     crayon,
-    dplyr,
+    dplyr (>= 1.0.0),
     gert,
     here,
-    httr,
     httr2,
     lubridate,
-    magrittr,
+    pillar,
     purrr,
     readr,
     rlang,
     rmarkdown,
+    rstudioapi,
     rvest,
-    scales,
     sf,
-    snakecase,
     stringr,
-    testthat,
     tidyr,
     usethis,
     utils,
     vctrs
 RoxygenNote: 7.2.2
 Depends: 
-    R (>= 3.50)
+    R (>= 4.0.0)
 Suggests:
     suncalc,
     togglr

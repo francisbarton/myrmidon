@@ -15,12 +15,14 @@
 ## usethis namespace: end
 NULL
 
-## quiets concerns of R CMD check re: the .'s that appear in pipelines
-if (getRversion() >= "2.15.1") utils::globalVariables(c(".", ".data"))
-
 #' @importFrom dplyr across c_across all_of any_of desc
 #' @importFrom dplyr starts_with ends_with contains matches
 #' @importFrom dplyr everything last_col num_range
 #' @importFrom usethis ui_info ui_stop ui_oops ui_nope ui_code
 #' @importFrom rlang `:=`
 NULL
+
+#' Borrow view() from {tibble}
+#' @param x a data frame
+#' @export
+view <- function(x) tibble::view(x)
