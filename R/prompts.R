@@ -93,7 +93,7 @@ prompt_memuse <- function(unicode) {
   } else {
     colours <- c(rep("palegreen4", 2), "orange", "orangered3")
     crayon::style(
-      scales::percent(mem_pct, accuracy = 0.1),
+      round(mem_pct * 100, digits = 1),
       colours[mem])
   }
 }
@@ -112,10 +112,11 @@ prompt_moon <- function() {
   if (requireNamespace("suncalc", quietly = TRUE)) {
     moon_emoji <- c(
       "\U1F311", "\U1F312", "\U1F313", "\U1F314",
-      "\U1F315", "\U1F316", "\U1F317", "\U1F318", "\U1F311"
+      "\U1F315", "\U1F316", "\U1F317", "\U1F318",
+      "\U1F311"
     )
     moon_phase <- rlang::env_cache(.myr_prompt_env, "moon_phase",
-            suncalc::getMoonIllumination()$fraction)
+            suncalc::getMoonIllumination()$phase)
     if (!is.null(moon_phase)) {
       moon_phase <- round(moon_phase * (length(moon_emoji) -1)) + 1
       moon_emoji[[moon_phase]]

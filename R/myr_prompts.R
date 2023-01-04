@@ -2,13 +2,6 @@
 myr_prompt_light <- function(unicode = TRUE) {
   stopifnot(is.logical(unicode))
 
-  if (unicode) {
-    options(
-      prompt = crayon::white("\u27A4 ")
-    )
-  }
-
-
   prompt::set_prompt(
     function(expr, value, ok, visible) {
       chk <- if (ok) {
@@ -18,7 +11,6 @@ myr_prompt_light <- function(unicode = TRUE) {
       }
 
       cat(
-        prompt_rstudio(),
         prompt_location(unicode),
         prompt_git_branch(unicode),
         chk
@@ -46,11 +38,6 @@ myr_prompt_no_unicode <- function() {
 
 #' @export
 myr_prompt_medium <- function() {
-
-  options(
-    prompt = crayon::white("\u27A4 ")
-  )
-
   prompt::set_prompt(
     function(expr, value, ok, visible) {
       chk <- if (ok) {
@@ -74,11 +61,6 @@ myr_prompt_medium <- function() {
 
 #' @export
 myr_prompt_heavy <- function() {
-
-  options(
-    prompt = crayon::white("\u27A4 ")
-  )
-
   prompt::set_prompt(
     function(expr, value, ok, visible) {
       chk <- if (ok) {
