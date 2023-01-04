@@ -12,7 +12,7 @@ get_daily_welsh_word <- function() {
     rvest::html_elements("p") |>
     purrr::pluck(2) |>
     rvest::html_text() |>
-    stringr::str_extract("(?<=^Word of the Day: )[^:]*(?=https)")
+    stringr::str_extract("(?<=^Word of the Day: )[^:]*(?= https)")
 
-  paste("Gair y Dydd: ", latest)
+  paste0("Gair y Dydd: ", latest)
 }

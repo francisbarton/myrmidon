@@ -22,7 +22,7 @@ NULL
 #' @importFrom rlang `:=`
 NULL
 
-#' Borrow view() from {tibble}
+#' Borrow `view()` from {tibble}
 #' @param x a data frame
 #' @export
 view <- function(x) tibble::view(x)
