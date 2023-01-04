@@ -1,26 +1,26 @@
 #' Turn A Long Vector Into A Batched List
 #'
-#' Go \code{batch_it()} crazy!
+#' Batch up a long vector, or list of vectors, for example so they can be
+#' passed to services with length-limited APIs.
+#' Go `batch_it()` crazy!
 #'
-#' Batch up a long vector or list of vectors for passing to
-#' services with limited APIs such as postcodes.io
-#'
-#' @param x a vector
-#' @param batches size of batches to create. Can be a single value or
-#'   multiple values (see examples). Should be a whole, positive
-#'   number.
-#' @param proportion proportional sizes of batches to be created, for
-#'   example c(4, 6) will create two batches of approximately 40% and
-#'   60% of the length of the target vector. When multiple proportions
-#'   are provided, these are not repeated. A single proportion less
-#'   than 1 is repeated as many times as possible to get near to the
-#'   length of the target vector. For example, a proportion of 0.1
-#'   will be treated as a tenth, and batch sizes will be rounded to an
-#'   integer size nearest to a tenth of the vector length.
-#' @param maximise FALSE by default. When TRUE, a vector of batch
+#' @param x a vector, or a list flattenable to a vector
+#' @param batches numeric. The size (length) of batches to create. Can be a
+#'   single value or multiple values (see examples). Should be a whole,
+#'   positive number, if provided, else `NULL`
+#' @param proportion numeric proportional sizes of batches to be created.
+#'   For example `c(4, 6)` will create two batches of approximately 40% and
+#'   60% of the length of the target vector (`x`). When multiple
+#'   `proportion` values are provided, these are not repeated.
+#'   A single proportion less than 1 is repeated as many times as possible to
+#'   get near to the length of the target vector. For example, a `proportion`
+#'   of 0.1 will be treated as a tenth, and batch sizes will be rounded to
+#'   an integer size nearest to a tenth of the length of `x`.
+#' @param maximise boolean, `FALSE` by default. If `TRUE`, a vector of batch
 #'   sizes will be partially repeated to fit maximally to the length
 #'   of the target vector. See examples below.
-#' @param quiet Boolean, default TRUE. Whether to show ui_* messages.
+#' @param quiet Boolean, `TRUE` by default. Whether to show informative
+#'   `ui_*` messages from `{usethis}`.
 #'
 #' @export
 #'
@@ -42,63 +42,69 @@
 #'   lubridate::as_date(paste0(year, "-", 1:12, "-01")) |>
 #'     lubridate::days_in_month()
 #' }
-#' batch_it(x = as_year(2019), batches = month_lengths(2019))
-batch_it <- function(x, batches = NULL, proportion = NULL, maximise = FALSE, quiet = TRUE) {
+#' batch_it(x = as_year(2022), batches = month_lengths(2022))
+batch_it <- function(
+    x,
+    batches = NULL,
+    proportion = NULL,
+    maximise = FALSE,
+    quiet = TRUE
+  ) {
   if (!rlang::is_interactive() | quiet) {
     options(usethis.quiet = TRUE)
   }
 
   # ensure x is a reasonable vector
-  while (is.list(x)) {
-    x <- unlist(x)
+  if (is.list(x)) {
+    ui_info("Converting list to single vector")
+    x <- purrr::list_c(x)
   }
 
   assertthat::assert_that(is.atomic(x),
     msg = ui_stop("This function only works with lists or vectors")
   )
 
-  # return
-  if (!is.null(batches) & length(batches) == 1 && length(x) <= batches) return(x)
+  if (!is.null(batches) && length(batches) == 1 && length(x) <= batches) x
 
-  # if no arguments supplied, set batches to a default value
-  if (all(is.null(c(batches, proportion)))) batches <- length(x) / 10
-
-  # prefer batches if both are supplied
-  if (all(!is.null(c(batches, proportion)))) {
-    proportion <- NULL
-    if (!quiet) {
-    ui_info("`batches` and `proportion` cannot both be supplied.
-            `batches` only is being kept.")
-    }
+  if (purrr::every(list(batches, proportion), rlang::is_null)) {
+    ui_stop("batch_it: Either `batches` or `proportion` must be supplied.")
   }
 
-  if (length(x) > 10e6 & !quiet) {
-    ui_nope("Easy, tiger! That vector has more than a million items.
-    Are you sure you want to continue?")
+  # prefer batches if both are supplied
+  if (purrr::none(list(batches, proportion), rlang::is_null)) {
+    proportion <- NULL
+    ui_info("batch_it: Values for both `batches` and `proportion` have
+    been supplied. The `batches` value is prioritised.")
+  }
+
+  if (length(x) > 10e6) {
+    ui_nope("batch_it: Easy, tiger! That vector has more than a million
+    items. Are you sure you want to continue?")
   }
 
 
   # sub-routine to handle proportion parameter
-  if (is.numeric(proportion)) {
+  if (!is.null(proportion)) {
+    assertthat::assert_that(
+      is.numeric(proportion),
+      msg = ui_oops("batch_it: The proportion parameter is not numeric")
+    )
     batches <- convert_proportion_to_batches(x, proportion)
   }
 
   # just checking
-  batches <- as.numeric(batches)
-
   assertthat::assert_that(is.numeric(batches),
-    msg = ui_oops("Batch sizes provided are not numeric")
+    msg = ui_oops("batch_it: Batch sizes provided are not numeric")
   )
 
-  assertthat::assert_that(all(batches >= 0),
-    msg = ui_oops("Batch sizes must not be negative numbers")
+  assertthat::assert_that(all(batches > 0),
+    msg = ui_oops("batch_it: Batch sizes must be greater than zero")
   )
-
 
 
   batches <- round(batches)
-  batches <- batches[which(!batches == 0)]
-  batches <- maximise_batches(x, batches, maximise) # helper
+  batches <- batches[which(batches > 0)]
+  batches <- maximise_batches(x, batches, maximise)
 
 
   # this shouldn't be able to happen...
@@ -106,42 +112,39 @@ batch_it <- function(x, batches = NULL, proportion = NULL, maximise = FALSE, qui
     ui_stop("Batch sizes ended up longer than the length of the vector")
   }
 
-  if (!length(x) - sum(batches) == 0 & !quiet) {
-    ui_info("The length of the target vector is not an exact multiple of the
-    total of the batches. The remainder will be added as a final batch.")
+  if (length(x) - sum(batches) > 0) {
+    ui_info("The length of the target vector `x` is not an exact multiple of the
+    batch length(s) supplied. The remaining elements of `x` will be added as a
+    final batch.")
 
     batches <- c(batches, length(x) - sum(batches))
   }
 
+  list_a <- c(0, utils::head(batches, -1)) |>
+    rlang::set_names(names(batches)) |>
+    purrr::accumulate(sum, .simplify = TRUE)
+  list_b <- batches |>
+    purrr::accumulate(sum, .simplify = TRUE)
 
-  # add initial zero to support algorithm below
-  batches <- c(0, batches)
-
-  purrr::map(seq_along(utils::head(batches, -1)),
-             ~ `[`(x,
-                   `:`(sum(batches[1:.x], 1),
-                       sum(batches[1:(.x + 1)])
-                       )
-                   )
-  )
+  purrr::map2(list_a, list_b, \(a, b) x[(a + 1):b])
 }
 # end of main function
 
 
 ### helper functions (internal)
 convert_proportion_to_batches <- function(x, proportion) {
-  proportion <- as.numeric(proportion)
-
   if (!all(proportion > 0)) {
     ui_stop("Proportions must be positive numbers")
   }
 
-  if (length(proportion) == 1 & proportion < 1) {
+  if (length(proportion) == 1 && proportion < 1) {
     proportion <- rep(proportion, times = floor(1 / proportion))
-    proportion <- c(proportion, 1 - sum(proportion))
+    if (sum(proportion) < 1) {
+      proportion <- c(proportion, 1 - sum(proportion))
+    }
   }
 
-  `/`(proportion, sum(proportion)) * length(x)
+  (proportion / sum(proportion)) * length(x)
 }
 
 
@@ -149,7 +152,7 @@ maximise_batches <- function(x, batches, maximise) {
   # If maximise = TRUE and `batches` has length > 0, partially repeat the
   # batch lengths as far as possible within the length of x.
   # If maximise = FALSE, only repeat the batch lengths in full as far as they
-  # will fit, then return the remainder as a final batch.
+  # will fit. then return the remainder as a final batch.
   if (!maximise) {
     batches <- rep(batches, times = floor(length(x) / sum(batches)))
   } else {
@@ -158,8 +161,9 @@ maximise_batches <- function(x, batches, maximise) {
     while (sum(batches) > length(x)) {
       batches <- utils::head(batches, -1)
     }
-    # test this feature with e.g.:
-    # batch_it(letters, batches = c(4, 6), maximise = TRUE)
+
+  # test this feature with e.g.:
+  # batch_it(letters, batches = c(4, 6), maximise = TRUE)
   }
   batches
 }

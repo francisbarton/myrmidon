@@ -1,4 +1,10 @@
-batch_it_simple <- function(x, batch_size = 100) {
+#' Convert a list or vector to a batched list of its elements
+#' @inheritParams batch_it
+#' @examples
+#' batch_it_simple(letters, 6)
+#' batch_it_simple(letters, 0.45)
+#' @export
+batch_it_simple <- function(x, batch_size) {
   if (!rlang::is_interactive()) {
     options(usethis.quiet = TRUE)
   }
@@ -6,7 +12,7 @@ batch_it_simple <- function(x, batch_size = 100) {
   # ensure x is a reasonable vector
   if (is.list(x)) {
     ui_info("Converting list to single vector")
-    x <- do.call("c", x)
+    x <- purrr::list_c(x)
   }
 
   if (!is.vector(x)) {
@@ -19,11 +25,13 @@ batch_it_simple <- function(x, batch_size = 100) {
   }
 
   # ensure batch_size is an appropriate single positive number
-  if (!length(batch_size) == 1 || !batch_size > 0) {
+  if (length(batch_size) != 1 | batch_size <= 0) {
     ui_stop("The batch_size parameter must be a single positive value")
   }
 
-  if ((batch_size > 0) && (batch_size < 1)) {
+  # if batch_size is supplied as a decimal between 0 and 1, interpret this as
+  # a proportion of the length of `x`, and convert to an integer
+  if (batch_size < 1) {
     batch_size <- ceiling(length(x) * batch_size)
   }
 
@@ -32,23 +40,12 @@ batch_it_simple <- function(x, batch_size = 100) {
     batch_size <- length(x)
   }
 
-  # stolen from `?integer`
-  is.wholenumber <-
-    function(x, tol = .Machine$double.eps^0.5) abs(x - round(x)) < tol
-
-  # ensure batch size is a single whole positive integer
-  assertthat::assert_that(is.wholenumber(batch_size))
+  batch_size <- round(batch_size)
   assertthat::assert_that(batch_size > 0)
 
   # do the batching by creating a vector of factors of length(x)
   # then use this as the factor argument to split(x)
-  rep(1:ceiling(length(x) / batch_size), each = batch_size) %>%
-    utils::head(length(x)) %>%
-    split(x = x, f = .)
+  f <- rep(1:ceiling(length(x) / batch_size), each = batch_size) |>
+    utils::head(length(x))
+  unname(split(x, f))
 }
-
-# test 1
-batch_it_simple(letters, 6)
-
-# test 2
-batch_it_simple(letters, 0.45)
