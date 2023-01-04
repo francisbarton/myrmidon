@@ -2,8 +2,8 @@
 % Please edit documentation in R/gitmoji.R
 \name{gitmoji_desc}
 \alias{gitmoji_desc}
-\title{List gitmoji whose description matches `x`
-If `x` is "" (as by default), all rows in the table will be returned}
+\title{List gitmoji whose description matches \code{x}
+If \code{x} is "" (as by default), all rows in the table will be returned}
 \usage{
 gitmoji_desc(x = "")
 }
@@ -14,6 +14,6 @@ gitmoji_desc(x = "")
 a three-column table showing matching emoji with their code and description
 }
 \description{
-List gitmoji whose description matches `x`
-If `x` is "" (as by default), all rows in the table will be returned
+List gitmoji whose description matches \code{x}
+If \code{x} is "" (as by default), all rows in the table will be returned
 }

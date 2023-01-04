@@ -10,13 +10,13 @@ commonest(vec, first = TRUE)
 \item{vec}{A vector.}
 
 \item{first}{If there is a tie, this parameter decides whether to prioritise the
-element that appears first in `vec`.
-If `FALSE`, the function will just return the first item in the result produced by
-the default mode of `vec_count` (ie `"count"`, which does not return results
+element that appears first in \code{vec}.
+If \code{FALSE}, the function will just return the first item in the result produced by
+the default mode of \code{vec_count} (ie \code{"count"}, which does not return results
 prioritised by location -- see test-commonest file).}
 }
 \value{
-A single element of the same type as `vec`.
+A single element of the same type as \code{vec}.
 }
 \description{
 Pull out the commonest (mode) item from a vector

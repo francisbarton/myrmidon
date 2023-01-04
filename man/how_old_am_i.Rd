@@ -2,7 +2,7 @@
 % Please edit documentation in R/how_old_am_i.R
 \name{how_old_am_i}
 \alias{how_old_am_i}
-\title{A quick function using `lubridate` to report how old I am}
+\title{A quick function using \code{lubridate} to report how old I am}
 \usage{
 how_old_am_i(date = "1977-02-17")
 }
@@ -10,5 +10,5 @@ how_old_am_i(date = "1977-02-17")
 \item{date}{your date of birth. Set to mine by default.}
 }
 \description{
-A quick function using `lubridate` to report how old I am
+A quick function using \code{lubridate} to report how old I am
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/download_file.R
 \name{download_file}
 \alias{download_file}
-\title{Wrapper to Automate `download.file()`}
+\title{Wrapper to Automate \code{download.file()}}
 \usage{
 download_file(
   url,
@@ -14,24 +14,24 @@ download_file(
 )
 }
 \arguments{
-\item{url}{URL to download. Passed to `download.file()`.}
+\item{url}{URL to download. Passed to \code{download.file()}.}
 
 \item{dir}{(optional) Directory to download to. Defaults to the output of
-`here::here()` i.e. the project directory or equivalent (since
-[this beauty](https://github.com/r-lib/rprojroot/pull/59) got merged you can
-nest `here()`s and it just takes it in its stride.)}
+\code{here::here()} i.e. the project directory or equivalent (since
+\href{https://github.com/r-lib/rprojroot/pull/59}{this beauty} got merged you can
+nest \code{here()}s and it just takes it in its stride.)}
 
 \item{destfile}{(optional) Name of local file to download to.
 The whole point of this is not to have to specify a destfile,
-but if you want or need to, you can. Passed to `download.file()`.}
+but if you want or need to, you can. Passed to \code{download.file()}.}
 
 \item{overwrite}{(optional) Force allow overwrite of existing local destfile.
-I haven't checked whether `download.file()` will actually do this in the end,
+I haven't checked whether \code{download.file()} will actually do this in the end,
 though.}
 
 \item{quiet}{don't say anything while downloading}
 
-\item{...}{Any other arguments you want to pass through to `download.file()`,
+\item{...}{Any other arguments you want to pass through to \code{download.file()},
 such as mode, method, headers and so on.}
 }
 \description{
@@ -41,14 +41,14 @@ as the remote file that forms the basename of the URL.
 }
 \details{
 Default setting for dir is "" which means file will end up in project root
-directory (according to `here()`).
+directory (according to \code{here()}).
 
-destfile we want to extract from the URL using `basename` but we need to offer
+destfile we want to extract from the URL using \code{basename} but we need to offer
 it as an argument to the function anyway because the user might want or need
-to specify it, as you do with `download.file` eg if it turns out destfile
+to specify it, as you do with \code{download.file} eg if it turns out destfile
 already exists.
 
-The user can specify `overwrite = TRUE` which will allow the file to be
+The user can specify \code{overwrite = TRUE} which will allow the file to be
 downloaded even if the target already exists.
 }
 \examples{

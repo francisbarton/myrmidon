@@ -3,6 +3,7 @@
 export()
 export(add_msoa_names)
 export(batch_it)
+export(batch_it_simple)
 export(bbox_to_poly)
 export(commonest)
 export(download_file)

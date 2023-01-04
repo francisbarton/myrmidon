@@ -2,13 +2,13 @@
 % Please edit documentation in R/myrmidon-package.R
 \name{view}
 \alias{view}
-\title{Borrow `view()` from {tibble}}
+\title{Borrow \code{view()} from \code{{tibble}}}
 \usage{
 view(x)
 }
 \arguments{
-\item{x}{a data frame}
+\item{x}{a data frame or sijilar viewable object}
 }
 \description{
-Borrow `view()` from {tibble}
+Borrow \code{view()} from \code{{tibble}}
 }

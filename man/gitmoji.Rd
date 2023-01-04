@@ -2,9 +2,9 @@
 % Please edit documentation in R/gitmoji.R
 \name{gitmoji}
 \alias{gitmoji}
-\title{Writes emoji to the system clipboard, whose name(s) match `x`
-Use `gitmoji_list()` to list all available gitmoji or to search the table of gitmoji by emoji name.
-Use `gitmoji_desc()` to search the table of gitmoji by description}
+\title{Writes emoji to the system clipboard, whose name(s) match \code{x}
+Use \code{gitmoji_list()} to list all available gitmoji or to search the table of gitmoji by emoji name.
+Use \code{gitmoji_desc()} to search the table of gitmoji by description}
 \usage{
 gitmoji(x, exact = TRUE)
 }
@@ -17,7 +17,7 @@ gitmoji(x, exact = TRUE)
 TRUE if successful; the emoji is/are copied to the clipboard
 }
 \description{
-Writes emoji to the system clipboard, whose name(s) match `x`
-Use `gitmoji_list()` to list all available gitmoji or to search the table of gitmoji by emoji name.
-Use `gitmoji_desc()` to search the table of gitmoji by description
+Writes emoji to the system clipboard, whose name(s) match \code{x}
+Use \code{gitmoji_list()} to list all available gitmoji or to search the table of gitmoji by emoji name.
+Use \code{gitmoji_desc()} to search the table of gitmoji by description
 }

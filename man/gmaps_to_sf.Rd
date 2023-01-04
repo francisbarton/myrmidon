@@ -12,9 +12,9 @@ gmaps_to_sf(lst, crs)
 \item{crs}{the desired CRS of the output}
 }
 \value{
-an `sf` (sfc) object (collection)
+an \code{sf} (sfc) object (collection)
 }
 \description{
-If you right-click on a location in Google Maps, it gives you the option to copy the latitude and longitude. This is really useful. But it does provide the latitude figure first, which will be inaccurate if you try to feed it straight to `sf::st_point()`, which expects longitude first.
-This function allows you to create a list of these coordinate pairs as pasted from GMaps, and convert it into a single, plottable, geospatial `sf` (sfc) object.
+If you right-click on a location in Google Maps, it gives you the option to copy the latitude and longitude. This is really useful. But it does provide the latitude figure first, which will be inaccurate if you try to feed it straight to \code{sf::st_point()}, which expects longitude first.
+This function allows you to create a list of these coordinate pairs as pasted from GMaps, and convert it into a single, plottable, geospatial \code{sf} (sfc) object.
 }

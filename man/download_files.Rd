@@ -10,17 +10,17 @@ download_files(urls, dir = here::here(), overwrite = FALSE, quiet = TRUE, ...)
 \item{urls}{A list or vector of URLs}
 
 \item{dir}{(optional) Directory to download to. Defaults to the output of
-`here::here()` i.e. the project directory or equivalent (since
-[this beauty](https://github.com/r-lib/rprojroot/pull/59) got merged you can
-nest `here()`s and it just takes it in its stride.)}
+\code{here::here()} i.e. the project directory or equivalent (since
+\href{https://github.com/r-lib/rprojroot/pull/59}{this beauty} got merged you can
+nest \code{here()}s and it just takes it in its stride.)}
 
 \item{overwrite}{(optional) Force allow overwrite of existing local destfile.
-I haven't checked whether `download.file()` will actually do this in the end,
+I haven't checked whether \code{download.file()} will actually do this in the end,
 though.}
 
 \item{quiet}{don't say anything while downloading}
 
-\item{...}{Any other arguments you want to pass through to `download.file()`,
+\item{...}{Any other arguments you want to pass through to \code{download.file()},
 such as mode, method, headers and so on.}
 }
 \description{

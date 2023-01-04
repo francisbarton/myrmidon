@@ -1,4 +1,4 @@
-#' \code{myrmidon} package
+#' `myrmidon` package
 #'
 #' Personal Functions Toolbox
 #'
@@ -22,7 +22,7 @@ NULL
 #' @importFrom rlang `:=`
 NULL
 
-#' Borrow `view()` from {tibble}
-#' @param x a data frame
+#' Borrow `view()` from `{tibble}`
+#' @param x a data frame or sijilar viewable object
 #' @export
 view <- function(x) tibble::view(x)

@@ -9,12 +9,12 @@ extract_col_types(.data, named = FALSE, collapse = FALSE)
 \arguments{
 \item{.data}{A data frame}
 
-\item{named}{logical: Whether to retain the column names as names for the vector of types. Default `FALSE`.}
+\item{named}{logical: Whether to retain the column names as names for the vector of types. Default \code{FALSE}.}
 
-\item{collapse}{logical: Whether to collapse the vector of column names to a single string comprising the initial letters of each type. Default `FALSE`.}
+\item{collapse}{logical: Whether to collapse the vector of column names to a single string comprising the initial letters of each type. Default \code{FALSE}.}
 }
 \value{
-A character vector (with or without names), or if `collapse` is `TRUE`, a single condensed string.
+A character vector (with or without names), or if \code{collapse} is \code{TRUE}, a single condensed string.
 }
 \description{
 Extracts all the column types of a data frame to a character vector

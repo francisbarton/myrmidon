@@ -16,5 +16,5 @@ order_along(df, order_along, sort_by, desc = FALSE)
 \item{desc}{whether to sort sort_by in descending order}
 }
 \description{
-Also works with `sf` tibbles – use `order_along.sf` instead.
+Also works with \code{sf} tibbles – use \code{order_along.sf} instead.
 }

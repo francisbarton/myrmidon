@@ -7,33 +7,32 @@
 batch_it(x, batches = NULL, proportion = NULL, maximise = FALSE, quiet = TRUE)
 }
 \arguments{
-\item{x}{a vector}
+\item{x}{a vector, or a list flattenable to a vector}
 
-\item{batches}{size of batches to create. Can be a single value or
-multiple values (see examples). Should be a whole, positive
-number.}
+\item{batches}{numeric. The size (length) of batches to create. Can be a
+single value or multiple values (see examples). Should be a whole,
+positive number, if provided, else \code{NULL}}
 
-\item{proportion}{proportional sizes of batches to be created, for
-example c(4, 6) will create two batches of approximately 40% and
-60% of the length of the target vector. When multiple proportions
-are provided, these are not repeated. A single proportion less
-than 1 is repeated as many times as possible to get near to the
-length of the target vector. For example, a proportion of 0.1
-will be treated as a tenth, and batch sizes will be rounded to an
-integer size nearest to a tenth of the vector length.}
+\item{proportion}{numeric proportional sizes of batches to be created.
+For example \code{c(4, 6)} will create two batches of approximately 40\% and
+60\% of the length of the target vector (\code{x}). When multiple
+\code{proportion} values are provided, these are not repeated.
+A single proportion less than 1 is repeated as many times as possible to
+get near to the length of the target vector. For example, a \code{proportion}
+of 0.1 will be treated as a tenth, and batch sizes will be rounded to
+an integer size nearest to a tenth of the length of \code{x}.}
 
-\item{maximise}{FALSE by default. When TRUE, a vector of batch
+\item{maximise}{boolean, \code{FALSE} by default. If \code{TRUE}, a vector of batch
 sizes will be partially repeated to fit maximally to the length
 of the target vector. See examples below.}
 
-\item{quiet}{Boolean, default TRUE. Whether to show ui_* messages.}
+\item{quiet}{Boolean, \code{TRUE} by default. Whether to show informative
+\verb{ui_*} messages from \code{{usethis}}.}
 }
 \description{
+Batch up a long vector, or list of vectors, for example so they can be
+passed to services with length-limited APIs.
 Go \code{batch_it()} crazy!
-}
-\details{
-Batch up a long vector or list of vectors for passing to
-services with limited APIs such as postcodes.io
 }
 \examples{
 batch_it(seq(2, 60, 2), 6)
@@ -53,5 +52,5 @@ month_lengths <- function(year) {
   lubridate::as_date(paste0(year, "-", 1:12, "-01")) |>
     lubridate::days_in_month()
 }
-batch_it(x = as_year(2019), batches = month_lengths(2019))
+batch_it(x = as_year(2022), batches = month_lengths(2022))
 }

@@ -2,8 +2,8 @@
 % Please edit documentation in R/gitmoji.R
 \name{gitmoji_list}
 \alias{gitmoji_list}
-\title{List gitmoji names matching a text string (`x`)
-If `x` is "" (as by default), all names in the table will be returned}
+\title{List gitmoji names matching a text string (\code{x})
+If \code{x} is "" (as by default), all names in the table will be returned}
 \usage{
 gitmoji_list(x = "", exact = FALSE)
 }
@@ -16,6 +16,6 @@ gitmoji_list(x = "", exact = FALSE)
 A character vector of all matching gitmoji names
 }
 \description{
-List gitmoji names matching a text string (`x`)
-If `x` is "" (as by default), all names in the table will be returned
+List gitmoji names matching a text string (\code{x})
+If \code{x} is "" (as by default), all names in the table will be returned
 }
