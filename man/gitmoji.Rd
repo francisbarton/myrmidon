@@ -2,22 +2,25 @@
 % Please edit documentation in R/gitmoji.R
 \name{gitmoji}
 \alias{gitmoji}
-\title{Writes emoji to the system clipboard, whose name(s) match \code{x}
-Use \code{gitmoji_list()} to list all available gitmoji or to search the table of gitmoji by emoji name.
-Use \code{gitmoji_desc()} to search the table of gitmoji by description}
+\title{Writes a gitmoji to the clipboard}
 \usage{
 gitmoji(x, exact = TRUE)
 }
 \arguments{
-\item{x}{string. A piece of text to search for}
+\item{x}{string. A piece of text to search for.}
 
-\item{exact}{boolean, default TRUE. Whether to only return a result for the exact string provided, or return all names that contain the string.}
+\item{exact}{Boolean, default \code{TRUE}. Whether to only return a result for the
+exact string provided, or return all names that match the string.}
 }
 \value{
-TRUE if successful; the emoji is/are copied to the clipboard
+\code{TRUE} if successful; the gitmoji is/are copied to the clipboard.
 }
 \description{
-Writes emoji to the system clipboard, whose name(s) match \code{x}
-Use \code{gitmoji_list()} to list all available gitmoji or to search the table of gitmoji by emoji name.
-Use \code{gitmoji_desc()} to search the table of gitmoji by description
+Use \code{\link[=gitmoji_name]{gitmoji_name()}} to list all available gitmoji or to search the table of
+gitmoji by name.
+Use \code{\link[=gitmoji_desc]{gitmoji_desc()}} to search the table of gitmoji by description
+}
+\examples{
+gitmoji("memo")
+gitmoji("flag")
 }

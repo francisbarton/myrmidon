@@ -1,49 +1,73 @@
-#' List gitmoji names matching a text string (`x`)
+#' List gitmoji names matching `x`
+#'
 #' If `x` is "" (as by default), all names in the table will be returned
 #' @inheritParams gitmoji
 #' @returns A character vector of all matching gitmoji names
 #' @export
-gitmoji_list <- function(x = "", exact = FALSE) {
+gitmoji_name <- function(x = "", exact = FALSE) {
   x <- tolower(x)
   if (exact) x <- paste0("^", x, "$")
-  grep(x, gitmoji_df$name, value = TRUE)
+  n <- grep(x, gitmoji_df$name, ignore.case = TRUE)
+  res <- gitmoji_df |>
+    dplyr::slice(n)
+  stringr::str_glue_data(res, "{emoji} {name}")
 }
 
-#' List gitmoji whose description matches `x`
+#' List gitmoji with a description matching `x`
+#'
 #' If `x` is "" (as by default), all rows in the table will be returned
+#'
 #' @inheritParams gitmoji
-#' @returns a three-column table showing matching emoji with their code and description
+#' @returns a three-column table showing matching emoji with their code
+#'   and description
 #' @export
 gitmoji_desc <- function(x = "") {
   assertthat::is.string(x)
   n <- grep(x, gitmoji_df$description, ignore.case = TRUE)
-  res <- gitmoji_df[n,]
-  res$code <- stringr::str_pad(res$code, max(nchar(res$code)), "right")
+  res <- gitmoji_df |>
+    dplyr::slice(n) |>
+    dplyr::mutate(across("emoji",
+      \(x) stringr::str_pad(x, 3, "right"))) |>
+    dplyr::mutate(across("name",
+      \(x) stringr::str_pad(x, max(nchar(x)), "right", use_width = TRUE))) |>
+    dplyr::mutate(across("description",
+      \(x) stringr::str_remove(x, "\\.?$")))
 
-  usethis::ui_info(
-    stringr::str_glue_data(res, "{emoji} {code} {description}")
-  )
+  stringr::str_glue_data(res, " {emoji} {name}  | {description}")
 }
 
-#' Writes emoji to the system clipboard, whose name(s) match `x`
-#' Use `gitmoji_list()` to list all available gitmoji or to search the table of gitmoji by emoji name.
-#' Use `gitmoji_desc()` to search the table of gitmoji by description
+#' Writes a gitmoji to the clipboard
 #'
-#' @param x string. A piece of text to search for
-#' @param exact boolean, default TRUE. Whether to only return a result for the exact string provided, or return all names that contain the string.
-#' @returns TRUE if successful; the emoji is/are copied to the clipboard
+#' @description
+#' Use [gitmoji_name()] to list all available gitmoji or to search the table of
+#'   gitmoji by name.
+#' Use [gitmoji_desc()] to search the table of gitmoji by description
+#'
+#' @param x string. A piece of text to search for.
+#' @param exact Boolean, default `TRUE`. Whether to only return a result for the
+#'   exact string provided, or return all names that match the string.
+#' @returns `TRUE` if successful; the gitmoji is/are copied to the clipboard.
+#' @examples
+#' gitmoji("memo")
+#' gitmoji("flag")
 #' @export
 gitmoji <- function(x, exact = TRUE) {
   assertthat::is.string(x)
   x <- tolower(x)
   if (exact) x <- paste0("^", x, "$")
   n <- grep(x, gitmoji_df$name)
-  assertthat::not_empty(n)
-  res <- gitmoji_df[n,]
-  writeLines(res$emoji, con = "clipboard", sep = "")
-  res$description <- stringr::str_remove(res$description, "\\.?$")
-  usethis::ui_info(
-    stringr::str_glue_data(res, "{emoji} ('{description}') gitmoji has been copied to clipboard.")
-  )
-  invisible(TRUE)
+
+  if (rlang::is_empty(n)) {
+    usethis::ui_oops("No matching gitmoji found.")
+  } else if (is.numeric(n)) {
+    res <- gitmoji_df[n,]
+    writeLines(res$emoji, con = "clipboard", sep = "")
+    res$description <- stringr::str_remove(res$description, "\\.?$")
+
+    usethis::ui_info(
+      stringr::str_glue_data(res,
+        "Gitmoji: {emoji} ('{description}') copied to clipboard.")
+    )
+    return(invisible(TRUE))
+  } else stop("gitmoji(): Process failed somehow.")
 }

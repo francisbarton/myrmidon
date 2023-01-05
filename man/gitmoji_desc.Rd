@@ -2,18 +2,17 @@
 % Please edit documentation in R/gitmoji.R
 \name{gitmoji_desc}
 \alias{gitmoji_desc}
-\title{List gitmoji whose description matches \code{x}
-If \code{x} is "" (as by default), all rows in the table will be returned}
+\title{List gitmoji with a description matching \code{x}}
 \usage{
 gitmoji_desc(x = "")
 }
 \arguments{
-\item{x}{string. A piece of text to search for}
+\item{x}{string. A piece of text to search for.}
 }
 \value{
-a three-column table showing matching emoji with their code and description
+a three-column table showing matching emoji with their code
+and description
 }
 \description{
-List gitmoji whose description matches \code{x}
 If \code{x} is "" (as by default), all rows in the table will be returned
 }
