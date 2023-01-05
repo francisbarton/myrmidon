@@ -4,8 +4,13 @@
 \name{myrmidon}
 \alias{myrmidon}
 \alias{myrmidon-package}
-\title{\code{myrmidon} package}
+\title{\code{myrmidon}}
 \description{
-Personal Functions Toolbox
+"My R" Kitchen Drawer
+}
+\details{
+Fran's personal useful tools, tricks and toys. Some functions I want to have
+available most times I start up R, as well as my own HTML5 RMarkdown
+template. Please feel free to use and improve them.
 }
 \keyword{internal}

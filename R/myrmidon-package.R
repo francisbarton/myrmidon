@@ -1,6 +1,10 @@
-#' `myrmidon` package
+#' `myrmidon`
 #'
-#' Personal Functions Toolbox
+#' "My R" Kitchen Drawer
+#'
+#' Fran's personal useful tools, tricks and toys. Some functions I want to have
+#' available most times I start up R, as well as my own HTML5 RMarkdown
+#' template. Please feel free to use and improve them.
 #'
 #' @docType package
 #' @name myrmidon
@@ -11,7 +15,6 @@
 # roxygen namespace tags. Modify with care!
 ## usethis namespace: start
 #' @importFrom magrittr %>%
-#' @export
 ## usethis namespace: end
 NULL
 
@@ -23,6 +26,7 @@ NULL
 NULL
 
 #' Borrow `view()` from `{tibble}`
-#' @param x a data frame or sijilar viewable object
+#'
+#' @param x a data frame or similar viewable object
 #' @export
 view <- function(x) tibble::view(x)

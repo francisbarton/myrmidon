@@ -7,7 +7,7 @@
 view(x)
 }
 \arguments{
-\item{x}{a data frame or sijilar viewable object}
+\item{x}{a data frame or similar viewable object}
 }
 \description{
 Borrow \code{view()} from \code{{tibble}}
