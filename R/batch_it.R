@@ -1,14 +1,20 @@
-#' Turn A Long Vector Into A Batched List
+
+# batch_it() --------------------------------------------------------------
+
+
+#' Convert a list or vector to a batched list of its elements
 #'
-#' Batch up a long vector, or list of vectors, for example so they can be
-#' passed to services with length-limited APIs.
-#' Go `batch_it()` crazy!
+#' @description
+#' Batch up a long vector, or list of vectors. For example so they can be
+#' passed via a `map` function to services with length-limited APIs.
+#'
+#' *Go `batch_it()` crazy!*
 #'
 #' @param x a vector, or a list flattenable to a vector
 #' @param batches numeric. The size (length) of batches to create. Can be a
-#'   single value or multiple values (see examples). Should be a whole,
-#'   positive number, if provided, else `NULL`
-#' @param proportion numeric proportional sizes of batches to be created.
+#'   single value or multiple values (see Examples). Should be a whole,
+#'   positive number, if provided, else `NULL`.
+#' @param proportion numeric. Proportional sizes of batches to be created.
 #'   For example `c(4, 6)` will create two batches of approximately 40% and
 #'   60% of the length of the target vector (`x`). When multiple
 #'   `proportion` values are provided, these are not repeated.
@@ -16,22 +22,27 @@
 #'   get near to the length of the target vector. For example, a `proportion`
 #'   of 0.1 will be treated as a tenth, and batch sizes will be rounded to
 #'   an integer size nearest to a tenth of the length of `x`.
-#' @param maximise boolean, `FALSE` by default. If `TRUE`, a vector of batch
+#' @param maximise Boolean, `FALSE` by default. If `TRUE`, a vector of batch
 #'   sizes will be partially repeated to fit maximally to the length
 #'   of the target vector. See examples below.
 #' @param quiet Boolean, `TRUE` by default. Whether to show informative
 #'   `ui_*` messages from `{usethis}`.
 #'
-#' @export
+#' @seealso [batch_it_simple()] which does the same thing but has fewer options
+#'   and works just fine for simpler cases.
+#'
+#' @returns All the elements of `x` batched into a list.
 #'
 #' @examples
 #' batch_it(seq(2, 60, 2), 6)
 #' batch_it(seq(2, 60, 2), proportion = 0.2)
+#'
 #' batch_it(1:100, batches = c(20, 30, 50))
 #' batch_it(letters, batches = c(4, 6))
 #' batch_it(letters, batches = c(4, 6), maximise = TRUE)
 #' batch_it(letters, proportion = c(4, 6))
 #'
+#' # ----
 #' as_year <- function(x) {
 #'   lubridate::as_date(
 #'     lubridate::ymd(paste0(x, "-01-01")):
@@ -43,6 +54,8 @@
 #'     lubridate::days_in_month()
 #' }
 #' batch_it(x = as_year(2022), batches = month_lengths(2022))
+#'
+#' @export
 batch_it <- function(
     x,
     batches = NULL,
@@ -131,7 +144,11 @@ batch_it <- function(
 # end of main function
 
 
-### helper functions (internal)
+
+# helper functions (internal) ---------------------------------------------
+
+
+#' @noRd
 convert_proportion_to_batches <- function(x, proportion) {
   if (!all(proportion > 0)) {
     ui_stop("Proportions must be positive numbers")
@@ -148,6 +165,7 @@ convert_proportion_to_batches <- function(x, proportion) {
 }
 
 
+#' @noRd
 maximise_batches <- function(x, batches, maximise) {
   # If maximise = TRUE and `batches` has length > 0, partially repeat the
   # batch lengths as far as possible within the length of x.
@@ -166,4 +184,70 @@ maximise_batches <- function(x, batches, maximise) {
   # batch_it(letters, batches = c(4, 6), maximise = TRUE)
   }
   batches
+}
+
+
+
+# batch_it_simple() -------------------------------------------------------
+
+
+
+#' Convert a list or vector to a batched list of its elements
+#'
+#' @rdname batch_it
+#'
+#' @param batch_size numeric. The size (length) of batches to create. Should be
+#'   a single value (see Examples). If supplied as a decimal (<1), it will be
+#'   interpreted as a proportion of `length(x)`.
+#'
+#' @examples
+#' # ----
+#' batch_it_simple(letters, 6)
+#' batch_it_simple(letters, 0.45)
+#'
+#' @export
+batch_it_simple <- function(x, batch_size) {
+  if (!rlang::is_interactive()) {
+    options(usethis.quiet = TRUE)
+  }
+
+  # ensure x is a reasonable vector
+  if (is.list(x)) {
+    ui_info("Converting list to single vector")
+    x <- purrr::list_c(x)
+  }
+
+  if (!is.vector(x)) {
+    ui_stop("This function only works with lists or vectors")
+  }
+
+  if (length(x) > 10e6) {
+    ui_nope("Easy, tiger! That vector has more than a million items.
+            Are you sure you want to continue?")
+  }
+
+  # ensure batch_size is an appropriate single positive number
+  if (length(batch_size) != 1 | batch_size <= 0) {
+    ui_stop("The batch_size parameter must be a single positive value")
+  }
+
+  # if batch_size is supplied as a decimal between 0 and 1, interpret this as
+  # a proportion of the length of `x`, and convert to an integer
+  if (batch_size < 1) {
+    batch_size <- ceiling(length(x) * batch_size)
+  }
+
+  if (batch_size > length(x)) {
+    ui_oops("Batch size provided was greater than the length of the vector.")
+    batch_size <- length(x)
+  }
+
+  batch_size <- round(batch_size)
+  assertthat::assert_that(batch_size > 0)
+
+  # do the batching by creating a vector of factors of length(x)
+  # then use this as the factor argument to split(x)
+  f <- rep(1:ceiling(length(x) / batch_size), each = batch_size) |>
+    utils::head(length(x))
+  unname(split(x, f))
 }
