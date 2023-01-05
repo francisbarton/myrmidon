@@ -2,18 +2,58 @@
 % Please edit documentation in R/bbox_to_poly.R
 \name{bbox_to_poly}
 \alias{bbox_to_poly}
-\title{Convert a bbox to an sf geospatial polygon (rectangle)}
+\alias{expand_sf_bbox}
+\alias{fit_square}
+\title{Convert a bbox to an \code{sf} polygon}
 \usage{
 bbox_to_poly(x, crs)
+
+expand_sf_bbox(x, factor, crs = NULL)
+
+fit_square(x, output = c("bbox", "polygon"))
 }
 \arguments{
-\item{x}{bbox - a named integer vector}
+\item{x}{A polygon}
 
-\item{crs}{Coordinate Reference System eg EPSG code}
+\item{crs}{the CRS of the returned object. Inherits the CRS of \code{x} by
+default. Use \code{NA} if no CRS is desired.}
+
+\item{factor}{The factor(s) to expand the bbox of \code{x} by. Can be length 1, 2
+or 4. If length 1, the factor will be applied to all 4 sides of \code{x}. If
+length 2,the first value will be applied to the vertical (top and bottom)
+sides, the second value to the horizontal (left and right) sides. If length
+4, the factors will be applied to the top, right, bottom and left sides in
+that order (think t,r,b,l ... 'trouble'). Negative values are valid and will
+result in a contraction of sides as applicable.}
+
+\item{output}{Whether to return just a bbox, or an \code{sf} polygon}
 }
 \value{
-an sf polygon object (sfc)
+an \code{sf} (sfc) polygon
+
+a rectangular \code{sf} polygon
+
+a bbox (named vector) or an \code{sf} (sfc) polygon
 }
 \description{
-Convert a bbox to an sf geospatial polygon (rectangle)
+Note that the factor is applied to the coordinates in the bbox, and there is
+no correction for real world distance. In projected geometries, for example
+with geographical coordinates, a horizontal (longitudinal) factor and a
+vertical (latitudinal) factor may be numerically equal but will result in
+quite different expansions in terms of geographical distance, depending on
+latitude.
+
+Makes a bbox (rectangle) that just surrounds the polygon and then
+expands the shorter sides of the bbox to make it a square
+}
+\examples{
+
+# oxford_bbox <- osmdata::create_bbox("Oxford", 27700)
+oxford_bbox <- c(
+  xmin = 448100.3,
+  ymin = 201646.6,
+  xmax = 457014.2,
+  ymax = 211088.8)
+fit_square(oxford_bbox)
+
 }
