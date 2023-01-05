@@ -1,22 +1,27 @@
-#' Convert Google Maps lat-lon Data to a Geospatial sf object
+#' Convert Google Maps lat-lon data to geospatial `sf` points
 #'
-#' If you right-click on a location in Google Maps, it gives you the option to copy the latitude and longitude. This is really useful. But it does provide the latitude figure first, which will be inaccurate if you try to feed it straight to `sf::st_point()`, which expects longitude first.
-#' This function allows you to create a list of these coordinate pairs as pasted from GMaps, and convert it into a single, plottable, geospatial `sf` (sfc) object.
+#' @description
+#' If you right-click on a location in Google Maps, it gives you the option to
+#' copy the latitude and longitude. This is really useful. But it provides this
+#' latitude-first (latlon), which will be inaccurate if you try to feed it
+#' directly to `sf::st_point()`, which expects longitude first (lonlat).
 #'
-#' @param lst a list of coordinates as pasted from Google Maps right-click ($lat, $lon)
-#' @param crs the desired CRS of the output
+#' This function allows you to create a list of these coordinate pairs as pasted
+#' from GMaps, and convert it into a single, plottable, geospatial `sf` (sfc)
+#' multipoint object.
 #'
-#' @return an `sf` (sfc) object (collection)
+#' @param lst A list of coordinates as pasted from Google Maps right-click.
+#'  Looks something like `list(c(43.2, 44.9), c(43.4, 45.2))`.
+#'
+#' @returns an `sf` object (sfc) with CRS 4326
 #' @export
-gmaps_to_sf <- function(lst, crs) {
+gmaps_to_sf <- function(lst) {
 
-  lst %>%
+  lst |>
     # reverse lat & lon from what Google Maps gives you
-    purrr::map(rev) %>%
+    purrr::map(rev) |>
     # turn each one into a point
-    purrr::map(sf::st_point) %>%
+    purrr::map(sf::st_point) |>
     # turn list into an sf object
-    sf::st_sfc(crs = 4326) %>%
-    sf::st_transform(crs = crs)
-
+    sf::st_sfc(crs = 4326)
 }

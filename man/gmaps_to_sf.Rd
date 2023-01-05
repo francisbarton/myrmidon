@@ -2,19 +2,24 @@
 % Please edit documentation in R/gmaps_to_sf.R
 \name{gmaps_to_sf}
 \alias{gmaps_to_sf}
-\title{Convert Google Maps lat-lon Data to a Geospatial sf object}
+\title{Convert Google Maps lat-lon data to geospatial \code{sf} points}
 \usage{
-gmaps_to_sf(lst, crs)
+gmaps_to_sf(lst)
 }
 \arguments{
-\item{lst}{a list of coordinates as pasted from Google Maps right-click ($lat, $lon)}
-
-\item{crs}{the desired CRS of the output}
+\item{lst}{A list of coordinates as pasted from Google Maps right-click.
+Looks something like \code{list(c(43.2, 44.9), c(43.4, 45.2))}.}
 }
 \value{
-an \code{sf} (sfc) object (collection)
+an \code{sf} object (sfc) with CRS 4326
 }
 \description{
-If you right-click on a location in Google Maps, it gives you the option to copy the latitude and longitude. This is really useful. But it does provide the latitude figure first, which will be inaccurate if you try to feed it straight to \code{sf::st_point()}, which expects longitude first.
-This function allows you to create a list of these coordinate pairs as pasted from GMaps, and convert it into a single, plottable, geospatial \code{sf} (sfc) object.
+If you right-click on a location in Google Maps, it gives you the option to
+copy the latitude and longitude. This is really useful. But it provides this
+latitude-first (latlon), which will be inaccurate if you try to feed it
+directly to \code{sf::st_point()}, which expects longitude first (lonlat).
+
+This function allows you to create a list of these coordinate pairs as pasted
+from GMaps, and convert it into a single, plottable, geospatial \code{sf} (sfc)
+multipoint object.
 }
