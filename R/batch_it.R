@@ -64,12 +64,16 @@ batch_it <- function(
     quiet = TRUE
   ) {
   if (!rlang::is_interactive() | quiet) {
+    cur_quiet <- getOption("usethis.quiet")
     options(usethis.quiet = TRUE)
   }
 
   # ensure x is a reasonable vector
   if (is.list(x)) {
-    ui_info("Converting list to single vector")
+    ui_info("Flattening list to vector")
+    while (purrr::pluck_depth(x) > 2) {
+      x <- purrr::list_flatten(x)
+    }
     x <- purrr::list_c(x)
   }
 
@@ -77,7 +81,7 @@ batch_it <- function(
     msg = ui_stop("This function only works with lists or vectors")
   )
 
-  if (!is.null(batches) && length(batches) == 1 && length(x) <= batches) x
+  if (length(batches) == 1 && (length(x) <= batches)) x
 
   if (purrr::every(list(batches, proportion), rlang::is_null)) {
     ui_stop("batch_it: Either `batches` or `proportion` must be supplied.")
@@ -133,6 +137,11 @@ batch_it <- function(
     batches <- c(batches, length(x) - sum(batches))
   }
 
+  # restore to initial setting
+  if (!rlang::is_interactive() | quiet) {
+    options(usethis.quiet = cur_quiet)
+  }
+
   list_a <- c(0, utils::head(batches, -1)) |>
     rlang::set_names(names(batches)) |>
     purrr::accumulate(sum, .simplify = TRUE)
@@ -179,9 +188,6 @@ maximise_batches <- function(x, batches, maximise) {
     while (sum(batches) > length(x)) {
       batches <- utils::head(batches, -1)
     }
-
-  # test this feature with e.g.:
-  # batch_it(letters, batches = c(4, 6), maximise = TRUE)
   }
   batches
 }
@@ -208,6 +214,7 @@ maximise_batches <- function(x, batches, maximise) {
 #' @export
 batch_it_simple <- function(x, batch_size) {
   if (!rlang::is_interactive()) {
+    cur_quiet <- getOption("usethis.quiet")
     options(usethis.quiet = TRUE)
   }
 
@@ -238,8 +245,13 @@ batch_it_simple <- function(x, batch_size) {
   }
 
   if (batch_size > length(x)) {
-    ui_oops("Batch size provided was greater than the length of the vector.")
+    ui_info("Batch size provided was greater than the length of the vector.")
     batch_size <- length(x)
+  }
+
+  # restore to initial setting
+  if (!rlang::is_interactive()) {
+    options(usethis.quiet = cur_quiet)
   }
 
   batch_size <- round(batch_size)

@@ -1,165 +1,169 @@
 #' Use postcodes.io to get postcode data
 #'
-#' @param df A data frame with a column of postcodes.
-#' @param var The name of the variable in the data frame that contains
-#'   postcodes (only!). Should be acceptable as a symbol (variable name)
-#'   or as a standard character string.
-#' @param fix_invalid Whether to try to fix any postcodes that are not
-#'   found (potentially because they are terminated codes, or typos).
-#' @param narrow Whether to narrow the returned data frame by removing
-#'   a bunch of potentially unnecessary fields from the data before
-#'   returning the final product to the user. Boolean, default TRUE.
-#'   Set to FALSE to get all data variables available from the API,
-#'   plus a data quality indicator and a record of which codes were
-#'   invalid and subsequently fixed, if any.
+#' @param .data A data frame with a column of postcodes, or a vector
+#'  of postcodes.
+#' @param var String or symbol. The name of the variable in the data frame that
+#'  comprises the postcodes to be submitted. Should be acceptable as a symbol
+#'  or as a standard string.
+#' @param fix_invalid Boolean, default `TRUE`. Whether to try to fix any
+#'  postcodes that are not found (potentially because they are terminated codes,
+#'  or contain typos).
 #'
-#' @export
 #' @examples
 #' postcodes <- c("HD1 2UT", "HD1 2UU", "HD1 2UV")
-#' test_df1 <- dplyr::tibble(place = paste0("place_", 1:3), postcode = postcodes)
-#' postcode_data_join(test_df1, fix_invalid = TRUE, narrow = FALSE)
-postcode_data_join <- function(df, var = postcode, fix_invalid = TRUE, narrow = TRUE) {
+#' test_df1 <- dplyr::tibble(
+#'   place = paste0("place_", 1:3),
+#'   postcode = postcodes)
+#' postcode_data_join(test_df1, fix_invalid = TRUE)
+#' @export
+postcode_data_join <- function(
+    .data,
+    var = "postcode",
+    fix_invalid = TRUE
+  ) {
 
   valid_results <- NULL
-  terminated_results <- NULL
-  autocompleted_results <- NULL
-  replaced <- c()
+  fixed_terminated_data <- NULL
+  fixed_autocomp_data <- NULL
+  terminated_codes <- NULL
+  autocomp_codes <- NULL
+  remainder <- NULL
 
+  var <- rlang::as_string(var)
 
-  # check that var is a column of df
-  var <- rlang::as_string(rlang::enexpr(var))
+  if (is.data.frame(.data)) {
+    assertthat::assert_that(
+      var %in% names(.data),
+      msg = "That variable doesn't seem to exist in this data frame."
+    )
+
+    codes <- .data |>
+      dplyr::pull(var) |>
+      unique()
+  } else {
+    assertthat::assert_that(rlang::is_vector(.data))
+    codes <- unique(.data)
+  }
+
   assertthat::assert_that(
-    var %in% names(df),
-    msg = "That variable doesn't seem to exist in this data frame."
-  ) %>%
-    invisible()
+    length(codes) > 0,
+    msg = "No postcodes have been found.")
 
-  # select and rename a single column df with unique postcodes to validate
-  codes <- df %>%
-    dplyr::select(query_code = .data[[var]]) %>%
-    dplyr::distinct()
+  codes <- toupper(codes)
 
-  # result is 2-col df with query_code and results (see tests)
-  validated <- codes %>%
-    dplyr::mutate(result = purrr::map_lgl(.data[["query_code"]], validate))
-
-  # split into invalid and valid codes
-  invalid <- validated %>%
-    dplyr::filter(!.data[["result"]]) %>%
-    dplyr::select(!result)
-
-  valid <- validated %>%
-    dplyr::filter(.data[["result"]]) %>%
-    dplyr::select(!result)
+  valid_codes <- codes |>
+    purrr::keep(validate_code)
+  invalid_codes <- codes |>
+    purrr::discard(validate_code)
 
 
-  ##### if we have some invalid codes then try to fix them
+  ##### If we have some invalid codes then try to fix them
   # by, firstly, seeing if they are terminated codes, finding the lon/lat and
   # then reverse geocoding the lon/lat to get the current code;
   # then if that fails, returning a nearby code using the autocomplete feature
   # (assuming that codes with only single final character different are
   # geographically near each other - I think this is sound).
 
-  if (nrow(invalid) > 0) {
+  if (length(invalid_codes)) {
     if (fix_invalid) {
 
       # filter out any invalid codes that match a terminated code...
-      terminated <- invalid %>%
-        dplyr::mutate(response = purrr::map(.data[["query_code"]], check_term_possibly)) %>%
-        dplyr::filter(!purrr::map_lgl(.data[["response"]], is.null))
+      terminated_codes_data <- invalid_codes |>
+        purrr::map_df(check_term_possibly)
 
-      # ...and find the current code for the same lon/lat
-      # (only proceed with trying to expand the API response if there are
-      # matched codes!)
-      if (nrow(terminated) > 0) {
-        lonlats <- terminated %>%
-          extract_lonlat()
-        # keep original codes as 'postcode' column
-        terminated_codes <- terminated %>%
-          dplyr::select(postcode = .data[["query_code"]])
+      # ...and find the current nearest code for the same lon/lat
+      if (nrow(terminated_codes_data) > 0) {
+        fixed_term_codes_data <- terminated_codes_data |>
+          dplyr::select(all_of(c("longitude", "latitude"))) |>
+          bulk_reverse_geocode() |>
+          unnest_codes() |>
+          dplyr::rename(new_postcode = "postcode") |>
+          dplyr::select(!"distance")
 
-        terminated_results <- bulk_reverse_geocode(lonlats) %>%
-          dplyr::rename(query_code = .data[["postcode"]]) %>%
-          dplyr::bind_cols(terminated_codes, .) %>%
-          dplyr::select(!.data[["distance"]])
+        fixed_terminated_data <- terminated_codes_data |>
+          dplyr::select("postcode") |>
+          dplyr::bind_cols(fixed_term_codes_data)
 
-        replaced <- terminated_codes$postcode
+        terminated_codes <- terminated_codes_data$postcode
+
+        usethis::ui_info(paste0(
+          "The following postcodes are terminated:\n",
+          fixed_terminated_data$postcode,
+          "\nand have been replaced with these current postcodes:\n",
+          fixed_terminated_data$new_postcode))
       }
 
-      usethis::ui_info(stringr::str_glue(
-        "The following postcodes are terminated:
-          {terminated_results$postcode}
-          and have been replaced with the following current postcodes:
-          {terminated_results$query_code}"
-      ))
+      invalid_codes <- invalid_codes |>
+        setdiff(terminated_codes)
 
-      # if there is a remainder of invalid codes that don't match terminated
-      # codes, try the autocomplete method.
-      # NB this will return codes that may be geographically inaccurate at small
-      # scales compared to the original postcode query.
-      if (nrow(terminated) < nrow(invalid)) {
-        to_autocomplete <- invalid %>%
-          dplyr::anti_join(terminated, by = "query_code") %>%
-          # will be used to left_join to original df
-          dplyr::rename(postcode = .data[["query_code"]]) %>%
-          dplyr::mutate(query_code = purrr::map_chr(.data[["postcode"]], autocomplete_possibly)) %>%
-          dplyr::filter(!purrr::map_lgl(.data[["query_code"]], is.null)) %>%
-          # keep both original postcode and new postcode to query
-          dplyr::select(postcode, query_code)
+      if (length(invalid_codes)) {
+        ac_results <- invalid_codes |>
+          purrr::map(autocomplete_possibly)
 
-        if (nrow(to_autocomplete) > 0) {
-          autocompleted_results <- to_autocomplete[["query_code"]] %>%
-            batch_it(100) %>%
-            purrr::map_df(bulk_lookup) %>%
-            dplyr::left_join(to_autocomplete, ., by = c(query_code = "postcode"))
-        }
-        replaced <- c(replaced, to_autocomplete$postcode)
+        ac_wins <- ac_results |>
+          purrr::map_lgl(purrr::negate(rlang::is_null)) |>
+          which()
+        autocomp_codes <- invalid_codes[ac_wins]
+
+
+        fixed_ac_data <- ac_results |>
+          purrr::compact() |>
+          purrr::list_c() |>
+          batch_it_simple(100) |>
+          purrr::map_df(bulk_lookup) |>
+          unnest_codes() |>
+          dplyr::rename(new_postcode = "postcode")
+
+        assertthat::are_equal(length(autocomp_codes), nrow(fixed_ac_data))
+
+        fixed_autocomp_data <- tibble::tibble(postcode = autocomp_codes) |>
+          dplyr::bind_cols(fixed_ac_data)
+
+
+        usethis::ui_info(paste0(
+          "The following postcodes are invalid:\n",
+          autocomp_codes,
+          "\nand have been replaced with these nearby postcodes:\n",
+          fixed_ac_data$new_postcode))
       }
-      remainder <- setdiff(invalid$query_code, replaced)
-
-      if (length(replaced) > 0) {
-        usethis::ui_info(
-          stringr::str_wrap(
-            stringr::str_glue(
-              "The following codes were found to be invalid, but were
-            successfully replaced with nearby valid codes: {replaced}"
-            ), 72))
-      }
-
-      ##### end of trying to match/replace invalid codes
-    } else {
-      remainder <- invalid$query_code
     }
-    if (length(remainder) > 0) {
-      usethis::ui_info(
-        stringr::str_wrap(
-          stringr::str_glue(
-            "The following codes were unsuccessful: {remainder}"
-          ), 72))
+
+    remainder <- invalid_codes |>
+      setdiff(c(terminated_codes, autocomp_codes))
+
+    if (length(remainder)) {
+      usethis::ui_info(paste0(
+        "The following postcodes are invalid:\n",
+        remainder,
+        "\nbut have not been successfully replaced with valid codes."))
     }
   }
 
-  if (nrow(valid) > 0) {
-    valid_results <- valid$query_code %>%
-      batch_it(100) %>%
-      purrr::map_df(bulk_lookup) %>%
-      dplyr::mutate(query_code = postcode)
+  if (length(valid_codes)) {
+    valid_results <- valid_codes |>
+      batch_it(100) |>
+      purrr::map_df(bulk_lookup) |>
+      unnest_codes() |>
+      dplyr::mutate(new_postcode = postcode, .after = postcode)
   }
 
   postcode_data <- dplyr::bind_rows(
-    purrr::compact(
-      list(
-        valid = valid_results,
-        terminated = terminated_results,
-        autocompleted = autocompleted_results
-      )
+    list(
+      valid = valid_results,
+      terminated = fixed_terminated_data,
+      autocompleted = fixed_autocomp_data
     ),
     .id = "result_type"
-  ) %>%
-    dplyr::relocate(query_code, .after = .data[["result_type"]])
+  ) |>
+    dplyr::relocate("result_type", .after = "new_postcode")
 
-  if (narrow) postcode_data <- narrow(postcode_data)
-
-  df %>%
-    dplyr::left_join(postcode_data, by = vctrs::vec_c({{var}} := "postcode"))
+  if (is.data.frame(.data)) {
+    .data |>
+      dplyr::left_join(postcode_data, by = vctrs::vec_c({{var}} := "postcode"))
+  } else if (rlang::is_vector(.data)) {
+    tibble::tibble({{var}} := .env$.data) |>
+      dplyr::left_join(postcode_data, by = vctrs::vec_c({{var}} := "postcode"))
+  } else {
+    postcode_data
+  }
 }
