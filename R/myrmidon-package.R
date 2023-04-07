@@ -16,17 +16,15 @@
 ## usethis namespace: start
 #' @importFrom magrittr %>%
 ## usethis namespace: end
-NULL
 
+#' @importFrom rlang `:=`
 #' @importFrom dplyr across c_across all_of any_of desc
 #' @importFrom dplyr starts_with ends_with contains matches
 #' @importFrom dplyr everything last_col num_range
 #' @importFrom usethis ui_info ui_stop ui_oops ui_nope ui_code
-#' @importFrom rlang `:=`
-NULL
 
-#' Borrow `view()` from `{tibble}`
-#'
-#' @param x a data frame or similar viewable object
+# Borrow `view()` from `{tibble}`
 #' @export
-view <- function(x) tibble::view(x)
+view <- tibble::view
+
+NULL
