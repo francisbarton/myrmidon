@@ -1,17 +1,17 @@
 #' Pull out the commonest (mode) item from a vector
 #'
 #' @param vec A vector.
-#' @param first If there is a tie, this parameter decides whether to prioritise the
-#'   element that appears first in `vec`.
-#'   If `FALSE`, the function will just return the first item in the result produced by
-#'   the default mode of `vec_count` (ie `"count"`, which does not return results
-#'   prioritised by location -- see test-commonest file).
+#' @param first If there is a tie, this parameter decides whether to prioritise
+#'  the element that appears first in `vec`. If `FALSE`, the function will just
+#'  return the first item in the result produced by the default mode of
+#'  `vec_count` (ie `"count"`, which does not return results prioritised by
+#'  location -- see test-commonest file).
 #'
-#' @return A single element of the same type as `vec`.
+#' @returns A single element of the same type as `vec`.
 #' @export
 #'
 #' @examples
-#' set <- sample(letters, 20, replace = TRUE)
+#' set <- sample(letters, 40, replace = TRUE)
 #' commonest(set)
 #' commonest(set, first = FALSE)
 #'

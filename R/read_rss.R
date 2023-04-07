@@ -1,11 +1,10 @@
 #' Read an RSS feed and return items data and feed metadata
+#'
 #' @param url URL of the RSS feed
 #' @export
 read_rss <- function(url) {
-
   feed <- xml2::read_xml(url)
   feed_attrs <- xml2::xml_attrs(feed)
-
   feed_content <- xml2::xml_child(feed, 1)
 
   # https://www.rssboard.org/rss-specification
