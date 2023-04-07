@@ -48,22 +48,24 @@ prompt_git_branch <- function(unicode) {
 
 
 prompt_git_status <- function() {
-  if (prompt::is_git_dir() & nrow(gert::git_remote_list()) > 0) {
-    git_ab <- gert::git_ahead_behind()
+  if (prompt::is_git_dir()) {
+    if(nrow(gert::git_remote_list()) > 0) {
+      git_ab <- gert::git_ahead_behind()
 
-    if (git_ab$ahead > 0 ) {
-      git_ahead <- paste0(" ", git_ab$ahead,
+      if (git_ab$ahead > 0 ) {
+        git_ahead <- paste0(" ", git_ab$ahead,
                           crayon::style("\u25B2", "slateblue1"))
       } else git_ahead <- NULL
 
-    if (git_ab$behind > 0 ) {
-      git_behind <- paste0(" ", git_ab$behind,
+      if (git_ab$behind > 0 ) {
+        git_behind <- paste0(" ", git_ab$behind,
                            crayon::style("\u25BC", "tomato1"))
       } else git_behind <- NULL
 
-    if (!is.null(c(git_ahead, git_behind))) {
-      paste0(git_ahead, git_behind)
+      if (!any(is.null(c(git_ahead, git_behind)))) {
+        paste0(git_ahead, git_behind)
       } else NULL
+    } else NULL
   } else NULL
 }
 
