@@ -4,21 +4,20 @@
 \alias{year_dates}
 \title{Create vectors of dates for one or more years (and/or months)}
 \usage{
-year_dates(x, months = 1:12, unlist = FALSE)
+year_dates(x, months = 1:12)
 }
 \arguments{
-\item{x}{a vector of years, provided as numeric or string}
+\item{x}{A vector of years, provided as numeric or string.}
 
-\item{months}{a numeric vector. 1:12 by default (whole year).}
-
-\item{unlist}{FALSE by default (allows returning a list). TRUE causes it to return a vector of dates.}
+\item{months}{A vector of month numbers, provided as numeric or string. 1:12
+by default (i.e. the whole of the year).}
 }
 \value{
-a vector of dates, or a list of vectors, one for each year, where multiple years are requested.
+A list of vectors of dates, one element per year requested.
 }
 \description{
 Create vectors of dates for one or more years (and/or months)
 }
 \examples{
-head(year_dates(2019:2020, months = c(1, 4), unlist = TRUE), 10)
+head(year_dates(2019:2020, months = c(1, 4)), 10)
 }

@@ -9,11 +9,11 @@ commonest(vec, first = TRUE)
 \arguments{
 \item{vec}{A vector.}
 
-\item{first}{If there is a tie, this parameter decides whether to prioritise the
-element that appears first in \code{vec}.
-If \code{FALSE}, the function will just return the first item in the result produced by
-the default mode of \code{vec_count} (ie \code{"count"}, which does not return results
-prioritised by location -- see test-commonest file).}
+\item{first}{If there is a tie, this parameter decides whether to prioritise
+the element that appears first in \code{vec}. If \code{FALSE}, the function will just
+return the first item in the result produced by the default mode of
+\code{vec_count} (ie \code{"count"}, which does not return results prioritised by
+location -- see test-commonest file).}
 }
 \value{
 A single element of the same type as \code{vec}.
@@ -22,7 +22,7 @@ A single element of the same type as \code{vec}.
 Pull out the commonest (mode) item from a vector
 }
 \examples{
-set <- sample(letters, 20, replace = TRUE)
+set <- sample(letters, 40, replace = TRUE)
 commonest(set)
 commonest(set, first = FALSE)
 

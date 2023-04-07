@@ -4,30 +4,27 @@
 \alias{postcode_data_join}
 \title{Use postcodes.io to get postcode data}
 \usage{
-postcode_data_join(df, var = postcode, fix_invalid = TRUE, narrow = TRUE)
+postcode_data_join(.data, var = "postcode", fix_invalid = TRUE)
 }
 \arguments{
-\item{df}{A data frame with a column of postcodes.}
+\item{.data}{A data frame with a column of postcodes, or a vector
+of postcodes.}
 
-\item{var}{The name of the variable in the data frame that contains
-postcodes (only!). Should be acceptable as a symbol (variable name)
-or as a standard character string.}
+\item{var}{String or symbol. The name of the variable in the data frame that
+comprises the postcodes to be submitted. Should be acceptable as a symbol
+or as a standard string.}
 
-\item{fix_invalid}{Whether to try to fix any postcodes that are not
-found (potentially because they are terminated codes, or typos).}
-
-\item{narrow}{Whether to narrow the returned data frame by removing
-a bunch of potentially unnecessary fields from the data before
-returning the final product to the user. Boolean, default TRUE.
-Set to FALSE to get all data variables available from the API,
-plus a data quality indicator and a record of which codes were
-invalid and subsequently fixed, if any.}
+\item{fix_invalid}{Boolean, default \code{TRUE}. Whether to try to fix any
+postcodes that are not found (potentially because they are terminated codes,
+or contain typos).}
 }
 \description{
 Use postcodes.io to get postcode data
 }
 \examples{
 postcodes <- c("HD1 2UT", "HD1 2UU", "HD1 2UV")
-test_df1 <- dplyr::tibble(place = paste0("place_", 1:3), postcode = postcodes)
-postcode_data_join(test_df1, fix_invalid = TRUE, narrow = FALSE)
+test_df1 <- dplyr::tibble(
+  place = paste0("place_", 1:3),
+  postcode = postcodes)
+postcode_data_join(test_df1, fix_invalid = TRUE)
 }

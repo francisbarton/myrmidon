@@ -1,3 +1,10 @@
+# 0.6.11 (7 April 2023)
+
+* Apparently I don't update this file very often...
+* Added transpose_tbl_wider()
+* Added patch_join()
+* Various improvements to hcl_msoa_names()
+
 # 0.6.7 (1 August 2022)
 
 * Added `get_daily_welsh_word()` function just for fun

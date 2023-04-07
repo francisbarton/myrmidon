@@ -1,8 +1,8 @@
 Package: myrmidon
 Type: Package
 Title: My R Kitchen Drawer
-Version: 0.6.10
-Date: 2023-01-05
+Version: 0.6.11
+Date: 2023-04-07
 Author: Fran Barton (@ludictech)
 Maintainer: Fran Barton <fbarton@alwaysdata.net>
 Description: Fran's personal useful tools, tricks and toys. Some functions I
