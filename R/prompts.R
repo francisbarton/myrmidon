@@ -62,7 +62,7 @@ prompt_git_status <- function() {
           crayon::style("\u25BC", "tomato1"))
       } else git_behind <- NULL
 
-      if (!is.null(c(git_ahead, git_behind))) {
+      if (!any(is.null(c(git_ahead, git_behind)))) {
         paste0(git_ahead, git_behind)
       } else NULL
     } else NULL
