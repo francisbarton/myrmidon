@@ -7,7 +7,10 @@
 how_old_am_i(date = "1977-02-17")
 }
 \arguments{
-\item{date}{your date of birth. Set to mine by default.}
+\item{date}{Your date of birth. Set to mine by default.}
+}
+\value{
+A string
 }
 \description{
 A quick function using \code{lubridate} to report how old I am
