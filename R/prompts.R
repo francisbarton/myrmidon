@@ -1,13 +1,8 @@
 prompt_rstudio <- function() {
-
-  # Won't work at first prompt as it runs from .Rprofile
-  # before R is aware of RStudio
-  rstd <- tryCatch(
-    RStudio.Version()$release_name, error = function(e) NULL)
-
+  rstd <- tryCatch(RStudio.Version()$release_name, error = \(e) NULL)
   if (!is.null(rstd)) {
-    colour <- get0("myr_prompt_col3", .myr_prompt_env,
-                   ifnotfound = "darkslateblue")
+    colour <- "myr_prompt_col3" |>
+      get0(.myr_prompt_env, ifnotfound = "darkslateblue")
     crayon::style(rstd, colour)
   } else NULL
 }
@@ -16,12 +11,12 @@ prompt_rstudio <- function() {
 
 
 prompt_location <- function(unicode) {
-  colour <- get0("myr_prompt_col1", .myr_prompt_env,
-                 ifnotfound = "whitesmoke")
+  colour <- "myr_prompt_col1" |>
+    get0(.myr_prompt_env, ifnotfound = "whitesmoke")
   location <- basename(getwd())
   icon <- if(unicode) {
-    if (file.exists(here::here("DESCRIPTION"))) "\U1F4E6"
-    else "\U1F4C2"
+    if (file.exists(here::here("DESCRIPTION"))) "\U1F4E6 "
+    else "\U1F4C2 "
   } else NULL
   paste0(icon, crayon::style(location, colour))
 }
@@ -32,8 +27,8 @@ prompt_location <- function(unicode) {
 
 prompt_git_branch <- function(unicode) {
   if (prompt::is_git_dir()) {
-    colour <- get0("myr_prompt_col2", .myr_prompt_env,
-                   ifnotfound = "orange")
+    colour <- "myr_prompt_col2" |>
+      get0(.myr_prompt_env, ifnotfound = "orange")
 
     if (unicode) {
       paste0(
@@ -87,7 +82,6 @@ prompt_memuse <- function(unicode) {
       crayon::style("\u2586", "grey40"),
       crayon::style("\u2588", "grey40")
     )
-
     paste0(
       paste0(col_blocks[seq(mem)], collapse = ""),
       paste0(gry_blocks[setdiff(seq(4), seq(mem))], collapse = "")
@@ -129,9 +123,7 @@ prompt_moon <- function() {
 
 
 prompt_uptime <- function(prefix = "up: ") {
-  start_time <- rlang::env_cache(.myr_prompt_env, "start_time",
-                                 Sys.time())
-
+  start_time <- rlang::env_cache(.myr_prompt_env, "start_time", Sys.time())
   uptime <- difftime(Sys.time(), start_time, units = "auto")
   paste0(
     prefix,
@@ -146,14 +138,12 @@ prompt_uptime <- function(prefix = "up: ") {
 prompt_toggl <- function(unicode, add_time = TRUE) {
 
   if (requireNamespace("togglr", quietly = TRUE)) {
-
     toggl_desc <- togglr::get_current()$description
 
     if (is.null(toggl_desc)) {
       if (unicode) toggl_status <- crayon::red$bold("\u2718")
       else NULL
     }
-
     if (!is.null(toggl_desc)) {
       if (add_time) {
         toggl_time <- paste0(
@@ -170,7 +160,6 @@ prompt_toggl <- function(unicode, add_time = TRUE) {
       } else {
         toggl_status <- crayon::style(toggl_desc, "mediumorchid3")
       }
-
       if (unicode) {
         toggl_status <- paste0(
           crayon::style("\u23FB", "mediumorchid1"),
@@ -178,7 +167,6 @@ prompt_toggl <- function(unicode, add_time = TRUE) {
           toggl_status)
       }
     }
-
     toggl_status
   } else NULL
 }

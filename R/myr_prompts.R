@@ -9,14 +9,12 @@ myr_prompt_light <- function(unicode = TRUE) {
         } else {
         crayon::red$bold("\u2718 ")
       }
-
       cat(
         prompt_location(unicode),
         prompt_git_branch(unicode),
         chk
       )
     })
-
   invisible(TRUE)
 }
 
@@ -24,7 +22,6 @@ myr_prompt_light <- function(unicode = TRUE) {
 myr_prompt_no_unicode <- function() {
   prompt::set_prompt(
     function(expr, value, ok, visible) {
-
       cat(
         prompt_rstudio(),
         prompt_memuse(unicode = FALSE),
@@ -45,7 +42,6 @@ myr_prompt_medium <- function() {
       } else {
         crayon::red$bold("\u2718 ")
       }
-
       cat(
         prompt_rstudio(),
         prompt_moon(),
@@ -68,7 +64,6 @@ myr_prompt_heavy <- function() {
       } else {
         crayon::red$bold("\u2718 ")
       }
-
       cat(
         prompt_rstudio(),
         prompt_moon(),

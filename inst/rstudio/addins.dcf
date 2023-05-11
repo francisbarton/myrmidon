@@ -1,0 +1,19 @@
+Name: Auto reprex
+Description: Saves going through the Shiny interface - simply copies from the current open file and renders
+Binding: autoReprexAddin
+Interactive: false
+
+Name: Set myR prompt - standard
+Description: Sets prompt to my standard (medium) prompt
+Binding: myr_prompt_medium
+Interactive: true
+
+Name: Set myR prompt - light
+Description: Sets prompt to my minimal prompt
+Binding: myr_prompt_light
+Interactive: true
+
+Name: Set myR prompt - heavy
+Description: Sets prompt to my full (heavy) prompt
+Binding: myr_prompt_heavy
+Interactive: true

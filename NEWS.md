@@ -1,3 +1,11 @@
+# 0.6.13 (11 May 2023)
+
+* Moved my prompt functions to be RStudio add-ins
+
+# 0.6.12 (10 April 2023)
+
+* Added auto_reprex function and RStudio add-in
+
 # 0.6.11 (7 April 2023)
 
 * Apparently I don't update this file very often...

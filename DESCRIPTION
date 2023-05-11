@@ -1,8 +1,8 @@
 Package: myrmidon
 Type: Package
 Title: My R Kitchen Drawer
-Version: 0.6.11
-Date: 2023-04-07
+Version: 0.6.13
+Date: 2023-05-10
 Author: Fran Barton (@ludictech)
 Maintainer: Fran Barton <fbarton@alwaysdata.net>
 Description: Fran's personal useful tools, tricks and toys. Some functions I
@@ -14,14 +14,15 @@ LazyData: true
 Imports: 
     assertthat,
     crayon,
-    dplyr (>= 1.0.0),
+    dplyr (>= 1.1.0),
     gert,
     here,
     httr2,
     lubridate,
     pillar,
-    purrr,
+    purrr (>= 1.0.0),
     readr,
+    reprex,
     rlang,
     rmarkdown,
     rstudioapi,
