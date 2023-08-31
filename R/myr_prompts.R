@@ -18,6 +18,8 @@ myr_prompt_light <- function(unicode = TRUE) {
   invisible(TRUE)
 }
 
+
+
 #' @export
 myr_prompt_no_unicode <- function() {
   prompt::set_prompt(
