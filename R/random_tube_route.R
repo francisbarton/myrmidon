@@ -1,5 +1,5 @@
 #' @export
-get_tube_route <- function(stops = FALSE) {
+random_tube_route <- function() {
 
   tube_lines <- jsonlite::fromJSON("https://api.tfl.gov.uk/Line/Mode/tube") |>
     purrr::pluck("id") |>
@@ -12,11 +12,13 @@ get_tube_route <- function(stops = FALSE) {
     sample(1)
 
   tfl_req <- httr2::request("https://api.tfl.gov.uk/")
+  tfl_app_key <- Sys.getenv("TFL_API_KEY")
 
   line_stop_ids <- tfl_req |>
     httr2::req_url_path_append("Line") |>
     httr2::req_url_path_append(line_id) |>
     httr2::req_url_path_append("StopPoints") |>
+    httr2::req_url_query(app_key = tfl_app_key) |>
     httr2::req_perform() |>
     httr2::resp_body_json() |>
     purrr::map_chr("id")
@@ -24,9 +26,9 @@ get_tube_route <- function(stops = FALSE) {
   stop1 <- sample(seq_along(line_stop_ids), 1)
 
   if (stop1 <= length(line_stop_ids) / 2) {
-    stop2 <- min(stop1 + 6L, length(line_stop_ids))
+    stop2 <- min(stop1 + sample(seq(4L), 1), length(line_stop_ids))
   } else {
-    stop2 <- max(stop1 - 6L, 1L)
+    stop2 <- max(stop1 - sample(seq(4L), 1), 1L)
   }
 
   stop1_id <- line_stop_ids[stop1]
@@ -44,6 +46,7 @@ get_tube_route <- function(stops = FALSE) {
     httr2::req_url_path_append(stop2_id) |>
     httr2::req_url_query(journeyPreference = "LeastInterchange") |>
     httr2::req_url_query(mode = journey_mode) |>
+    httr2::req_url_query(app_key = tfl_app_key) |>
     httr2::req_perform() |>
     httr2::resp_body_json()
 
@@ -84,47 +87,43 @@ get_tube_route <- function(stops = FALSE) {
 
 
   if (length(stop_points) > 4) {
-    arrive_stn <- stop_points[5]
-    stop_points <- stop_points[1:4]
+    arrive_stn <- stop_points[4]
+    stop_points <- stop_points[1:3]
   }
 
-  # https://londonmymind.com/london-tube-colors/
+  stop_points <- setdiff(stop_points, arrive_stn) |>
+    stringr::str_flatten_comma(", and ")
+
+  if (length(stop_points)) {
+    stop_points <- paste0(", via ", stop_points)
+  } else {
+    stop_points <- ""
+  }
+
+  # Slightly amended from https://londonmymind.com/london-tube-colors/
   line_colours <- c(
     bakerloo           = "#b36305",
     central            = "#e32017",
-    circle             = "#ffd300",
-    district           = "#00782a",
+    circle             = "#ddd300",
+    district           = "#20984a",
     elizabeth          = "#6950a1",
     `hammersmith-city` = "#f3a9bb",
     jubilee            = "#a0a5a9",
     metropolitan       = "#9b0056",
-    northern           = "#000000",
+    northern           = "#202020",
     piccadilly         = "#003688",
     victoria           = "#0098d4",
     `waterloo-city`    = "#95cdba"
   )
 
-  direction_line <- stringr::str_extract(direction, "^.+ Line") |>
-    crayon::style(line_colours[[route_line_id]]) |>
-    crayon::style("bold")
-  direction_twds <- stringr::str_extract(direction, " towards.*$")
+  # direction_line <- stringr::str_extract(direction, "^.+ Line") |>
+  #   crayon::style(line_colours[[route_line_id]]) |>
+  #   crayon::style("bold")
+  twds <- paste0(
+    "(——⦿ ",
+    crayon::style(stringr::str_extract(direction, "(?<=towards ).*"), "bold"),
+    ")") |>
+    crayon::style(line_colours[[route_line_id]])
 
-  route <- paste0(
-    depart_stn,
-    " to ",
-    arrive_stn,
-    " (",
-    direction_line,
-    direction_twds,
-    ")\n")
-
-
-  if (stops & length(setdiff(stop_points, arrive_stn))) {
-    paste0(
-      route,
-      "\tvia ",
-      stringr::str_flatten_comma(setdiff(stop_points, arrive_stn), ", and "),
-      "\n"
-    )
-  } else route
+  glue::glue("{depart_stn} to {arrive_stn}{stop_points} {twds}")
 }
