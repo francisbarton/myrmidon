@@ -14,9 +14,9 @@ prompt_location <- function(unicode) {
   colour <- "myr_prompt_col1" |>
     get0(.myr_prompt_env, ifnotfound = "whitesmoke")
   location <- basename(getwd())
-  icon <- if(unicode) {
-    if (file.exists(here::here("DESCRIPTION"))) "\U1F4E6 "
-    else "\U1F4C2 "
+  icon <- if (unicode) {
+    if (file.exists(here::here("DESCRIPTION"))) "\U1F4E6\u2009"
+    else "\u1F4C2\u2009"
   } else NULL
   paste0(icon, crayon::style(location, colour))
 }
