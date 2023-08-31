@@ -2,4 +2,4 @@ gitmoji_df <- jsonlite::fromJSON("https://github.com/carloscuesta/gitmoji/raw/ma
 
 source(here::here("data-raw/project_mascots.R"))
 
-usethis::use_data(gitmoji_df, project_mascots, overwrite = TRUE, internal = TRUE)
+usethis::use_data(gitmoji_df, project_mascots, mascot_names, star_names, overwrite = TRUE, internal = TRUE)
