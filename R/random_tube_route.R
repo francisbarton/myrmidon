@@ -120,10 +120,10 @@ random_tube_route <- function() {
   #   crayon::style(line_colours[[route_line_id]]) |>
   #   crayon::style("bold")
   twds <- paste0(
-    "(——⦿ ",
+    " (——⦿ ",
     crayon::style(stringr::str_extract(direction, "(?<=towards ).*"), "bold"),
     ")") |>
     crayon::style(line_colours[[route_line_id]])
 
-  glue::glue("{depart_stn} to {arrive_stn}{stop_points} {twds}")
+  glue::glue("{depart_stn} to {arrive_stn}{stop_points}{twds}")
 }
