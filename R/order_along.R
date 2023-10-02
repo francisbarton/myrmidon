@@ -1,42 +1,39 @@
 #' Sort a data frame using a secondary key, within primary groupings
 #'
 #' Also works with `sf` tibbles – use `order_along.sf` instead.
-#' @param df data frame
+#'
+#' @param dtf data frame
 #' @param order_along variable you want to order
 #' @param sort_by variable(s) you want to order by
 #' @param desc whether to sort sort_by in descending order
 #' @export
-order_along <- function(df, order_along, sort_by, desc = FALSE) {
+order_along <- function(dtf, order_along, sort_by, desc = FALSE) {
 
   # https://adv-r.hadley.nz/quasiquotation.html?q=ensym#capturing-symbols 🤓
   along <- rlang::ensym(order_along)
 
-  cols <- colnames(df)
-
-  # Not yet tested to see if it can work when length(sort_by) > 1
-  # That might be unnecessarily overcomplicating things...
   if (desc) {
-    df <- df %>%
+    dtf2 <- dtf |>
       dplyr::arrange(desc({{ sort_by }}))
   } else {
-    df <- df %>%
+    dtf2 <- dtf |>
       dplyr::arrange({{ sort_by }})
   }
 
-  df %>%
+  dtf |>
     # create list of `order_along` variable, in order of appearance 😊
-    dplyr::select({{ order_along }}) %>%
-    dplyr::distinct() %>%
+    dplyr::select({{ order_along }}) |>
+    dplyr::distinct() |>
 
     # now ordered along `order_along` and sorted by `sort_by` 😄
     #
     # not _necessary_ to stipulate `by`, but it avoids the join message🤫.
     # rlang::as_name() reverses the rlang::ensym() above
     # (I previously used as.character() here, but as_name is preferable)
-    dplyr::left_join(df, by = rlang::as_name(along)) %>%
+    dplyr::left_join(dtf2, by = rlang::as_name(along)) |>
 
     # quick way to restore the original column order 😙
-    dplyr::select(dplyr::all_of(cols))
+    dplyr::select(dplyr::all_of(names(dtf)))
 }
 
 
