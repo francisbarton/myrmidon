@@ -53,8 +53,7 @@ postcode_data_join <- function(
 
   valid_codes <- codes |>
     purrr::keep(validate_code)
-  invalid_codes <- codes |>
-    purrr::discard(validate_code)
+  invalid_codes <- setdiff(codes, valid_codes)
 
 
   ##### If we have some invalid codes then try to fix them
@@ -98,33 +97,37 @@ postcode_data_join <- function(
 
       if (length(invalid_codes)) {
         ac_results <- invalid_codes |>
-          purrr::map(autocomplete_possibly)
+          purrr::map(autocomplete_possibly) |>
+          purrr::compact()
 
-        ac_wins <- ac_results |>
-          purrr::map_lgl(purrr::negate(rlang::is_null)) |>
-          which()
-        autocomp_codes <- invalid_codes[ac_wins]
+        if (length(ac_results)) {
+          ac_wins <- ac_results |>
+            purrr::map_lgl(purrr::negate(rlang::is_null)) |>
+            which()
+          autocomp_codes <- invalid_codes[ac_wins]
+
+          fixed_ac_data <- ac_results |>
+            purrr::list_c() |>
+            batch_it_simple(100) |>
+            purrr::map_df(bulk_lookup) |>
+            unnest_codes() |>
+            dplyr::rename(new_postcode = "postcode")
+
+          assertthat::are_equal(length(autocomp_codes), nrow(fixed_ac_data))
+
+          fixed_autocomp_data <- tibble::tibble(postcode = autocomp_codes) |>
+            dplyr::bind_cols(fixed_ac_data)
 
 
-        fixed_ac_data <- ac_results |>
-          purrr::compact() |>
-          purrr::list_c() |>
-          batch_it_simple(100) |>
-          purrr::map_df(bulk_lookup) |>
-          unnest_codes() |>
-          dplyr::rename(new_postcode = "postcode")
-
-        assertthat::are_equal(length(autocomp_codes), nrow(fixed_ac_data))
-
-        fixed_autocomp_data <- tibble::tibble(postcode = autocomp_codes) |>
-          dplyr::bind_cols(fixed_ac_data)
-
-
-        usethis::ui_info(paste0(
-          "The following postcodes are invalid:\n",
-          autocomp_codes,
-          "\nand have been replaced with these nearby postcodes:\n",
-          fixed_ac_data$new_postcode))
+          usethis::ui_info(paste0(
+            "The following postcodes are invalid:\n",
+            autocomp_codes,
+            "\nand have been replaced with these nearby postcodes:\n",
+            fixed_ac_data$new_postcode))
+        } else {
+          autocomp_codes <- NULL
+          fixed_autocomp_data <- NULL
+        }
       }
     }
 
