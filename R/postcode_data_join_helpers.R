@@ -49,13 +49,13 @@ bulk_reverse_geocode <- function(.data) {
 
 unnest_codes <- function(.data) {
   .data |>
-    dplyr::mutate(
-      codes_names = names(codes),
-      across("codes", unlist)) |>
+    dplyr::mutate(codes_names = names(codes)) |>
+    dplyr::mutate(across("codes", unlist)) |>
+    dplyr::rename(code = "codes") |>
     tidyr::pivot_wider(
-      names_from = codes_names,
+      names_from = "codes_names",
       names_glue = "{codes_names}_{.value}",
-      values_from = codes)
+      values_from = "code")
 }
 
 
