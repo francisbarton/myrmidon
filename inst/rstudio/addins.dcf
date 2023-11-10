@@ -17,3 +17,8 @@ Name: Set myR prompt - heavy
 Description: Sets prompt to my full (heavy) prompt
 Binding: myr_prompt_heavy
 Interactive: false
+
+Name: Break pipe to View
+Description: Adds call to View() at start of current line in editor
+Binding: flowview
+Interactive: false

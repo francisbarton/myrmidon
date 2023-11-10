@@ -13,14 +13,11 @@
 
 # The following block is used by usethis to automatically manage
 # roxygen namespace tags. Modify with care!
-## usethis namespace: start
+#' @importFrom dplyr across c_across desc join_by
 #' @importFrom magrittr %>%
-## usethis namespace: end
-
 #' @importFrom rlang `:=`
-#' @importFrom dplyr across c_across all_of any_of desc
-#' @importFrom dplyr starts_with ends_with contains matches
-#' @importFrom dplyr everything last_col num_range
+#' @importFrom tidyselect all_of any_of contains ends_with everything
+#' @importFrom tidyselect last_col matches num_range starts_with
 #' @importFrom usethis ui_info ui_stop ui_oops ui_nope ui_code
 
 # Borrow `view()` from `{tibble}`
