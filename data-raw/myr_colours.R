@@ -31,4 +31,5 @@ myr_colours <- list(
     "slategrey",
     "thistle"
   )
-)
+) |>
+  purrr::map(rlang::set_names)

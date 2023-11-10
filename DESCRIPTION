@@ -1,8 +1,8 @@
 Package: myrmidon
 Type: Package
 Title: My R Kitchen Drawer
-Version: 0.6.14
-Date: 2023-08-31
+Version: 0.6.15
+Date: 2023-11-10
 Author: Fran Barton (@ludictech)
 Maintainer: Fran Barton <fbarton@alwaysdata.net>
 Description: Fran's personal useful tools, tricks and toys. Some functions I
@@ -19,6 +19,7 @@ Imports:
     here,
     httr2,
     lubridate,
+    magrittr,
     pillar,
     purrr (>= 1.0.0),
     readr,
@@ -30,12 +31,13 @@ Imports:
     sf,
     stringr,
     tidyr,
+    tidyselect,
     usethis,
     utils,
     vctrs
 RoxygenNote: 7.2.3
 Depends: 
-    R (>= 4.0.0)
+    R (>= 4.1.0)
 Suggests:
     suncalc,
     togglr
