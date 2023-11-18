@@ -12,18 +12,19 @@ my_gt_style <- function(.data) {
       column_labels.font.size = "11px",
       source_notes.font.size = "10px",
       row.striping.background_color = "#faf0fa"
-    ) |>
+      ) |>
     gt::opt_row_striping() |>
     gt::tab_style(
       style = cell_text(weight = "bold"),
       locations = cells_column_labels()
-    ) |>
+      ) |>
     gt::tab_style(
       style = cell_text(align = "right", v_align = "middle"),
       locations = list(
         cells_column_labels(),
         cells_body()
-      )) |>
+        )
+      ) |>
     gt::tab_style(
       style = cell_text(weight = "bold", align = "left"),
       locations = cells_column_labels(columns = 1)
@@ -31,5 +32,5 @@ my_gt_style <- function(.data) {
     gt::tab_style(
       style = cell_text(align = "right"),
       locations = cells_source_notes()
-    )
+      )
 }
