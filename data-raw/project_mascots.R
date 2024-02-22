@@ -34,6 +34,7 @@ project_mascots <- tibble::tibble(
   mascot_label = emoji_labels,
   mascot_emoji = emoji
   ) |>
+  # some exclusions based on personal preference
   dplyr::filter(
     if_any("mascot_label", \(x) stringr::str_detect(x,
     paste(
@@ -73,7 +74,7 @@ project_mascots <- tibble::tibble(
       "Potted Plant",
     sep = "|"), negate = TRUE))) |>
   dplyr::mutate(across("mascot_label", \(x) dplyr::case_match(x,
-      "Bird" ~ "Nightjar", # We needed an N!
+      "Bird" ~ "Nightjar", # Not actually a nightjar but we needed an N!
       "Dromedary Camel" ~ "Camel",
       "Rooster" ~ "Cockerel",
       "Lady Beetle" ~ "Ladybird", # This is a British function!
@@ -88,12 +89,13 @@ project_mascots <- tibble::tibble(
   dplyr::arrange(dplyr::across("mascot_label"))
 
 
-
+# https://docs.google.com/spreadsheets/d/1fc6thrwFTPKwP0PlBTvzKjfiGlnM37JXLPaR8_In3fw/
 mascot_names <- "1fc6thrwFTPKwP0PlBTvzKjfiGlnM37JXLPaR8_In3fw" |>
   googlesheets4::read_sheet(2, "C:C") |>
   dplyr::pull("First") |>
   unique() |>
   stringr::str_to_sentence() |>
+  # some exclusions based on personal preference
   purrr::discard(
     \(x) x %in% c(
       "Alfre", "America", "Bigfreedia", "Blind", "Contrapoints", "Dj", "Dr", "Drake", "E", "Eazye", "Ego", "Ice", "J", "Kj", "Jesus", "Kasturba",
@@ -111,6 +113,7 @@ star_names <- "https://en.wikipedia.org/wiki/List_of_proper_names_of_stars" |>
   stringr::str_extract("^[:alpha:]+") |>
   unique() |>
   stringr::str_to_sentence() |>
+  # some exclusions based on personal preference
   purrr::discard(
     \(x) x %in% c(
       "Aldebaran", "Absolutno", "Betelgeuse", "Felixvarela", "Intercrus", "La", "Lionrock", "Phact", "Pollux"
