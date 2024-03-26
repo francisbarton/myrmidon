@@ -52,10 +52,10 @@ lonlat_out <- structure(list(longitude = -1.780629, latitude = 53.643909), row.n
 
 
 
-"validate_test" %>%
+"validate_test" |>
   test_that({
     expect_identical(
-      purrr::map_lgl(postcodes, validate),
+      purrr::map_lgl(postcodes, validate_code),
       c(FALSE, TRUE, FALSE)
     )
   })
@@ -64,19 +64,19 @@ lonlat_out <- structure(list(longitude = -1.780629, latitude = 53.643909), row.n
 
 
 
-"check_term_test" %>% test_that({
+"check_term_test" |> test_that({
   expect_identical(
-    check_term(postcodes[1]),
+    check_terminated(postcodes[1]),
     check_term_out1
   )
   expect_identical(
-    validate_out %>%
-      dplyr::mutate(response = purrr::map(query_code, check_term_possibly)) %>%
+    validate_out |>
+      dplyr::mutate(response = purrr::map(query_code, check_term_possibly)) |>
       dplyr::filter(!purrr::map_lgl(response, is.null)),
     check_term_out2
   )
   expect_error(
-    check_term(bad_postcode)
+    check_terminated(bad_postcode)
   )
   expect_null(
     check_term_possibly(bad_postcode)
@@ -85,10 +85,10 @@ lonlat_out <- structure(list(longitude = -1.780629, latitude = 53.643909), row.n
 
 
 
-"lonlat_test" %>% test_that({
+"lonlat_test" |> test_that({
   expect_identical(
-    check_term_out2 %>%
-      tidyr::unnest_wider(response) %>%
+    check_term_out2 |>
+      tidyr::unnest_wider(response) |>
       dplyr::select(longitude, latitude),
     lonlat_out
   )
@@ -97,25 +97,26 @@ lonlat_out <- structure(list(longitude = -1.780629, latitude = 53.643909), row.n
 
 
 # bulk_geocode -----------------------------------------------------
-"bulk_geocode_test" %>%
+"bulk_geocode_test" |>
   test_that({
     expect_equal(
-      bulk_reverse_geocode(lonlat_out) %>%
+      bulk_reverse_geocode(lonlat_out) |>
       ncol(),
-    34
+    41L
     )
   })
 
 
 
 
-"autocomplete_test" %>% test_that({
+"autocomplete_test" |> test_that({
   expect_equal(
-    autocomplete(postcodes[1]),
-    "HD1 2UD"
+    autocomplete_possibly(postcodes[1]),
+    "HD1 2UU"
   )
-  expect_null(
-    autocomplete(bad_postcode)
+  expect_equal(
+    autocomplete_possibly(bad_postcode),
+    NA
   )
 })
 
