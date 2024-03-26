@@ -24,10 +24,10 @@ get_latlon <- function(postcode) {
 
   endpoint <- "https://www.doogal.co.uk/GetPostcode.ashx?postcode="
 
-  paste0(endpoint, postcode) %>%
-    utils::URLencode() %>%
-    rvest::read_html() %>%
-    rvest::html_node("p") %>%
-    rvest::html_text() %>%
+  paste0(endpoint, postcode) |>
+    utils::URLencode() |>
+    rvest::read_html() |>
+    rvest::html_node("p") |>
+    rvest::html_text() |>
     readr::read_delim("\t", col_names = data_names)
 }

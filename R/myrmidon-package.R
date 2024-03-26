@@ -15,8 +15,7 @@
 # roxygen namespace tags. Modify with care!
 #' @importFrom assertthat assert_that
 #' @importFrom dplyr across c_across desc if_any if_else join_by
-#' @importFrom magrittr %>%
-#' @importFrom rlang `:=`
+#' @importFrom rlang `:=` .data
 #' @importFrom tidyselect all_of any_of contains ends_with everything
 #' @importFrom tidyselect last_col matches num_range starts_with
 #' @importFrom usethis ui_info ui_stop ui_oops ui_nope ui_code

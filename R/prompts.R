@@ -2,7 +2,7 @@ prompt_rstudio <- function() {
   rstd <- tryCatch(RStudio.Version()$release_name, error = \(e) NULL)
   if (!is.null(rstd)) {
     colour <- "myr_prompt_col3" |>
-      get0(.myr_prompt_env, ifnotfound = "darkslateblue")
+      get0(".myr_prompt_env", ifnotfound = "darkslateblue")
     crayon::style(rstd, colour)
   } else NULL
 }
@@ -11,7 +11,7 @@ prompt_rstudio <- function() {
 
 prompt_location <- function(unicode) {
   colour <- "myr_prompt_col1" |>
-    get0(.myr_prompt_env, ifnotfound = "whitesmoke")
+    get0(".myr_prompt_env", ifnotfound = "whitesmoke")
   location <- basename(getwd())
   icon <- if (unicode) {
     if (file.exists(here::here("DESCRIPTION"))) "\U1F4E6\u2009"
@@ -26,7 +26,7 @@ prompt_location <- function(unicode) {
 prompt_git_branch <- function(unicode) {
   if (prompt::is_git_dir()) {
     colour <- "myr_prompt_col2" |>
-      get0(.myr_prompt_env, ifnotfound = "orange")
+      get0(".myr_prompt_env", ifnotfound = "orange")
 
     if (unicode) {
       paste0(

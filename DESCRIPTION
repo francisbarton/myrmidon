@@ -24,7 +24,6 @@ Imports:
     janitor,
     jsonlite,
     lubridate,
-    magrittr,
     pillar,
     prompt,
     ps,

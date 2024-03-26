@@ -45,30 +45,30 @@ order_along.sf <- function(sf, order_along, sort_by, desc = FALSE) {
 
   # gotta split🍌, and work without geometry on one fork🍴, otherwise
   # the left_join later on will fail (can't `dplyr::*-join` two `sf` tbls)
-  sf2 <- sf %>%
+  sf2 <- sf |>
       sf::st_drop_geometry()
 
   cols <- colnames(sf2)
 
   if (desc) {
-    sf2 <- sf2 %>%
+    sf2 <- sf2 |>
       dplyr::arrange(desc({{ sort_by }}))
   } else {
-    sf2 <- sf2 %>%
+    sf2 <- sf2 |>
       dplyr::arrange({{ sort_by }})
   }
 
-  sf2 %>%
+  sf2 |>
     # create list of `order_along` variable, in order of appearance 😊
-    dplyr::select({{ order_along }}) %>%
-    dplyr::distinct() %>%
+    dplyr::select({{ order_along }}) |>
+    dplyr::distinct() |>
 
     # now ordered along `order_along` and sorted by `sort_by` 😄
     # not _necessary_ to stipulate `by`, but it avoids the join message 🤫.
-    dplyr::left_join(sf2, by = rlang::as_name(along)) %>%
+    dplyr::left_join(sf2, by = rlang::as_name(along)) |>
 
     # quick way to restore the original column order 😙
-    dplyr::select(dplyr::all_of(cols)) %>%
+    dplyr::select(dplyr::all_of(cols)) |>
 
     # `right_join()` saves the day by retrieving and joining to the original
     # geometry without losing our carefully crafted sorting and ordering 😌
