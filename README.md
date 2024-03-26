@@ -9,7 +9,7 @@
 > The Myrmidons of Greek myth were known for their loyalty to their leaders, so that in pre-industrial Europe the word "myrmidon" carried many of the same connotations that "robot" does today. [wikipedia](https://en.m.wikipedia.org/wiki/Myrmidons#Modern_Myrmidons)
 
 <figure style="margin: 30px;">
-  <img src="bad_myrmidon.png" width="33%" alt="Myrmidon cartoon by Horacio Gonzalez. A "centaur" ant is drawn, with an ant's body and legs, and a human torso, wearing a breastplate and helmet in an Ancient Greek style, and carrying a spear in its right hand and a sword in its left. (It also has its six ant legs)." />
+  <img src="inst/img/bad_myrmidon.png" width="33%" alt="Myrmidon cartoon by Horacio Gonzalez. A "centaur" ant is drawn, with an ant's body and legs, and a human torso, wearing a breastplate and helmet in an Ancient Greek style, and carrying a spear in its right hand and a sword in its left. (It also has its six ant legs)." />
   <figcaption><em>Myrmidon cartoon – represented as a half-ant, half-human warrior creature – by <a href="https://lostinbrittany.org/blog/2006/09/28/monstres-pour-la-grece-fantastique/">Horacio Gonzalez</a>.</em></figcaption>
  </figure>
 
@@ -34,7 +34,7 @@ Some useful functions you will find in here:
 ```r
 postcodes <- c("HD1 2UT", "HD1 2UU", "HD1 2UV")
 test_df1 <- dplyr::tibble(place = paste0("place_", 1:3), postcode = postcodes)
-postcode_data_join(test_df1, fix_invalid = TRUE, narrow = FALSE)
+postcode_data_join(test_df1)
 ```
 
 

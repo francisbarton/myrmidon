@@ -1,3 +1,7 @@
+# 0.6.15 (26 March 2024)
+
+* Added `suggest_postcode_fixes()` function and simplified `postcode_data_join()` function as a result.
+
 # 0.6.13 (11 May 2023)
 
 * Moved my prompt functions to be RStudio add-ins
