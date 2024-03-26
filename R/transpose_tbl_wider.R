@@ -11,6 +11,6 @@ transpose_tbl_wider <- function(.tbl) {
   .tbl |>
     dplyr::mutate(across(everything(), as.character)) |>
     tidyr::pivot_longer(cols = !1) |>
-    tidyr::pivot_wider(names_from = 1, values_from = value) |>
+    tidyr::pivot_wider(names_from = 1) |>
     dplyr::rename_with(\(x) x = colnames(.tbl)[[1]], 1)
 }

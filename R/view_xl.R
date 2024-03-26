@@ -10,7 +10,7 @@ view_xl <- function(.data) {
   if (rlang::is_interactive()) {
     tmp <- tempfile(fileext = ".csv")
     readr::write_csv(.data, tmp)
-    browseURL(tmp)
+    utils::browseURL(tmp)
   }
   invisible(.data)
 }

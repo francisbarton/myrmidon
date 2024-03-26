@@ -2,7 +2,7 @@ my_gt_style <- function(.data) {
   .data |>
     gt::gt() |>
     gt::tab_options(
-      table.width = pct(80),
+      table.width = gt::pct(80),
       table.font.names = "Fira Sans",
       table.font.size = "10px",
       heading.align = "left",
@@ -15,21 +15,21 @@ my_gt_style <- function(.data) {
     ) |>
     gt::opt_row_striping() |>
     gt::tab_style(
-      style = cell_text(weight = "bold"),
-      locations = cells_column_labels()
+      style = gt::cell_text(weight = "bold"),
+      locations = gt::cells_column_labels()
     ) |>
     gt::tab_style(
-      style = cell_text(align = "right", v_align = "middle"),
+      style = gt::cell_text(align = "right", v_align = "middle"),
       locations = list(
-        cells_column_labels(),
-        cells_body()
+        gt::cells_column_labels(),
+        gt::cells_body()
       )) |>
     gt::tab_style(
-      style = cell_text(weight = "bold", align = "left"),
-      locations = cells_column_labels(columns = 1)
+      style = gt::cell_text(weight = "bold", align = "left"),
+      locations = gt::cells_column_labels(columns = 1)
       ) |>
     gt::tab_style(
-      style = cell_text(align = "right"),
-      locations = cells_source_notes()
+      style = gt::cell_text(align = "right"),
+      locations = gt::cells_source_notes()
     )
 }

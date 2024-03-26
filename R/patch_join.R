@@ -73,7 +73,7 @@ patch_join <- function(dtf_x, dtf_y, patch_col) {
 
   out <- dtf_x |>
     dplyr::left_join(dtf_y, by = {{ by_cols }}, relationship = "one-to-one") |>
-    dplyr::mutate(across({{ patch_col }}, \(x) dplyr::coalesce(x, src_col))) |>
+    dplyr::mutate(across({{ patch_col }}, \(x) dplyr::coalesce(x, .data[["src_col"]]))) |>
     dplyr::select(!"src_col") |>
     dplyr::select(all_of(names(dtf_x)))
 

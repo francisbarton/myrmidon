@@ -53,7 +53,8 @@ bulk_reverse_geocode <- function(.data, prev_data = NULL, curr_radius = 250L) {
     dplyr::mutate(radius = curr_radius) |>
     dplyr::mutate(batch = ceiling(dplyr::row_number() / 100L)) |>
     # batch into groups of max 100 rows
-    dplyr::group_split(batch, .keep = FALSE)
+    dplyr::nest_by("batch") |>
+    dplyr::pull("data")
 
   geodata_return <- data_list |>
     purrr::map(get_geodata_return) |>
@@ -117,7 +118,7 @@ bulk_reverse_geocode <- function(.data, prev_data = NULL, curr_radius = 250L) {
 unnest_codes <- function(.data) {
   if ("codes" %in% names(.data)) {
     .data |>
-      dplyr::mutate(codes_names = names(codes)) |>
+      dplyr::mutate(codes_names = names(.data[["codes"]])) |>
       dplyr::mutate(across("codes", unlist)) |>
       dplyr::rename(code = "codes") |>
       tidyr::pivot_wider(

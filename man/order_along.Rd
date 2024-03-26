@@ -4,10 +4,10 @@
 \alias{order_along}
 \title{Sort a data frame using a secondary key, within primary groupings}
 \usage{
-order_along(df, order_along, sort_by, desc = FALSE)
+order_along(dtf, order_along, sort_by, desc = FALSE)
 }
 \arguments{
-\item{df}{data frame}
+\item{dtf}{data frame}
 
 \item{order_along}{variable you want to order}
 
