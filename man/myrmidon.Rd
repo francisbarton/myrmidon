@@ -2,8 +2,8 @@
 % Please edit documentation in R/myrmidon-package.R
 \docType{package}
 \name{myrmidon}
-\alias{myrmidon}
 \alias{myrmidon-package}
+\alias{myrmidon}
 \title{\code{myrmidon}}
 \description{
 "My R" Kitchen Drawer
