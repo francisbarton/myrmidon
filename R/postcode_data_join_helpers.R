@@ -31,7 +31,7 @@ check_terminated <- function(x) {
     httr2::req_url_path_append(URLencode(x)) |>
     pluck_result()
 }
-check_terminated_possibly <- purrr::possibly(check_terminated, otherwise = NULL)
+check_term_possibly <- purrr::possibly(check_term, otherwise = NULL)
 
 
 
@@ -141,10 +141,13 @@ autocomplete <- function(x) {
     httr2::req_url_path_append(x) |>
     httr2::req_url_path_append("/autocomplete") |>
     httr2::req_url_query(limit = 5L) |>
+    httr2::req_url_query(limit = 5L) |>
     pluck_result() |>
     unlist() |>
     sample(1L)
+    sample(1L)
 }
+autocomplete_possibly <- purrr::possibly(autocomplete, otherwise = NA)
 autocomplete_possibly <- purrr::possibly(autocomplete, otherwise = NA)
 
 
@@ -157,6 +160,14 @@ bulk_lookup <- function(x) {
     purrr::map_df("result")
 }
 
+
+get_geodata_return <- function(.data) {
+  req_base() |>
+    httr2::req_body_json(list(geolocations = .data)) |>
+    httr2::req_perform() |>
+    httr2::resp_body_json() |>
+    purrr::pluck("result")
+}
 
 get_geodata_return <- function(.data) {
   req_base() |>

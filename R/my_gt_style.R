@@ -12,7 +12,7 @@ my_gt_style <- function(.data) {
       column_labels.font.size = "11px",
       source_notes.font.size = "10px",
       row.striping.background_color = "#faf0fa"
-    ) |>
+      ) |>
     gt::opt_row_striping() |>
     gt::tab_style(
       style = gt::cell_text(weight = "bold"),
