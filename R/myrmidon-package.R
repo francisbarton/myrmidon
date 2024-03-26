@@ -13,7 +13,8 @@
 
 # The following block is used by usethis to automatically manage
 # roxygen namespace tags. Modify with care!
-#' @importFrom dplyr across c_across desc join_by
+#' @importFrom assertthat assert_that
+#' @importFrom dplyr across c_across desc if_any if_else join_by
 #' @importFrom magrittr %>%
 #' @importFrom rlang `:=`
 #' @importFrom tidyselect all_of any_of contains ends_with everything

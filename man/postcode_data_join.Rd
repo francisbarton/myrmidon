@@ -4,19 +4,14 @@
 \alias{postcode_data_join}
 \title{Use postcodes.io to get postcode data}
 \usage{
-postcode_data_join(.data, var = "postcode", fix_invalid = TRUE)
+postcode_data_join(.data, var = "postcode")
 }
 \arguments{
 \item{.data}{A data frame with a column of postcodes, or a vector
 of postcodes.}
 
-\item{var}{String or symbol. The name of the variable in the data frame that
-comprises the postcodes to be submitted. Should be acceptable as a symbol
-or as a standard string.}
-
-\item{fix_invalid}{Boolean, default \code{TRUE}. Whether to try to fix any
-postcodes that are not found (potentially because they are terminated codes,
-or contain typos).}
+\item{var}{Character. The name of the variable in the data frame that
+holds the postcodes to be submitted. Ignored if .data is a vector.}
 }
 \description{
 Use postcodes.io to get postcode data
@@ -26,5 +21,5 @@ postcodes <- c("HD1 2UT", "HD1 2UU", "HD1 2UV")
 test_df1 <- dplyr::tibble(
   place = paste0("place_", 1:3),
   postcode = postcodes)
-postcode_data_join(test_df1, fix_invalid = TRUE)
+postcode_data_join(test_df1)
 }
