@@ -20,6 +20,7 @@
 #' @importFrom tidyselect all_of any_of contains ends_with everything
 #' @importFrom tidyselect last_col matches num_range starts_with
 #' @importFrom usethis ui_info ui_stop ui_oops ui_nope ui_code
+#' @importFrom utils URLencode
 
 # Borrow `view()` from `{tibble}`
 #' @export

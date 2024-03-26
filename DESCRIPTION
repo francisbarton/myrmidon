@@ -1,8 +1,8 @@
 Package: myrmidon
 Type: Package
 Title: My R Kitchen Drawer
-Version: 0.6.15
-Date: 2023-11-10
+Version: 0.6.16
+Date: 2024-03-26
 Author: Fran Barton (@ludictech)
 Maintainer: Fran Barton <fbarton@alwaysdata.net>
 Description: Fran's personal useful tools, tricks and toys. Some functions I
@@ -17,11 +17,17 @@ Imports:
     crayon,
     dplyr (>= 1.1.0),
     gert,
+    glue,
+    gt,
     here,
     httr2,
+    janitor,
+    jsonlite,
     lubridate,
     magrittr,
     pillar,
+    prompt,
+    ps,
     purrr (>= 1.0.0),
     readr,
     reprex,
@@ -31,16 +37,19 @@ Imports:
     rvest,
     sf,
     stringr,
+    tibble,
     tidyr,
     tidyselect,
     usethis,
     utils,
-    vctrs
+    vctrs,
+    xml2
 RoxygenNote: 7.3.1
 Depends: 
     R (>= 4.1.0)
 Suggests:
     suncalc,
+    testthat,
     togglr
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
