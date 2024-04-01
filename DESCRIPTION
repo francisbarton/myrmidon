@@ -17,6 +17,7 @@ Imports:
     crayon,
     dplyr (>= 1.1.0),
     gert,
+    gh,
     glue,
     gt,
     here,

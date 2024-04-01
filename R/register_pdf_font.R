@@ -11,7 +11,7 @@
 
 register_pdf_font <- function(name) {
 
-  assertthat::assert_that(require(extrafontdb), msg = "It looks like the extrafontdb package is not installed.")
+  assertthat::assert_that(requireNamespace("extrafontdb"), msg = "It looks like the extrafontdb package is not installed.")
 
   font_paths <- function(name, path) {
     list.files(path, pattern = paste0("^", name, ".*.afm.gz"), ignore.case = TRUE)
