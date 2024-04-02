@@ -31,7 +31,7 @@ check_terminated <- function(x) {
     httr2::req_url_path_append(URLencode(x)) |>
     pluck_result()
 }
-check_term_possibly <- purrr::possibly(check_terminated, otherwise = NULL)
+check_terminated_possibly <- purrr::possibly(check_terminated, otherwise = NULL)
 
 
 

@@ -71,7 +71,7 @@ lonlat_out <- structure(list(longitude = -1.780629, latitude = 53.643909), row.n
   )
   expect_identical(
     validate_out |>
-      dplyr::mutate(response = purrr::map(query_code, check_term_possibly)) |>
+      dplyr::mutate(response = purrr::map(query_code, check_terminated_possibly)) |>
       dplyr::filter(!purrr::map_lgl(response, is.null)),
     check_term_out2
   )
@@ -79,7 +79,7 @@ lonlat_out <- structure(list(longitude = -1.780629, latitude = 53.643909), row.n
     check_terminated(bad_postcode)
   )
   expect_null(
-    check_term_possibly(bad_postcode)
+    check_terminated_possibly(bad_postcode)
   )
 })
 
