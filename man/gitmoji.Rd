@@ -21,6 +21,8 @@ gitmoji by name.
 Use \code{\link[=gitmoji_desc]{gitmoji_desc()}} to search the table of gitmoji by description
 }
 \examples{
-gitmoji("memo")
-gitmoji("flag")
+if (FALSE) {
+ gitmoji("memo")
+ gitmoji("flag", exact = FALSE)
+}
 }

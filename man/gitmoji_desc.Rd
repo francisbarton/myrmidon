@@ -10,7 +10,7 @@ gitmoji_desc(x = "")
 \item{x}{string. A piece of text to search for.}
 }
 \value{
-a three-column table showing matching emoji with their code
+A three-column table showing matching emoji with their code
 and description
 }
 \description{
