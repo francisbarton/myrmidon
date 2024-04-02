@@ -11,7 +11,7 @@
 
 register_pdf_font <- function(name) {
 
-  assertthat::assert_that(requireNamespace("extrafontdb"), msg = "It looks like the extrafontdb package is not installed.")
+  assert_that(requireNamespace("extrafontdb"), msg = "It looks like the extrafontdb package is not installed.")
 
   font_paths <- function(name, path) {
     list.files(path, pattern = paste0("^", name, ".*.afm.gz"), ignore.case = TRUE)
@@ -19,7 +19,7 @@ register_pdf_font <- function(name) {
   name <- sub(" ", "", name)
   extrafontdb_path <- system.file('metrics', package = 'extrafontdb', mustWork = TRUE)
 
-  assertthat::assert_that(!rlang::is_empty(font_paths(name, extrafontdb_path)),
+  assert_that(!rlang::is_empty(font_paths(name, extrafontdb_path)),
                           msg = "No fonts found starting with this name. Try removing spaces or replacing them with hyphens.")
 
 

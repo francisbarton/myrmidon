@@ -42,7 +42,7 @@
 
 
 patch_join <- function(dtf_x, dtf_y, patch_col) {
-  assertthat::assert_that(
+  assert_that(
     patch_col %in% names(dtf_x) & patch_col %in% names(dtf_y),
     msg = "patch_join: The column to patch is not found in both data frames."
   )
@@ -54,16 +54,16 @@ patch_join <- function(dtf_x, dtf_y, patch_col) {
     patch_col
   )
 
-  assertthat::assert_that(
+  assert_that(
     is.vector(dtf_x[[patch_col]]),
     msg = "patch_join: The column to be patched in dtf_x is not a vector col."
   )
-  assertthat::assert_that(
+  assert_that(
     is.vector(dtf_y[[patch_col]]),
     msg = "patch_join: The column to patch from in dtf_y is not a vector col."
   )
 
-  assertthat::assert_that(
+  assert_that(
     typeof(dtf_x[[patch_col]]) == typeof(dtf_y[[patch_col]])
   )
 
@@ -82,8 +82,8 @@ patch_join <- function(dtf_x, dtf_y, patch_col) {
       "There were {sum(is.na(dtf_x[[patch_col]]))} NAs in the original data frame column, out of {nrow(dtf_x)} rows. {sum(is.na(dtf_x[[patch_col]])) - sum(is.na(out[[patch_col]]))} of these have now been patched."
     )}
 
-  assertthat::assert_that(nrow(out) == nrow(dtf_x))
-  assertthat::assert_that(identical(names(out), names(dtf_x)))
+  assert_that(nrow(out) == nrow(dtf_x))
+  assert_that(identical(names(out), names(dtf_x)))
 
   out
 }

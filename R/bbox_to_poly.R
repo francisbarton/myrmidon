@@ -61,8 +61,8 @@ expand_sf_bbox <- function(x, factor, crs = NULL) {
 
   orig_bbox <- sf::st_bbox(x)
 
-  assertthat::assert_that(purrr::is_double(orig_bbox))
-  assertthat::assert_that(length(orig_bbox) == 4)
+  assert_that(purrr::is_double(orig_bbox))
+  assert_that(length(orig_bbox) == 4)
 
   usethis::ui_info("The bounding box of the object you supplied was:")
   usethis::ui_code(orig_bbox)
@@ -74,7 +74,7 @@ expand_sf_bbox <- function(x, factor, crs = NULL) {
     factor <- rep(factor, 2)
   }
 
-  assertthat::assert_that(
+  assert_that(
     length(factor) == 4,
     msg = "The expansion factor you supplied is not of length 1, 2 or 4"
   )
@@ -90,7 +90,7 @@ expand_sf_bbox <- function(x, factor, crs = NULL) {
     ymax = orig_bbox[["ymax"]] + (orig_height * factor[[1]])  # top
   )
 
-  assertthat::assert_that(purrr::is_double(b))
+  assert_that(purrr::is_double(b))
   bbox_to_poly(b)
 }
 

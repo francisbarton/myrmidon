@@ -42,7 +42,7 @@ reprex_to_gist <- function() {
   gist_url <- glue::glue("{gist_base}/{my_gh}/{gist_id}")
 
   cli::cli_alert_success("reprex posted to {gist_url}")
-  writeClipboard(gist_url)
+  utils::writeClipboard(gist_url)
   utils::browseURL(gist_url)
   invisible(TRUE)
 }

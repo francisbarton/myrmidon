@@ -12,7 +12,7 @@
 year_dates <- function(x, months = 1:12) {
   x <- as.character(x)
 
-  assertthat::assert_that(all(as.numeric(months) %in% 1:12),
+  assert_that(all(as.numeric(months) %in% 1:12),
     msg = usethis::ui_oops(
       "One or more supplied months is not a whole number between 1 and 12."
     ))

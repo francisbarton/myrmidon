@@ -71,17 +71,17 @@ batch_it <- function(
   # ensure x is a reasonable vector
   if (is.list(x)) {
     ui_info("Flattening list to vector")
-    while (purrr::pluck_depth(x) > 2) {
+    while (purrr::pluck_depth(x) > 2L) {
       x <- purrr::list_flatten(x)
     }
     x <- purrr::list_c(x)
   }
 
-  assertthat::assert_that(is.atomic(x),
+  assert_that(is.atomic(x),
     msg = ui_stop("This function only works with lists or vectors")
   )
 
-  if (length(batches) == 1 && (length(x) <= batches)) x
+  if (length(batches) == 1L && (length(x) <= batches)) x
 
   if (purrr::every(list(batches, proportion), rlang::is_null)) {
     ui_stop("batch_it: Either `batches` or `proportion` must be supplied.")
@@ -94,7 +94,7 @@ batch_it <- function(
     been supplied. The `batches` value is prioritised.")
   }
 
-  if (length(x) > 10e6) {
+  if (length(x) > 10e6L) {
     ui_nope("batch_it: Easy, tiger! That vector has more than a million
     items. Are you sure you want to continue?")
   }
@@ -102,7 +102,7 @@ batch_it <- function(
 
   # sub-routine to handle proportion parameter
   if (!is.null(proportion)) {
-    assertthat::assert_that(
+    assert_that(
       is.numeric(proportion),
       msg = ui_oops("batch_it: The proportion parameter is not numeric")
     )
@@ -110,17 +110,17 @@ batch_it <- function(
   }
 
   # just checking
-  assertthat::assert_that(is.numeric(batches),
+  assert_that(is.numeric(batches),
     msg = ui_oops("batch_it: Batch sizes provided are not numeric")
   )
 
-  assertthat::assert_that(all(batches > 0),
+  assert_that(all(batches > 0L),
     msg = ui_oops("batch_it: Batch sizes must be greater than zero")
   )
 
 
   batches <- round(batches)
-  batches <- batches[which(batches > 0)]
+  batches <- batches[which(batches > 0L)]
   batches <- maximise_batches(x, batches, maximise)
 
 
@@ -129,7 +129,7 @@ batch_it <- function(
     ui_stop("Batch sizes ended up longer than the length of the vector")
   }
 
-  if (length(x) - sum(batches) > 0) {
+  if (length(x) - sum(batches) > 0L) {
     ui_info("The length of the target vector `x` is not an exact multiple of the
     batch length(s) supplied. The remaining elements of `x` will be added as a
     final batch.")
@@ -142,13 +142,13 @@ batch_it <- function(
     options(usethis.quiet = cur_quiet)
   }
 
-  list_a <- c(0, utils::head(batches, -1)) |>
+  list_a <- c(0L, utils::head(batches, -1L)) |>
     rlang::set_names(names(batches)) |>
     purrr::accumulate(sum, .simplify = TRUE)
   list_b <- batches |>
     purrr::accumulate(sum, .simplify = TRUE)
 
-  purrr::map2(list_a, list_b, \(a, b) x[(a + 1):b])
+  purrr::map2(list_a, list_b, \(a, b) x[(a + 1L):b])
 }
 # end of main function
 
@@ -159,14 +159,14 @@ batch_it <- function(
 
 #' @noRd
 convert_proportion_to_batches <- function(x, proportion) {
-  if (!all(proportion > 0)) {
+  if (!all(proportion > 0L)) {
     ui_stop("Proportions must be positive numbers")
   }
 
-  if (length(proportion) == 1 && proportion < 1) {
-    proportion <- rep(proportion, times = floor(1 / proportion))
-    if (sum(proportion) < 1) {
-      proportion <- c(proportion, 1 - sum(proportion))
+  if (length(proportion) == 1L && proportion < 1L) {
+    proportion <- rep(proportion, times = floor(1L / proportion))
+    if (sum(proportion) < 1L) {
+      proportion <- c(proportion, 1L - sum(proportion))
     }
   }
 
@@ -186,7 +186,7 @@ maximise_batches <- function(x, batches, maximise) {
     batches <- rep(batches, times = ceiling(length(x) / sum(batches)))
 
     while (sum(batches) > length(x)) {
-      batches <- utils::head(batches, -1)
+      batches <- utils::head(batches, -1L)
     }
   }
   batches
@@ -228,19 +228,19 @@ batch_it_simple <- function(x, batch_size) {
     ui_stop("This function only works with lists or vectors")
   }
 
-  if (length(x) > 10e6) {
+  if (length(x) > 10e6L) {
     ui_nope("Easy, tiger! That vector has more than a million items.
             Are you sure you want to continue?")
   }
 
   # ensure batch_size is an appropriate single positive number
-  if (length(batch_size) != 1 | batch_size <= 0) {
+  if (length(batch_size) != 1L | batch_size <= 0L) {
     ui_stop("The batch_size parameter must be a single positive value")
   }
 
   # if batch_size is supplied as a decimal between 0 and 1, interpret this as
   # a proportion of the length of `x`, and convert to an integer
-  if (batch_size < 1) {
+  if (batch_size < 1L) {
     batch_size <- ceiling(length(x) * batch_size)
   }
 
@@ -255,7 +255,7 @@ batch_it_simple <- function(x, batch_size) {
   }
 
   batch_size <- round(batch_size)
-  assertthat::assert_that(batch_size > 0)
+  assert_that(batch_size > 0L)
 
   # do the batching by creating a vector of factors of length(x)
   # then use this as the factor argument to split(x)

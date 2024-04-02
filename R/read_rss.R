@@ -109,10 +109,3 @@ read_rss <- function(url) {
 
   list(items = items, feed_metadata = feed_metadata)
 }
-
-
-#' Remove NAs from a vector
-#' @export
-remove_nas <- function(vec) {
-  vec[!is.na(vec)]
-}
