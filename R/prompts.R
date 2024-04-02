@@ -1,5 +1,5 @@
 prompt_rstudio <- function() {
-  rstd <- tryCatch(RStudio.Version()$release_name, error = \(e) NULL)
+  rstd <- tryCatch(rstudioapi::versionInfo()$release_name, error = \(e) NULL)
   if (!is.null(rstd)) {
     colour <- "myr_prompt_col3" |>
       get0(".myr_prompt_env", ifnotfound = "darkslateblue")
