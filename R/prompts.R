@@ -1,39 +1,36 @@
-prompt_rstudio <- function() {
-  rstd <- tryCatch(rstudioapi::versionInfo()$release_name, error = \(e) NULL)
+prompt_rstudio <- function(prompt_env = .myr_prompt_env) {
+  rstd <- tryCatch(rstudioapi::versionInfo(), error = \(e) NULL)
   if (!is.null(rstd)) {
-    colour <- "myr_prompt_col3" |>
-      get0(".myr_prompt_env", ifnotfound = "darkslateblue")
-    crayon::style(rstd, colour)
+    clr <- get0("myr_prompt_col3", prompt_env, ifnotfound = "darkslateblue")
+    crayon::style(rstd[["release_name"]], clr)
   } else NULL
 }
 
 
 
-prompt_location <- function(unicode) {
-  colour <- "myr_prompt_col1" |>
-    get0(".myr_prompt_env", ifnotfound = "whitesmoke")
+prompt_location <- function(unicode = TRUE, prompt_env = .myr_prompt_env) {
+  clr <- get0("myr_prompt_col1", prompt_env, ifnotfound = "whitesmoke")
   location <- basename(getwd())
   icon <- if (unicode) {
     if (file.exists(here::here("DESCRIPTION"))) "\U1F4E6\u2009"
     else "\U1F4C2\u2009"
   } else NULL
-  paste0(icon, crayon::style(location, colour))
+  paste0(icon, crayon::style(location, clr))
 }
 
 
 
 
-prompt_git_branch <- function(unicode) {
+prompt_git_branch <- function(unicode = TRUE, prompt_env = .myr_prompt_env) {
   if (prompt::is_git_dir()) {
-    colour <- "myr_prompt_col2" |>
-      get0(".myr_prompt_env", ifnotfound = "orange")
+    clr <- get0("myr_prompt_col2", prompt_env, ifnotfound = "orange")
 
     if (unicode) {
       paste0(
-        crayon::style("\uE0A0", colour),
-        crayon::style(gert::git_branch(), colour))
+        crayon::style("\uE0A0", clr),
+        crayon::style(gert::git_branch(), clr))
     } else {
-      crayon::style(gert::git_branch(), colour)
+      crayon::style(gert::git_branch(), clr)
     }
   } else NULL
 }
@@ -42,16 +39,16 @@ prompt_git_branch <- function(unicode) {
 
 prompt_git_status <- function() {
   if (prompt::is_git_dir()) {
-    if (nrow(gert::git_remote_list()) > 0) {
+    if (nrow(gert::git_remote_list()) > 0L) {
       git_ab <- gert::git_ahead_behind()
 
-      if (git_ab$ahead > 0 ) {
-        git_ahead <- paste0(" ", git_ab$ahead,
+      if (git_ab[["ahead"]] > 0L ) {
+        git_ahead <- paste0(" ", git_ab[["ahead"]],
           crayon::style("\u25B2", "slateblue1"))
       } else git_ahead <- NULL
 
-      if (git_ab$behind > 0 ) {
-        git_behind <- paste0(" ", git_ab$behind,
+      if (git_ab[["behind"]] > 0L ) {
+        git_behind <- paste0(" ", git_ab[["behind"]],
           crayon::style("\u25BC", "tomato1"))
       } else git_behind <- NULL
 
@@ -64,7 +61,7 @@ prompt_git_status <- function() {
 
 
 prompt_memuse <- function(unicode) {
-  mem_pct <- ps::ps_system_memory()$percent / 100
+  mem_pct <- ps::ps_system_memory()[["percent"]] / 100
   mem <- ceiling(mem_pct * 4)
 
   if (unicode) {
@@ -82,12 +79,12 @@ prompt_memuse <- function(unicode) {
     )
     paste0(
       paste0(col_blocks[seq(mem)], collapse = ""),
-      paste0(gry_blocks[setdiff(seq(4), seq(mem))], collapse = "")
+      paste0(gry_blocks[setdiff(seq(4L), seq(mem))], collapse = "")
     )
   } else {
-    colours <- c(rep("palegreen4", 2), "orange", "orangered3")
+    colours <- c(rep("palegreen4", 2L), "orange", "orangered3")
     crayon::style(
-      round(mem_pct * 100, digits = 1),
+      round(mem_pct * 100, digits = 1L),
       colours[mem])
   }
 }
@@ -96,23 +93,23 @@ prompt_memuse <- function(unicode) {
 
 prompt_pkgs <- function(unicode) {
   n <- length(unname(utils::old.packages()[, "Package"]))
-  if (n > 0) {
+  if (n > 0L) {
     if (unicode) paste0("\U1F4E6", n) else n
   } else NULL
 }
 
 
-prompt_moon <- function() {
+prompt_moon <- function(prompt_env = .myr_prompt_env) {
   if (requireNamespace("suncalc", quietly = TRUE)) {
     moon_emoji <- c(
       "\U1F311", "\U1F312", "\U1F313", "\U1F314",
       "\U1F315", "\U1F316", "\U1F317", "\U1F318",
       "\U1F311"
     )
-    moon_phase <- rlang::env_cache(.myr_prompt_env, "moon_phase",
-            suncalc::getMoonIllumination()$phase)
+    moon_phase <- prompt_env |>
+      rlang::env_cache("moon_phase", suncalc::getMoonIllumination()[["phase"]])
     if (!is.null(moon_phase)) {
-      moon_phase <- round(moon_phase * (length(moon_emoji) -1)) + 1
+      moon_phase <- round(moon_phase * (length(moon_emoji) - 1L)) + 1L
       moon_emoji[[moon_phase]]
     } else NULL
   }
@@ -125,8 +122,8 @@ prompt_uptime <- function(prefix = "up: ") {
   uptime <- difftime(Sys.time(), start_time, units = "auto")
   paste0(
     prefix,
-    signif(as.double(uptime), 2),
-    substr(units(uptime), 1, 1)
+    signif(as.double(uptime), 2L),
+    substr(units(uptime), 1L, 1L)
   )
 }
 
@@ -136,7 +133,7 @@ prompt_uptime <- function(prefix = "up: ") {
 prompt_toggl <- function(unicode, add_time = TRUE) {
 
   if (requireNamespace("togglr", quietly = TRUE)) {
-    toggl_desc <- togglr::get_current()$description
+    toggl_desc <- togglr::get_current()[["description"]]
 
     if (is.null(toggl_desc)) {
       if (unicode) toggl_status <- crayon::red$bold("\u2718")
@@ -147,7 +144,7 @@ prompt_toggl <- function(unicode, add_time = TRUE) {
         toggl_time <- paste0(
           signif(
             as.double(
-              togglr::get_current_duration() / 60000,
+              togglr::get_current_duration() / 60000L,
               units = "mins"), 2),
           "m")
 
