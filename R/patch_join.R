@@ -6,8 +6,9 @@
 #' Currently the function is deliberately kept limited and simple. It could of
 #'  course be extended with further functionality (multiple patch columns,
 #'  patching from a column with a different name, replacing values more
-#'  generally not just NAs, specifying custom join_by (key) columns and so on).
-#'  But for now I just want to make a solid function that works and does this
+#'  generally not just `NA`s, specifying custom join_by (key) columns and so on).
+#'
+#' But for now I just want to make a solid function that works and does this
 #'  one job well, without lots of risks or potential scope for data loss
 #'  disasters.
 #'
@@ -17,13 +18,12 @@
 #'  -  Each row in x matches at most 1 row in y
 #'  -  Each row in y matches at most 1 row in x
 #'
-#' (from the dplyr::left_join() help page).
+#' (from the `dplyr::left_join()` help page).
 #'
 #' This means that it will throw an error if `dtf_y` would provide multiple
 #'  matching rows for a row in `dtf_x`, creating additional rows in the output
-#'  tibble. I want to avoid that - I want
-#'  the patching to be precise: each NA can only be replaced by at most one
-#'  patch value.
+#'  tibble. I want to avoid that - I want the patching to be precise: each `NA`
+#'  can only be replaced by at most one patch value.
 #'
 #' @param dtf_x A data frame. This contains a column with `NA` values that you
 #' intend to replace with actual values where possible.

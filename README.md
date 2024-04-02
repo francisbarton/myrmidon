@@ -21,11 +21,19 @@ Some useful functions you will find in here:
 
 * postcode_data_join: Get postcode data from postcodes.io and join it to an existing df
 * batch_it: Turn a vector into a batched list
-* save_it: Wrapper for saveRDS - a quick way to save an object to an Rds file
+* patch_join: (AKA coalesce join) Join 2 data frames, using values in `y` to patch NAs in `x`
+* project_mascot: Get a cute emoji mascot for your latest project - or even just for your current R session
+* reprex_to_gist: Send reprex code and output to a new GH gist (based on Mickaël Canouil's code [here][mc-gist])
+* save_it: Wrapper for saveRDS - a quick way to save an object to an `Rds` file
+* extract_col_types: A helper for the `col_types` argument to `readr::read_csv()` and similar
+* hcl_msoa_names: A simple function to get the latest [House of Commons Library MSOA Names][hcl-msoa]
+* commonest: a function that returns the mode (most common value) from a vector
 * gmaps_to_sf: Convert Google Maps lat-lon Data to a Geospatial sf object
 * year_dates: Create vectors of dates for one or more years (and/or months)
 * bbox_to_poly: Convert a bbox to an sf geospatial polygon (rectangle)
 
+[mc-gist]: https://github.com/tidyverse/reprex/issues/190#issuecomment-817313938
+[hcl-msoa]: https://houseofcommonslibrary.github.io/msoanames/
 
 ### Examples
 
@@ -40,7 +48,7 @@ postcode_data_join(test_df1)
 
 ### HTML5 RMarkdown template
 
-*details...*
+*details, details, details...*
 =======
 
 
