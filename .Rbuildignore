@@ -1,11 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^LICENSE\.md$
 ^data-raw$
 ^\.github$
-^data$
-^reprex\.txt$
-^test\.Rds$
-^R/sfbb_map\.R$
-^R/wifi_points_map\.R$
-^R/wtf\.R$
+^LICENSE\.md$
+^.*\.code\-workspace$

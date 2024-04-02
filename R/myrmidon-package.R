@@ -20,9 +20,12 @@
 #' @importFrom tidyselect last_col matches num_range starts_with
 #' @importFrom usethis ui_info ui_stop ui_oops ui_nope ui_code
 #' @importFrom utils URLencode
+#' @importFrom vctrs vec_in
 
 # Borrow `view()` from `{tibble}`
 #' @export
 view <- tibble::view
+
+utils::globalVariables(".myr_prompt_env")
 
 NULL

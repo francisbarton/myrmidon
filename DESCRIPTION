@@ -1,8 +1,8 @@
 Package: myrmidon
 Type: Package
 Title: My R Kitchen Drawer
-Version: 0.6.16
-Date: 2024-03-26
+Version: 0.6.17
+Date: 2024-04-02
 Author: Fran Barton (@ludictech)
 Maintainer: Fran Barton <fbarton@alwaysdata.net>
 Description: Fran's personal useful tools, tricks and toys. Some functions I
@@ -14,11 +14,13 @@ LazyData: true
 Imports: 
     assertthat,
     cli,
+    clipr,
     crayon,
     dplyr (>= 1.1.0),
     gert,
     gh,
     glue,
+    grDevices,
     gt,
     here,
     httr2,
@@ -48,6 +50,7 @@ RoxygenNote: 7.3.1
 Depends: 
     R (>= 4.1.0)
 Suggests:
+    extrafontdb,
     suncalc,
     testthat,
     togglr
