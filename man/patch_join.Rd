@@ -30,7 +30,8 @@ another data frame (\code{dtf_x}).
 Currently the function is deliberately kept limited and simple. It could of
 course be extended with further functionality (multiple patch columns,
 patching from a column with a different name, replacing values more
-generally not just NAs, specifying custom join_by (key) columns and so on).
+generally not just \code{NA}s, specifying custom join_by (key) columns and so on).
+
 But for now I just want to make a solid function that works and does this
 one job well, without lots of risks or potential scope for data loss
 disasters.
@@ -42,11 +43,10 @@ one-to-one relationship between rows in \code{dtf_x} and \code{dtf_y}. This mean
 \item Each row in y matches at most 1 row in x
 }
 
-(from the dplyr::left_join() help page).
+(from the \code{dplyr::left_join()} help page).
 
 This means that it will throw an error if \code{dtf_y} would provide multiple
 matching rows for a row in \code{dtf_x}, creating additional rows in the output
-tibble. I want to avoid that - I want
-the patching to be precise: each NA can only be replaced by at most one
-patch value.
+tibble. I want to avoid that - I want the patching to be precise: each \code{NA}
+can only be replaced by at most one patch value.
 }
