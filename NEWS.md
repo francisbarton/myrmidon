@@ -1,3 +1,15 @@
+# 0.6.18 (10 September 2024)
+
+* Add `theme_linen()` and `theme_clay()` ggplot2 themes
+* Add function to create `.myr_prompt_env` on package load
+* Add `chars()` helper function
+* Review function documentation and imports
+* We still have a lot of dependencies (33!)
+* `get_daily_welsh_word()` is still glitching due to inconsistencies in source data structure from day to day
+* Remove `how_old_am_i()` function which was only ever a little toy as I was learning stuff many years ago - it's not useful now
+* Little bit of housekeeping on `myr_colours` list
+* Update DESCRIPTION
+
 # 0.6.15 (26 March 2024)
 
 * Added `suggest_postcode_fixes()` function and simplified `postcode_data_join()` function as a result.

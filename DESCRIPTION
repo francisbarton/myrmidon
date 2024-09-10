@@ -1,14 +1,19 @@
 Package: myrmidon
 Type: Package
 Title: My R Kitchen Drawer
-Version: 0.6.17
-Date: 2024-04-02
-Author: Fran Barton (@ludictech)
-Maintainer: Fran Barton <fbarton@alwaysdata.net>
+Version: 0.6.18
+Date: 2024-09-10
+Authors@R:
+    person(
+        "Fran", "Barton",
+        email = "fbarton@alwaysdata.net",
+        role = c("aut", "cre"),
+        comment = c(ORCID = "0000-0002-5650-1176")
+    )
 Description: Fran's personal useful tools, tricks and toys. Some functions I
     want to have available most times I start up R, as well as my own HTML5
     RMarkdown template.
-License: MIT + file LICENSE
+License: MIT
 Encoding: UTF-8
 LazyData: true
 Imports: 
@@ -17,9 +22,11 @@ Imports:
     crayon,
     dplyr (>= 1.1.0),
     gert,
+    ggplot2,
     gh,
     glue,
     grDevices,
+    grid,
     gt,
     here,
     httr2,
@@ -45,13 +52,14 @@ Imports:
     utils,
     vctrs,
     xml2
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Depends: 
     R (>= 4.1.0)
 Suggests:
     extrafontdb,
     suncalc,
     testthat,
-    togglr
+    togglr,
+    withr
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)

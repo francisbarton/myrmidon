@@ -20,7 +20,7 @@ get_latlon <- function(postcode) {
     "national_park",
     "altitude",
     "rural_urban"
-    )
+  )
 
   endpoint <- "https://www.doogal.co.uk/GetPostcode.ashx?postcode="
 
