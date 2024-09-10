@@ -13,7 +13,7 @@ Authors@R:
 Description: Fran's personal useful tools, tricks and toys. Some functions I
     want to have available most times I start up R, as well as my own HTML5
     RMarkdown template.
-License: MIT + file LICENCE_INFO
+License: MIT + file MIT_INFO
 Encoding: UTF-8
 LazyData: true
 Imports: 
@@ -45,6 +45,7 @@ Imports:
     rvest,
     sf,
     stringr,
+    suncalc,
     tibble,
     tidyr,
     tidyselect,
@@ -57,9 +58,7 @@ Depends:
     R (>= 4.1.0)
 Suggests:
     extrafontdb,
-    suncalc,
     testthat,
-    togglr,
     withr
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
