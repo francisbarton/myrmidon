@@ -9,25 +9,14 @@
 hcl_msoa_names <- function(year = c("2021", "2011"), keep_welsh = TRUE) {
 
   year <- match.arg(year)
-  url_base <- "https://houseofcommonslibrary.github.io/msoanames/"
+  base <- "https://houseofcommonslibrary.github.io/msoanames/MSOA-Names-Latest"
 
-  if (year == "2021") {
-    url_file <- "MSOA-Names-Latest2.csv"
-    col_types <- "ccccccc"
-  }
-  if (year == "2011") {
-    url_file <- "MSOA-Names-Latest.csv"
-    col_types <- "cccccc"
-  }
-
-  out <- paste0(url_base, url_file) |>
+  url <- if (year == "2021") paste0(base, "2.csv") else paste0(base, ".csv")
+  col_types <- if (year == "2021") "ccccccc" else "cccccc"
+  
+  out <- url |>
     readr::read_csv(col_types = col_types, col_select = 1:5) |>
     janitor::clean_names()
 
-  if (keep_welsh) {
-    out
-  } else {
-    out |>
-      dplyr::select(!ends_with("nmw"))
-  }
+  if (keep_welsh) out else dplyr::select(out, !ends_with("nmw"))
 }

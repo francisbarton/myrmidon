@@ -4,7 +4,7 @@
 #' categories and you want the top-level categories at the right-hand end
 #' of your data frame and the more fine-grained or unique values at the
 #' left-hand end. If you have been doing left joins you might end up with an
-#' "irrationally sorted" table; this function will help you rationalise it.
+#' "irrationally" sorted table; this function will help you rationalise it.
 #' This won't make sense for all datasets, naturally.
 #' 
 #' @param .data A data frame
@@ -14,8 +14,7 @@ rationalise_df <- function(.data) {
   l <- .data |>
     dplyr::summarise(across(everything(), \(x) length(unique(x)))) |>
     unlist() |>
-    sort(TRUE)
+    sort(decreasing = TRUE)
   
-  .data |>
-    dplyr::select(all_of(names(l)))
+  dplyr::select(.data, all_of(names(l)))
 }

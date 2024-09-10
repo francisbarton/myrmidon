@@ -7,25 +7,23 @@
 commonest(vec, first = TRUE)
 }
 \arguments{
-\item{vec}{A vector.}
+\item{vec}{A vector}
 
-\item{first}{If there is a tie, this parameter decides whether to prioritise
+\item{first}{If there is a tie, this decides whether to prioritise
 the element that appears first in \code{vec}. If \code{FALSE}, the function will just
 return the first item in the result produced by the default mode of
-\code{vec_count} (ie \code{"count"}, which does not return results prioritised by
-location -- see test-commonest file).}
+\code{vec_count} (\code{"count"}, which does not prioritise results by location)}
 }
 \value{
-A single element of the same type as \code{vec}.
+A single element of the same type as \code{vec}
 }
 \description{
 Pull out the commonest (mode) item from a vector
 }
 \examples{
-set <- sample(letters, 40, replace = TRUE)
+set <- withr::with_seed(4444, sample(letters, 40, replace = TRUE))
 commonest(set)
 commonest(set, first = FALSE)
-
 test_df <- dplyr::tibble(letters = set)
 dplyr::summarise(test_df, letter = commonest(letters))
 }

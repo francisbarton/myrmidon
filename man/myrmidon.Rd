@@ -13,4 +13,8 @@ Fran's personal useful tools, tricks and toys. Some functions I want to have
 available most times I start up R, as well as my own HTML5 RMarkdown
 template. Please feel free to use and improve them.
 }
+\author{
+\strong{Maintainer}: Fran Barton \email{fbarton@alwaysdata.net} (\href{https://orcid.org/0000-0002-5650-1176}{ORCID})
+
+}
 \keyword{internal}

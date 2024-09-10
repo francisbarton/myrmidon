@@ -14,6 +14,6 @@ This makes sense when you have "nested" values such as sub-categories of
 categories and you want the top-level categories at the right-hand end
 of your data frame and the more fine-grained or unique values at the
 left-hand end. If you have been doing left joins you might end up with an
-"irrationally sorted" table; this function will help you rationalise it.
+"irrationally" sorted table; this function will help you rationalise it.
 This won't make sense for all datasets, naturally.
 }

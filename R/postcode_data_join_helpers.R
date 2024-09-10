@@ -1,11 +1,9 @@
 req_base <- function(x = "") {
   ua <- "github.com/francisbarton/myrmidon // httr2"
-
   paste0("https://api.postcodes.io/", x, "postcodes/") |>
     httr2::request() |>
     httr2::req_user_agent(ua)
 }
-
 
 
 pluck_result <- function(req) {
@@ -16,14 +14,12 @@ pluck_result <- function(req) {
 }
 
 
-
 validate_code <- function(x) {
   req_base() |>
     httr2::req_url_path_append(URLencode(x)) |>
     httr2::req_url_path_append("/validate") |>
     pluck_result()
 }
-
 
 
 check_terminated <- function(x) {
@@ -35,11 +31,14 @@ check_terminated_possibly <- purrr::possibly(check_terminated, otherwise = NULL)
 
 
 
-
 bulk_reverse_geocode <- function(.data, prev_data = NULL, curr_radius = 250L) {
 
   if (curr_radius > 4000L) {
-    usethis::ui_info("Geocoding searches have not found some replacement postcodes despite searching up to 4km in radius from the original postcode. Stopping search now.")
+    cli::cli_alert_info(paste0(
+      "Geocoding searches have not found some replacement postcodes despite ",
+      "searching up to 4km in radius from the original postcode. Stopping ",
+      "search now."
+    ))
     prev_data # return early
   }
 
@@ -48,7 +47,7 @@ bulk_reverse_geocode <- function(.data, prev_data = NULL, curr_radius = 250L) {
   #   dplyr::mutate(oa21cd = purrr::pmap_chr(lonlatapi::find_oa))
 
   data_list <- .data |>
-    dplyr::select(all_of(c("longitude", "latitude"))) |>
+    dplyr::select(c("longitude", "latitude")) |>
     dplyr::mutate(limit = 1L) |>
     dplyr::mutate(radius = curr_radius) |>
     dplyr::mutate(batch = ceiling(dplyr::row_number() / 100L)) |>
@@ -70,7 +69,7 @@ bulk_reverse_geocode <- function(.data, prev_data = NULL, curr_radius = 250L) {
   nifty_bind_cols <- function(x, y) {
     x2 <- x |>
       tibble::as_tibble_row() |>
-      dplyr::select(all_of(c("longitude", "latitude"))) |>
+      dplyr::select(c("longitude", "latitude")) |>
       dplyr::rename_with(\(x) paste0("orig_", x))
     if (!is.null(y)) {
       y2 <- y |>
@@ -98,20 +97,22 @@ bulk_reverse_geocode <- function(.data, prev_data = NULL, curr_radius = 250L) {
 
   dat_missing <- data_out |>
     dplyr::filter(if_any("postcode", is.na)) |>
-    dplyr::select(all_of(c(
+    dplyr::select(c(
       longitude = "orig_longitude",
       latitude = "orig_latitude"
-    )))
+    ))
 
   if (nrow(dat_missing) > 0L) {
     bulk_reverse_geocode(dat_missing, dat_done, curr_radius = curr_radius * 2L)
   } else {
     dat_done |>
       # https://stackoverflow.com/a/76044270#76044270
-      dplyr::rename_with(\(x) paste0("new_", x, recycle0 = TRUE), .cols = any_of(c("longitude", "latitude")))
+      dplyr::rename_with(
+        \(x) paste0("new_", x, recycle0 = TRUE),
+        .cols = any_of(c("longitude", "latitude"))
+      )
   }
 }
-
 
 
 unnest_codes <- function(.data) {
@@ -131,13 +132,10 @@ unnest_codes <- function(.data) {
 }
 
 
-
-
 autocomplete <- function(x) {
   # Create incomplete postcode: If x ends in two letters, keep only the first
   # one. If x ends in a single letter (i.e. already incomplete), still keep it.
-  x <- stringr::str_replace(x, "([:alpha:]?)([:alpha:]?)$", "\\1") |>
-    URLencode()
+  x <- URLencode(stringr::str_replace(x, "([:alpha:]?)([:alpha:]?)$", "\\1"))
   req_base() |>
     httr2::req_url_path_append(x) |>
     httr2::req_url_path_append("/autocomplete") |>
@@ -147,8 +145,6 @@ autocomplete <- function(x) {
     sample(1L)
 }
 autocomplete_possibly <- purrr::possibly(autocomplete, otherwise = NA)
-
-
 
 
 bulk_lookup <- function(x) {

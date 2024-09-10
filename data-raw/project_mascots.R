@@ -1,4 +1,3 @@
-
 unicode_url <- "https://symbl.cc/en/emoji/animals-and-nature/"
 
 url_data <- unicode_url |>
@@ -73,7 +72,8 @@ project_mascots <- tibble::tibble(
       "Shamrock",
       "Potted Plant",
     sep = "|"), negate = TRUE))) |>
-  dplyr::mutate(across("mascot_label", \(x) dplyr::case_match(x,
+  dplyr::mutate(
+    across("mascot_label", \(x) dplyr::case_match(x,
       "Bird" ~ "Nightjar", # Not actually a nightjar but we needed an N!
       "Dromedary Camel" ~ "Camel",
       "Rooster" ~ "Cockerel",
@@ -83,10 +83,14 @@ project_mascots <- tibble::tibble(
       "Deciduous Tree" ~ "Oak",
       "Evergreen Tree" ~ "Evergreen",
       "Palm Tree" ~ "Palm",
-      .default = x))) |>
-  dplyr::mutate(across("mascot_label", \(x) stringr::str_remove(x, " Face$"))) |>
+      .default = x
+    ))
+  ) |>
+  dplyr::mutate(
+    across("mascot_label", \(x) stringr::str_remove(x, " Face$"))
+  ) |>
   dplyr::bind_rows(extra_mascots) |>
-  dplyr::arrange(dplyr::across("mascot_label"))
+  dplyr::arrange(pick("mascot_label"))
 
 
 # https://docs.google.com/spreadsheets/d/1fc6thrwFTPKwP0PlBTvzKjfiGlnM37JXLPaR8_In3fw/

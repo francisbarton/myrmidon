@@ -1,0 +1,1 @@
+.myr_prompt_env <- rlang::new_environment()

@@ -12,8 +12,9 @@
 project_mascot <- function(alliterative = FALSE) {
 
   # Emoji currently missing on Windows
-  missing_emojis <- c("Beaver", "Beetle", "Bison", "Dodo",
-                      "Fly", "Mammoth", "Seal", "Worm")
+  missing_emojis <- c(
+    "Beaver", "Beetle", "Bison", "Dodo", "Fly", "Mammoth", "Seal", "Worm"
+  )
 
   mascot_row <- project_mascots |>
     dplyr::filter(!if_any("mascot_label", \(x) vec_in(x, missing_emojis))) |>
@@ -22,13 +23,21 @@ project_mascot <- function(alliterative = FALSE) {
 
   if (alliterative) {
     mascot_names <- mascot_names |>
-      grep(pattern = substr(mascot_row[["mascot_label"]], 1L, 1L), value = TRUE)
+      stringr::str_subset(paste0("^", chars(mascot_row[["mascot_label"]])[[1]]))
   }
 
-  # glue::glue("{mascot_name} the {mascot_label} {mascot_emoji}")
   list(
     mascot_name = sample(mascot_names, 1L),
     mascot_label = mascot_row[["mascot_label"]],
     mascot_emoji = mascot_row[["mascot_emoji"]]
   )
+}
+
+#' Alias for stringr::str_split_1(..., pattern = "")
+#' Split a string into its characters
+#' @param x A single character string
+# '@export
+chars <- function(x) {
+  assert_that(length(x) == 1, is.character(x))
+  stringr::str_split_1(x, "")
 }

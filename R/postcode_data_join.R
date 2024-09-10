@@ -19,22 +19,22 @@ postcode_data_join <- function(.data, var = "postcode") {
       var %in% names(.data),
       msg = "That column doesn't exist in this data frame."
     )
-    codes <- unique(.data[[var]]) 
+    codes <- .data[[var]]
   } else {
     assert_that(rlang::is_character(.data))
-    codes <- unique(.data)
+    codes <- .data
   }
 
+  codes <- unique(toupper(purrr::discard(codes, is.na)))
   assert_that(length(codes) > 0L, msg = "No postcodes have been found.")
 
-  codes <- toupper(codes)
-
-  valid_codes <- codes |>
-    purrr::keep(validate_code)
-  invalid_codes <- setdiff(codes, valid_codes)
+  valid_index <- codes |>
+    purrr::map_lgl(validate_code, .progress = "Checking postcodes...")
+  valid_codes <- codes[valid_index]
+  invalid_codes <- codes[!valid_index]
 
   if (length(invalid_codes) > 0L) {
-    c(
+    paste0(
       "{.fn postcode_data_join} found {length(invalid_codes)} ",
       "invalid postcodes. Examples: ",
       "{.val {head(invalid_codes, 5L)}}. ",
@@ -48,7 +48,7 @@ postcode_data_join <- function(.data, var = "postcode") {
   if (length(valid_codes) > 0L) {
     valid_results <- valid_codes |>
       batch_it(100L) |>
-      purrr::map(bulk_lookup) |>
+      purrr::map(bulk_lookup, .progress = "Looking up postcode data...") |>
       purrr::list_rbind() |>
       unnest_codes()
   } else {
@@ -57,7 +57,7 @@ postcode_data_join <- function(.data, var = "postcode") {
 
   if (is.data.frame(.data) & !is.null(valid_results)) {
     .data |>
-      dplyr::left_join(valid_results, by = vctrs::vec_c({{ var }} := "postcode"))
+      dplyr::left_join(valid_results, vctrs::vec_c({{ var }} := "postcode"))
   } else {
     valid_results
   }
@@ -80,10 +80,11 @@ postcode_data_join <- function(.data, var = "postcode") {
 #' @export
 suggest_postcode_fixes <- function(codes) {
 
-  codes <- unique(toupper(codes))
+  codes <- unique(toupper(purrr::discard(codes, is.na)))
   assert_that(length(codes) > 0L, msg = "No postcodes were supplied.")
-  invalid_codes <- codes |>
-    purrr::discard(validate_code)
+  valid_index <- codes |>
+    purrr::map_lgl(validate_code, .progress = "Checking postcodes...")
+  invalid_codes <- codes[!valid_index]
 
   if (length(invalid_codes) == 0L) {
     "{.fn postcode_data_join} found no postcodes that need fixing." |>
@@ -97,6 +98,8 @@ suggest_postcode_fixes <- function(codes) {
       purrr::list_rbind()
     if (nrow(terminated_codes_data) > 0L) {
       fixed_terminated_data <- fix_terminated(terminated_codes_data)
+    } else {
+      fixed_terminated_data <- NULL
     }
     if (!is.null(fixed_terminated_data)) {
       unfixed_codes <- invalid_codes |>
@@ -127,8 +130,7 @@ suggest_postcode_fixes <- function(codes) {
 
 
 fix_terminated <- function(.data) {
-  geocoded_data <- .data |>
-    bulk_reverse_geocode()
+  geocoded_data <- bulk_reverse_geocode(.data)
   if (nrow(geocoded_data) > 0L) {
     fixed_terminated_codes <- geocoded_data |>
       unnest_codes() |>
@@ -139,7 +141,7 @@ fix_terminated <- function(.data) {
       dplyr::inner_join(
         fixed_terminated_codes, c("orig_longitude", "orig_latitude")
       ) |>
-      dplyr::select(!all_of(c("orig_longitude", "orig_latitude"))) |>
+      dplyr::select(!c("orig_longitude", "orig_latitude")) |>
       dplyr::rename(
         longitude = "new_longitude",
         latitude = "new_latitude"
@@ -152,15 +154,13 @@ fix_terminated <- function(.data) {
 
 
 fix_by_autocomplete <- function(codes) {
-  autocomplete_results <- codes |>
-    purrr::map_chr(autocomplete_possibly)
+  autocomplete_results <- purrr::map_chr(codes, autocomplete_possibly)
 
   ac_data <- tibble::tibble(
     postcode = codes,
     new_postcode = autocomplete_results
   )
-  ac_codes <- autocomplete_results |>
-    purrr::discard(is.na)
+  ac_codes <- purrr::discard(autocomplete_results, is.na)
 
   if (length(ac_codes) > 0L) {
     fixed_ac_data <- ac_codes |>
@@ -169,8 +169,7 @@ fix_by_autocomplete <- function(codes) {
       purrr::map(unnest_codes) |>
       purrr::list_rbind() |>
       dplyr::rename(new_postcode = "postcode")
-    ac_data |>
-      dplyr::left_join(fixed_ac_data, "new_postcode")
+    dplyr::left_join(ac_data, fixed_ac_data, "new_postcode")
   } else {
     ac_data
   }

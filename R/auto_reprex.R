@@ -1,8 +1,7 @@
 #' @export
 auto_reprex <- function() {
-    reprex::reprex(
-      input = paste0(
-        rstudioapi::getSourceEditorContext() |>
-          purrr::pluck("contents"), "\n")
-    )
+  rstudioapi::getSourceEditorContext() |>
+    purrr::pluck("contents") |>
+    paste0("\n") |>
+    reprex::reprex(input = _)
 }

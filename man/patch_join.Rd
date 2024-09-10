@@ -15,9 +15,9 @@ to use to replace the \code{NA}s in \code{dtf_x}}
 
 \item{patch_col}{A string. This provides the name of the column which is to
 be patched. Currently this needs to be present in \code{dtf_x} and \code{dtf_y} and
-refer to the column to be patched and the column with the replacement values.
-The column should be a vector column in both cases, and of the same \code{type}
-otherwise coercion to the lower level type may occur.}
+refer to the column to be patched and the column with the replacement
+values. The column should be a vector column in both cases, and of the same
+\code{type} otherwise coercion to the lower level type may occur.}
 }
 \value{
 A tibble with the same column names and number of rows as \code{dtf_x}
@@ -30,11 +30,9 @@ another data frame (\code{dtf_x}).
 Currently the function is deliberately kept limited and simple. It could of
 course be extended with further functionality (multiple patch columns,
 patching from a column with a different name, replacing values more
-generally not just \code{NA}s, specifying custom join_by (key) columns and so on).
-
+generally not just \code{NA}s, specifying custom join_by columns and so on).
 But for now I just want to make a solid function that works and does this
-one job well, without lots of risks or potential scope for data loss
-disasters.
+one job well, without lots of risks or much scope for data loss disasters.
 
 A further (deliberate) limitation of this function is that it expects a
 one-to-one relationship between rows in \code{dtf_x} and \code{dtf_y}. This means that
