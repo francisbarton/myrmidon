@@ -13,7 +13,7 @@ Authors@R:
 Description: Fran's personal useful tools, tricks and toys. Some functions I
     want to have available most times I start up R, as well as my own HTML5
     RMarkdown template.
-License: MIT
+License: MIT + file LICENCE_INFO
 Encoding: UTF-8
 LazyData: true
 Imports: 
