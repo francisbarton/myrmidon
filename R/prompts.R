@@ -1,4 +1,4 @@
-prompt_rstudio <- function(prompt_env = .myr_prompt_env) {
+prompt_rstudio <- function(prompt_env = .myr_env) {
   rstd <- tryCatch(rstudioapi::versionInfo(), error = \(e) NULL)
   if (!is.null(rstd)) {
     clr <- get0("myr_prompt_col3", prompt_env, ifnotfound = "darkslateblue")
@@ -8,7 +8,7 @@ prompt_rstudio <- function(prompt_env = .myr_prompt_env) {
 
 
 
-prompt_location <- function(unicode = TRUE, prompt_env = .myr_prompt_env) {
+prompt_location <- function(unicode = TRUE, prompt_env = .myr_env) {
   clr <- get0("myr_prompt_col1", prompt_env, ifnotfound = "whitesmoke")
   location <- basename(getwd())
   icon <- if (unicode) {
@@ -21,7 +21,7 @@ prompt_location <- function(unicode = TRUE, prompt_env = .myr_prompt_env) {
 
 
 
-prompt_git_branch <- function(unicode = TRUE, prompt_env = .myr_prompt_env) {
+prompt_git_branch <- function(unicode = TRUE, prompt_env = .myr_env) {
   if (prompt::is_git_dir()) {
     clr <- get0("myr_prompt_col2", prompt_env, ifnotfound = "orange")
 
@@ -99,7 +99,7 @@ prompt_pkgs <- function(unicode) {
 }
 
 
-prompt_moon <- function(prompt_env = .myr_prompt_env) {
+prompt_moon <- function(prompt_env = .myr_env) {
   if (requireNamespace("suncalc", quietly = TRUE)) {
     moon_emoji <- c(
       "\U1F311", "\U1F312", "\U1F313", "\U1F314",
@@ -118,7 +118,7 @@ prompt_moon <- function(prompt_env = .myr_prompt_env) {
 
 
 prompt_uptime <- function(prefix = "up: ") {
-  start_time <- rlang::env_cache(.myr_prompt_env, "start_time", Sys.time())
+  start_time <- rlang::env_cache(.myr_env, "start_time", Sys.time())
   uptime <- difftime(Sys.time(), start_time, units = "auto")
   paste0(
     prefix,

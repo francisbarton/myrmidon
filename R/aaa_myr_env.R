@@ -1,0 +1,1 @@
+.myr_env <- rlang::new_environment()
