@@ -10,7 +10,7 @@ theme_linen <- function(font_family = "Fira Sans") {
       size = 18, margin = margin(8, 8, 12, 18)
       # hjust = 0.05, margin = margin(8, 8, 8, 24)
     ),
-    plot.subtitle = element_text(face = "plain", margin = margin(2, 0, 2, 0)),
+    plot.subtitle = element_text(face = "plain", margin = margin(2, 0, 2, 20)),
     plot.caption = element_text(
       hjust = 0.96, face = "plain", size = 12, margin = margin(12, 8, 6, 0)
     ),
@@ -22,7 +22,6 @@ theme_linen <- function(font_family = "Fira Sans") {
     legend.title = element_text(hjust = 0.05),
     legend.background = element_rect(fill = "linen"),
     legend.key = element_rect(fill = "linen", colour = NA),
-    legend.key = element_blank(),
     # legend.box.background = element_rect(fill = "linen"),
     panel.grid.major = element_line(
       colour = "#bfbfbf7f", # 50% opacity
